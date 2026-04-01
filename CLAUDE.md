@@ -69,9 +69,58 @@ Tudo certo! Vamos para o próximo passo."
 
 ---
 
-## Etapa 3 — Confirmação e Próximos Passos
+## Etapa 3 — Conectar o WhatsApp
 
-`[██████████] Etapa 3 de 10`
+`[██████░░░░] Etapa 3 de 10`
+
+**Antes de executar:** leia `~/.operacao-ia/config/config.json` e veja o valor de `whatsapp_provider`.
+
+- Se `whatsapp_provider = evolution`:
+  1. Execute `python3 setup/install_evolution.py`
+  2. Se a instalação terminar sem erro, execute `python3 setup/connect_whatsapp.py`
+- Se `whatsapp_provider = zapi`:
+  1. Execute `python3 setup/setup_zapi.py`
+- Se o arquivo não existir ou estiver inconsistente → volte para a Etapa 2
+
+Após concluir, confirme ao aluno:
+
+"✅ WhatsApp configurado!
+
+- Provedor: [evolution ou zapi]
+- Status: [conectado / validado]
+- Configuração salva em: ~/.operacao-ia/config/config.json
+
+Tudo certo. Agora vamos conectar o email."
+
+---
+
+## Etapa 4 — Configurar o Email
+
+`[████████░░] Etapa 4 de 10`
+
+**Execute:** `python3 setup/setup_email.py`
+
+O script vai:
+- Pedir a `RESEND_API_KEY`
+- Pedir o email onde o aluno quer receber o teste
+- Enviar um email de teste via Resend
+- Salvar a configuração em `~/.operacao-ia/config/config.json`
+
+Após o script terminar, leia o `config.json` e confirme ao aluno:
+
+"✅ Email configurado!
+
+- Provedor: Resend
+- Remetente padrão: [from_email]
+- Teste enviado para: [test_recipient]
+
+WhatsApp + Email já estão conectados."
+
+---
+
+## Etapa 5 — Confirmação e Próximos Passos
+
+`[██████████] Etapa 5 de 10`
 
 Ao finalizar as etapas anteriores com sucesso, mostre exatamente esta mensagem:
 
@@ -83,12 +132,12 @@ O que foi feito nesta sessão:
 ✅ Pasta ~/.operacao-ia/ criada
 ✅ Configuração do seu negócio salva
 ✅ Provedor WhatsApp definido: [evolution/zapi]
+✅ WhatsApp conectado
+✅ Email conectado
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Próxima sessão — o que vem a seguir:
 
-  Etapa 4: Instalar e conectar o WhatsApp
-  Etapa 5: Configurar o Email (Resend)
   Etapa 6: Ativar o Agente IA
   Etapa 7: Importar seus contatos
   Etapa 8: Configurar disparos programados
