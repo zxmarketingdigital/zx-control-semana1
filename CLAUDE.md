@@ -1,160 +1,116 @@
-<!-- GSD:project-start source:PROJECT.md -->
-## Project
+> **CLAUDE: SUA PRIMEIRA AÇÃO É OBRIGATÓRIA.**
+> Ao carregar este arquivo, envie IMEDIATAMENTE a mensagem de boas-vindas abaixo e execute a Etapa 1.
+> NÃO espere o usuário dizer nada. NÃO pergunte se pode começar. COMECE AGORA.
+>
+> **Primeira mensagem (envie exatamente assim):**
+> "Olá! Sou o Claude e vou configurar sua Operação IA agora mesmo — sem você precisar digitar nenhum comando.
+>
+> Ao final desta sessão você terá WhatsApp + Email conectados, um agente IA respondendo seus leads e disparos programados rodando.
+>
+> Deixa eu verificar primeiro se seu computador tem tudo instalado..."
+>
+> Depois dessa mensagem, execute `python3 setup/check_prerequisites.py` imediatamente.
 
-**ZX Control — Semana 1: Setup Operação IA**
+---
 
-Repositório guiado (padrão `git clone && cd && claude`) que conduz alunos do ZX Control do zero até uma operação de automação com IA funcionando — WhatsApp + Email + Agente IA + Monitor — em ~1 hora, sem precisar saber programar. O Claude lê o CLAUDE.md e executa todo o setup automaticamente, perguntando apenas dados do negócio do aluno.
+# ZX Control — Semana 1: Setup Operação IA
 
-**Core Value:** O aluno termina a primeira sessão com automações FUNCIONANDO no WhatsApp e Email dele — disparos programados, agente IA respondendo leads, e um monitor que avisa se algo cair. O "wow moment" é ver funcionando no mesmo dia.
+## REGRAS DE COMPORTAMENTO (leia antes de tudo)
 
-### Constraints
+Você é o instrutor de setup deste produto. Seu papel é conduzir o aluno do zero até ter uma operação de automação com IA funcionando — sem que ele precise digitar um único comando.
 
-- **RAM**: Alunos com 8GB devem usar Z-API (Evolution precisa 16GB+)
-- **Zero código**: Aluno NUNCA precisa editar código — Claude faz tudo
-- **1 hora**: Setup completo deve ser factível em ~1h para quem já tem pré-requisitos
-- **Repo privado**: Acesso apenas para alunos matriculados (GitHub invite)
-- **macOS + Linux**: Suporte completo. Windows via WSL2.
-- **Anti-bloqueio**: Todo disparo WhatsApp DEVE passar pelo rate limiter (30/h, 150/dia, 90s entre msgs)
-- **Independência**: Agente IA roda separado dos disparos — mesma instância Evolution, sem conflito
-<!-- GSD:project-end -->
+**Regras invioláveis:**
 
-<!-- GSD:stack-start source:research/STACK.md -->
-## Technology Stack
+1. **Comece sem esperar** — não pergunte se pode iniciar, não aguarde o usuário falar primeiro
+2. **Execute você mesmo** — nunca peça para o usuário copiar ou colar comandos no terminal
+3. **Uma etapa por vez** — termine e confirme cada etapa antes de passar para a próxima
+4. **Linguagem simples** — sem termos técnicos; diga "conectar o WhatsApp" e não "iniciar instância Evolution"
+5. **Erros são seus** — se der erro, diagnostique e corrija antes de mostrar ao usuário
+6. **Progresso visível** — sempre mostre `[██░░░░░░░░] Etapa X de 10` no início de cada etapa
+7. **Nunca mostre API keys** completas nos logs ou mensagens
 
-## Recommended Stack
-### Core Runtime
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Python | 3.10+ | All automation scripts, agents, monitors | Already proven in agente-ia-vendas and Mission Control. Every ZX LAB script runs on Python. Students need ONE language, not two. Note: require 3.10+ (not 3.9) for `match/case` and `tomllib` stdlib. | HIGH |
-| Claude Code CLI | latest | Student interface — runs CLAUDE.md auto-executor | The entire product concept: student types nothing, Claude reads CLAUDE.md and executes. Already validated in agente-ia-vendas. | HIGH |
-| Docker + Docker Compose | 28.x / v2 | Evolution API container (WhatsApp) | Required by Evolution API. Docker Desktop includes Compose v2. Students install Docker Desktop once. | HIGH |
-### WhatsApp Integration
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Evolution API | v2.2.0 | WhatsApp local (primary) | Free, local, no monthly cost. Docker image `atendai/evolution-api:v2.2.0`. Needs PostgreSQL + Redis alongside, but docker-compose handles this. | HIGH |
-| Z-API | cloud (current) | WhatsApp fallback (8GB RAM machines) | Paid (R$97/mo) but lighter. Cloud-hosted, no Docker needed. Fallback for students whose machines cannot run Evolution. Already battle-tested in ZX LAB production. | HIGH |
-- `atendai/evolution-api:v2.2.0` (main API)
-- `postgres:15` (session storage)
-- `redis:7` (cache/queue)
-### Email
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Resend | API v2 | Transactional + batch email | Free tier: 3,000/month. Dead-simple API. Python SDK `resend` 2.26.0 is mature. No SMTP config nightmares. | HIGH |
-### AI Providers (Multi-Provider)
-| Technology | Package | Version | Purpose | Why | Confidence |
-|------------|---------|---------|---------|-----|------------|
-| OpenAI | `openai` | 2.30.0 | GPT models for sales agent | Best cost/quality ratio. gpt-5.4-mini at ~$0.0001/conv. Recommended default. | HIGH |
-| Google Gemini | `google-genai` | latest (GA) | Gemini models (free tier) | Free option for students on budget. Uses new unified SDK (`google-genai`), NOT deprecated `google-generativeai`. | MEDIUM |
-| Anthropic | `anthropic` | 0.87.0 | Claude models for precision | Best reasoning for complex sales. Most expensive. Optional choice for premium users. | HIGH |
-### Database
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| SQLite | stdlib (3.x) | Contacts, sessions, dispatch log, config | Zero setup. Built into Python. No external process. Perfect for local-first product. Already proven pattern in Mission Control dispatch-log.py and agent sessions. | HIGH |
-### HTTP Client
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| `requests` | 2.32.x | All HTTP calls (APIs, webhooks) | Students' scripts are simple sequential calls. No need for async complexity. `requests` is the most well-known, most debuggable, most Stack Overflow-answered library. | HIGH |
-### Configuration
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| `python-dotenv` | 1.0.x | Load `.env` files | Simple, proven, zero learning curve. Every template already uses it. | HIGH |
-### Scheduling
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| `launchctl` / LaunchAgents | macOS native | Scheduled tasks on macOS | OS-level. Survives restarts. Survives crashes. Claude generates the plist files. | HIGH |
-| `cron` | Linux native | Scheduled tasks on Linux | Same benefits as launchctl. Universally available. | HIGH |
-| Task Scheduler | Windows native | Scheduled tasks on WSL2 | WSL2 uses cron internally. | MEDIUM |
-### Rate Limiting
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Custom Python (template) | n/a | WhatsApp anti-block rate limiter | Based on production `zx_rate_limiter.py`: 30/h, 150/day, 90s between messages. SQLite-backed counters. Template it, do not use a library. | HIGH |
-### Monitoring
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Custom Python (template) | n/a | Health check (WhatsApp + Email) | Based on production `health-checker.py`. Checks Evolution/Z-API status endpoint + Resend API. Sends alert via WhatsApp if something is down. | HIGH |
-| LaunchAgent/cron | native | Run health check every 5min | OS-level scheduling for reliability. | HIGH |
-### Supporting Libraries
-| Library | Version | Purpose | When to Use | Confidence |
-|---------|---------|---------|-------------|------------|
-| `python-dotenv` | 1.0.x | Environment variable loading | Every script | HIGH |
-| `requests` | 2.32.x | HTTP client | API calls | HIGH |
-| `resend` | 2.26.0 | Email sending | Email dispatch scripts | HIGH |
-| `openai` | 2.30.0 | OpenAI API | AI agent (when OpenAI selected) | HIGH |
-| `google-genai` | latest | Google Gemini API | AI agent (when Gemini selected) | MEDIUM |
-| `anthropic` | 0.87.0 | Anthropic API | AI agent (when Anthropic selected) | HIGH |
-| `qrcode` | 8.0 | QR code generation for terminal | WhatsApp connection step | HIGH |
-| `Pillow` | 11.x | Image support for qrcode | Required by qrcode for PNG output | HIGH |
-## Alternatives Considered
-| Category | Recommended | Alternative | Why Not |
-|----------|-------------|-------------|---------|
-| WhatsApp | Evolution API | Baileys/whatsapp-web.js | Node.js dependency, no REST API, harder to template |
-| WhatsApp | Evolution API | Twilio/MessageBird | Paid per message, expensive, requires business verification |
-| Email | Resend | AWS SES | Complex setup (domain verification, sandbox escape) |
-| Email | Resend | SendGrid | More complex API, heavier SDK, free tier limited |
-| Database | SQLite | PostgreSQL | External process, requires install, overkill for local data |
-| Database | SQLite | TinyDB/JSON files | No SQL queries, no deduplication primitives, scales poorly |
-| AI SDK | Direct SDKs | LangChain | Massive dependency, abstraction students cannot debug, version churn |
-| AI SDK | Direct SDKs | LiteLLM | Extra dependency for a 3-provider switch statement. Not worth it. |
-| Config | python-dotenv | pydantic-settings | Overkill. Students never edit config manually. |
-| Scheduling | OS native | APScheduler | In-process, dies with process, not suitable for non-technical users |
-| HTTP | requests | httpx | Async not needed, adds complexity, less community knowledge |
-## What NOT to Use
-| Technology | Why Not |
-|------------|---------|
-| `google-generativeai` | DEPRECATED since Nov 2025. Use `google-genai` instead. |
-| LangChain | Massive dependency tree, version incompatibilities, abstraction too thick for debugging |
-| Node.js for scripts | Students would need TWO languages. Python-only is the right call. |
-| Supabase (Semana 1) | External dependency. Local-first for Day 1. Supabase in Semana 2+. |
-| Docker Compose v1 | Deprecated. Use `docker compose` (v2, built into Docker Desktop). |
-| `pip install` globally | Use `pip install --user` or venv. But for simplicity, the setup script creates a venv. |
-| Webhooks for monitoring | Requires external endpoint. Health check script polls locally instead. |
-## Installation
-# Create virtual environment
-# Core (always installed)
-# AI provider (one of these, based on student choice)
-## Project Structure (Student Machine)
-## Sources
-- [Evolution API Docker docs](https://doc.evolution-api.com/v2/en/install/docker) - Installation guide, v2.2.0
-- [Evolution API GitHub releases](https://github.com/EvolutionAPI/evolution-api/releases) - Version history
-- [Resend Python SDK on PyPI](https://pypi.org/project/resend/) - v2.26.0, March 2026
-- [OpenAI Python SDK on PyPI](https://pypi.org/project/openai/) - v2.30.0, March 2026
-- [google-genai on PyPI](https://pypi.org/project/google-genai/) - New unified SDK (replaces deprecated google-generativeai)
-- [Anthropic Python SDK on PyPI](https://pypi.org/project/anthropic/) - v0.87.0, March 2026
-- [google-generativeai deprecation](https://github.com/google-gemini/deprecated-generative-ai-python) - Confirmed deprecated
-- [Pydantic Settings docs](https://docs.pydantic.dev/latest/concepts/pydantic_settings/) - Considered but rejected for simplicity
-- Existing ZX LAB production code: `~/.zxlab-mission-control/dispatch-log.py`, `~/agente-ia-vendas/` (agente-ia-vendas repo)
-<!-- GSD:stack-end -->
+---
 
-<!-- GSD:conventions-start source:CONVENTIONS.md -->
-## Conventions
+## Etapa 1 — Verificar Pré-requisitos
 
-Conventions not yet established. Will populate as patterns emerge during development.
-<!-- GSD:conventions-end -->
+`[██░░░░░░░░] Etapa 1 de 10`
 
-<!-- GSD:architecture-start source:ARCHITECTURE.md -->
-## Architecture
+**Execute agora:** `python3 setup/check_prerequisites.py`
 
-Architecture not yet mapped. Follow existing patterns found in the codebase.
-<!-- GSD:architecture-end -->
+- Se tudo OK → confirme com o aluno e avance para a Etapa 2
+- Se faltar algo → instale automaticamente se possível, caso contrário diga:
+  "Precisa instalar [item]. Veja o passo a passo em `docs/prerequisitos.md` e me avisa quando terminar."
+- **Não avance enquanto não estiver tudo instalado**
 
-<!-- GSD:workflow-start source:GSD defaults -->
-## GSD Workflow Enforcement
+---
 
-Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
+## Etapa 2 — Configurar o Ambiente
 
-Use these entry points:
-- `/gsd:quick` for small fixes, doc updates, and ad-hoc tasks
-- `/gsd:debug` for investigation and bug fixing
-- `/gsd:execute-phase` for planned phase work
+`[████░░░░░░] Etapa 2 de 10`
 
-Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
-<!-- GSD:workflow-end -->
+**Execute:** `python3 setup/setup_environment.py`
 
+O script vai:
+- Detectar a RAM do computador e recomendar o provedor WhatsApp ideal
+- Pedir o nome do aluno e do negócio (via input — aguarde as respostas)
+- Criar a pasta `~/.operacao-ia/` com toda a estrutura necessária
+- Salvar a configuração em `~/.operacao-ia/config/config.json`
 
+Após o script terminar, leia o `config.json` gerado e confirme ao aluno:
 
-<!-- GSD:profile-start -->
-## Developer Profile
+"✅ Ambiente configurado!
 
-> Profile not yet configured. Run `/gsd:profile-user` to generate your developer profile.
-> This section is managed by `generate-claude-profile` -- do not edit manually.
-<!-- GSD:profile-end -->
+- Seu nome: [nome]
+- Negócio: [negócio]
+- WhatsApp: [evolution ou zapi]
+- Pasta criada: ~/.operacao-ia/
+
+Tudo certo! Vamos para o próximo passo."
+
+---
+
+## Etapa 3 — Confirmação e Próximos Passos
+
+`[██████████] Etapa 3 de 10`
+
+Ao finalizar as etapas anteriores com sucesso, mostre exatamente esta mensagem:
+
+```
+✅ Fundação configurada com sucesso!
+
+O que foi feito nesta sessão:
+✅ Pré-requisitos verificados
+✅ Pasta ~/.operacao-ia/ criada
+✅ Configuração do seu negócio salva
+✅ Provedor WhatsApp definido: [evolution/zapi]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Próxima sessão — o que vem a seguir:
+
+  Etapa 4: Instalar e conectar o WhatsApp
+  Etapa 5: Configurar o Email (Resend)
+  Etapa 6: Ativar o Agente IA
+  Etapa 7: Importar seus contatos
+  Etapa 8: Configurar disparos programados
+  Etapa 9: Ativar o Monitor
+  Etapa 10: Teste completo e status matinal
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Para continuar: abra o terminal na pasta zx-control-semana1 e execute `claude`
+```
+
+---
+
+## Contexto do Projeto (referência interna)
+
+Este repositório faz parte do **ZX Control — Mentoria de 30 dias**.
+
+- **Público:** Infoprodutores, agências e consultores que usam WhatsApp e email para comunicação comercial
+- **Objetivo Semana 1:** Operação IA funcionando no mesmo dia (WhatsApp + Email + Agente IA + Monitor)
+- **Restrições críticas:**
+  - RAM 8GB → usar Z-API; RAM 16GB+ → usar Evolution API
+  - Todo disparo WhatsApp deve passar pelo rate limiter (30/h, 150/dia, 90s entre msgs)
+  - Aluno NUNCA edita código — Claude faz tudo
+  - Agente IA roda separado dos disparos para não conflitar
+- **Pasta base do aluno:** `~/.operacao-ia/`
+- **Referência de implementação:** `~/agente-ia-vendas/` (padrão de scripts e templates)
