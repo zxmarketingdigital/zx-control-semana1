@@ -33,7 +33,7 @@ Você é o instrutor de setup deste produto. Seu papel é conduzir o aluno do ze
 
 ## Etapa 1 — Verificar Pré-requisitos
 
-`[██░░░░░░░░] Etapa 1 de 10`
+`[█░░░░░░░░░] Etapa 1 de 10`
 
 **Execute agora:** `python3 setup/check_prerequisites.py`
 
@@ -46,7 +46,7 @@ Você é o instrutor de setup deste produto. Seu papel é conduzir o aluno do ze
 
 ## Etapa 2 — Configurar o Ambiente
 
-`[████░░░░░░] Etapa 2 de 10`
+`[██░░░░░░░░] Etapa 2 de 10`
 
 **Execute:** `python3 setup/setup_environment.py`
 
@@ -71,7 +71,7 @@ Tudo certo! Vamos para o próximo passo."
 
 ## Etapa 3 — Conectar o WhatsApp
 
-`[██████░░░░] Etapa 3 de 10`
+`[███░░░░░░░] Etapa 3 de 10`
 
 **Antes de executar:** leia `~/.operacao-ia/config/config.json` e veja o valor de `whatsapp_provider`.
 
@@ -96,7 +96,7 @@ Tudo certo. Agora vamos conectar o email."
 
 ## Etapa 4 — Configurar o Email
 
-`[████████░░] Etapa 4 de 10`
+`[████░░░░░░] Etapa 4 de 10`
 
 **Execute:** `python3 setup/setup_email.py`
 
@@ -120,7 +120,7 @@ WhatsApp + Email já estão conectados."
 
 ## Etapa 5 — Confirmação e Próximos Passos
 
-`[██████████] Etapa 5 de 10`
+`[█████░░░░░] Etapa 5 de 10`
 
 Ao finalizar as etapas anteriores com sucesso, mostre exatamente esta mensagem:
 
@@ -144,9 +144,126 @@ Próxima sessão — o que vem a seguir:
   Etapa 9: Ativar o Monitor
   Etapa 10: Teste completo e status matinal
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Para continuar: abra o terminal na pasta zx-control-semana1 e execute `claude`
 ```
+
+---
+
+## Etapa 6 — Ativar o Agente IA
+
+`[██████░░░░] Etapa 6 de 10`
+
+**Execute:** `python3 setup/setup_agent.py`
+
+O script vai:
+- Pedir o provider da IA (`openai`, `gemini` ou `anthropic`)
+- Pedir a API key, nome do agente e tom
+- Validar a API key com uma chamada de teste
+- Copiar o agente para `~/.operacao-ia/scripts/agent_bant.py`
+- Gerar `~/.operacao-ia/scripts/start_agent.sh`
+- Salvar tudo no `config.json`
+
+Depois confirme ao aluno:
+
+"✅ Agente IA configurado!
+
+- Provider: [provider]
+- Nome do agente: [agent_name]
+- Script criado em: ~/.operacao-ia/scripts/agent_bant.py
+
+Agora vamos importar seus contatos."
+
+---
+
+## Etapa 7 — Importar Contatos
+
+`[███████░░░] Etapa 7 de 10`
+
+**Execute:** `python3 setup/import_contacts.py`
+
+O script vai:
+- Aceitar contatos colados ou caminho de um CSV
+- Validar e normalizar telefones
+- Salvar no banco `~/.operacao-ia/data/contacts.db`
+- Gerar backup em `~/.operacao-ia/data/contacts.csv`
+
+Depois confirme ao aluno:
+
+"✅ Contatos importados!
+
+- Banco: ~/.operacao-ia/data/contacts.db
+- Backup: ~/.operacao-ia/data/contacts.csv
+
+Perfeito. Vamos preparar seus disparos."
+
+---
+
+## Etapa 8 — Configurar Disparos
+
+`[████████░░] Etapa 8 de 10`
+
+**Execute:** `python3 setup/setup_dispatcher.py`
+
+O script vai:
+- Copiar o dispatcher para `~/.operacao-ia/scripts/dispatcher.py`
+- Copiar o rate limiter, dispatch log e API do WhatsApp
+- Gerar o atalho `~/.operacao-ia/scripts/enviar.sh`
+
+Depois confirme ao aluno:
+
+"✅ Disparos configurados!
+
+- Dispatcher: ~/.operacao-ia/scripts/dispatcher.py
+- Atalho: ~/.operacao-ia/scripts/enviar.sh
+- Dry-run obrigatório antes de enviar
+
+Agora vamos ativar o monitor diário."
+
+---
+
+## Etapa 9 — Ativar o Monitor
+
+`[█████████░] Etapa 9 de 10`
+
+**Execute:** `python3 setup/setup_monitor.py`
+
+O script vai:
+- Copiar o monitor para `~/.operacao-ia/scripts/monitor.py`
+- Instalar o LaunchAgent `br.zxlab.operacao-ia.monitor`
+- Perguntar se o aluno quer rodar o primeiro health check agora
+
+Depois confirme ao aluno:
+
+"✅ Monitor ativado!
+
+- Monitor: ~/.operacao-ia/scripts/monitor.py
+- LaunchAgent: br.zxlab.operacao-ia.monitor
+- Status diário: 8h da manhã
+
+Falta só o teste final."
+
+---
+
+## Etapa 10 — Teste Completo
+
+`[██████████] Etapa 10 de 10`
+
+Ao final, leia o `config.json`, verifique se os scripts principais existem em `~/.operacao-ia/scripts/` e mostre um resumo final com:
+
+- WhatsApp: [provider + status]
+- Email: [ok]
+- Agente IA: [provider + script]
+- Contatos: [banco criado]
+- Dispatcher: [script + dry-run]
+- Monitor: [launchagent ativo]
+
+Depois encerre com uma instrução prática de primeiro teste:
+
+```bash
+~/.operacao-ia/scripts/enviar.sh --message "Oi {nome}, passando para te avisar..." --dry-run
+```
+
+E explique em linguagem simples:
+"Esse comando faz um teste sem enviar nada de verdade. Ele serve para você revisar tudo antes do primeiro disparo real."
 
 ---
 

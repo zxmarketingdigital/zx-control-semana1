@@ -1,0 +1,394 @@
+#!/usr/bin/env python3
+"""
+Agente IA BANT da Operacao IA.
+Este arquivo e a fonte do script deployado em ~/.operacao-ia/scripts/agent_bant.py.
+"""
+
+import json
+import logging
+import os
+import sqlite3
+import sys
+import time
+import urllib.error
+import urllib.request
+from datetime import datetime
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
+
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_DIR))
+
+from whatsapp_api_template import send_whatsapp
+
+
+CONFIG_PATH = Path.home() / ".operacao-ia" / "config" / "config.json"
+SESSIONS_DB = Path.home() / ".operacao-ia" / "data" / "sessions.db"
+ZAPI_STATE = Path.home() / ".operacao-ia" / "data" / ".agent_zapi_state.json"
+DEFAULT_AGENT_PORT = 8781
+SESSION_TTL = 1800
+
+DEFAULT_AGENT_NAME = "{{AGENT_NAME}}"
+DEFAULT_AGENT_TONE = "{{AGENT_TONE}}"
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(message)s",
+    datefmt="%H:%M:%S",
+)
+log = logging.getLogger("agent-bant")
+
+
+def load_config():
+    if not CONFIG_PATH.exists():
+        raise FileNotFoundError("config.json nao encontrado em ~/.operacao-ia/config/")
+    return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+
+
+def save_config(config):
+    CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CONFIG_PATH.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def db():
+    SESSIONS_DB.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(SESSIONS_DB))
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS sessions (
+            phone TEXT PRIMARY KEY,
+            messages TEXT NOT NULL,
+            last_activity REAL NOT NULL
+        )
+        """
+    )
+    conn.commit()
+    return conn
+
+
+def load_session(phone):
+    with db() as conn:
+        row = conn.execute(
+            "SELECT messages, last_activity FROM sessions WHERE phone = ?",
+            (phone,),
+        ).fetchone()
+    if not row:
+        return None
+    return {"messages": json.loads(row[0]), "last_activity": float(row[1])}
+
+
+def save_session(phone, messages, last_activity):
+    with db() as conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO sessions (phone, messages, last_activity) VALUES (?, ?, ?)",
+            (phone, json.dumps(messages, ensure_ascii=False), last_activity),
+        )
+        conn.commit()
+
+
+def cleanup_expired_sessions():
+    cutoff = time.time() - SESSION_TTL
+    with db() as conn:
+        conn.execute("DELETE FROM sessions WHERE last_activity < ?", (cutoff,))
+        conn.commit()
+
+
+def build_system_prompt(config):
+    agent_name = config.get("agent_name") or DEFAULT_AGENT_NAME or "Ana"
+    agent_tone = config.get("agent_tone") or DEFAULT_AGENT_TONE or "vendas"
+    business_name = config.get("business_name", "Operacao IA")
+
+    tone_map = {
+        "vendas": "consultiva, persuasiva, leve e objetiva",
+        "suporte": "prestativa, clara, acolhedora e calma",
+        "geral": "natural, humana, objetiva e amigavel",
+    }
+    tone_text = tone_map.get(agent_tone, tone_map["geral"])
+
+    return f"""
+Voce e {agent_name}, atendente da {business_name}.
+
+Objetivo:
+- Conduzir conversas de WhatsApp com naturalidade.
+- Qualificar a pessoa usando BANT de forma sutil.
+- Levar a conversa para fechamento ou proximo passo quando fizer sentido.
+
+Metodo BANT:
+- Budget: entender capacidade ou abertura para investir
+- Authority: descobrir se a pessoa decide ou consulta alguem
+- Need: identificar a dor real e o objetivo
+- Timeline: entender urgencia e quando quer agir
+
+Regras:
+- Responda em portugues do Brasil.
+- Nunca soe robotica.
+- Use no maximo 3 a 5 linhas por resposta.
+- Faca uma pergunta por vez.
+- Evite listas longas.
+- Seja pratica e humana.
+- Se faltar contexto, pergunte antes de assumir.
+- Se a pessoa demonstrar forte interesse, convide para o proximo passo de forma natural.
+- Nao invente promessas, numeros ou garantias que nao estejam na conversa.
+
+Tom:
+- {tone_text}
+"""
+
+
+def call_openai(messages, api_key, system_prompt):
+    payload = json.dumps(
+        {
+            "model": "gpt-5.4-mini",
+            "messages": [{"role": "system", "content": system_prompt}] + messages,
+            "max_completion_tokens": 600,
+        }
+    ).encode("utf-8")
+
+    request = urllib.request.Request(
+        "https://api.openai.com/v1/chat/completions",
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=40) as response:
+        result = json.loads(response.read().decode("utf-8"))
+    return result["choices"][0]["message"]["content"].strip()
+
+
+def call_gemini(messages, api_key, system_prompt):
+    contents = []
+    for message in [{"role": "system", "content": system_prompt}] + messages:
+        role = "model" if message["role"] == "assistant" else "user"
+        contents.append({"role": role, "parts": [{"text": message["content"]}]})
+
+    payload = json.dumps(
+        {
+            "contents": contents,
+            "generationConfig": {"maxOutputTokens": 1500, "temperature": 0.7},
+        }
+    ).encode("utf-8")
+
+    request = urllib.request.Request(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=40) as response:
+        result = json.loads(response.read().decode("utf-8"))
+    return result["candidates"][0]["content"]["parts"][0]["text"].strip()
+
+
+def call_anthropic(messages, api_key, system_prompt):
+    payload = json.dumps(
+        {
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 700,
+            "system": system_prompt,
+            "messages": messages,
+        }
+    ).encode("utf-8")
+
+    request = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages",
+        data=payload,
+        headers={
+            "x-api-key": api_key,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=40) as response:
+        result = json.loads(response.read().decode("utf-8"))
+    return "".join(item.get("text", "") for item in result.get("content", [])).strip()
+
+
+def generate_reply(config, messages):
+    provider = (config.get("ai_provider") or "").lower()
+    api_key = config.get("ai_api_key", "")
+    prompt = build_system_prompt(config)
+
+    if provider == "openai":
+        return call_openai(messages, api_key, prompt)
+    if provider == "gemini":
+        return call_gemini(messages, api_key, prompt)
+    if provider == "anthropic":
+        return call_anthropic(messages, api_key, prompt)
+
+    raise ValueError(f"Provider de IA nao suportado: {provider}")
+
+
+def normalize_phone(value):
+    digits = "".join(ch for ch in str(value or "") if ch.isdigit())
+    if digits.startswith("55") and len(digits) >= 12:
+        return digits
+    return digits
+
+
+def is_inbound_evolution(payload):
+    event = payload.get("event")
+    if event and event != "messages.upsert":
+        return False
+    data = payload.get("data", {})
+    if isinstance(data, dict) and data.get("key", {}).get("fromMe"):
+        return False
+    return True
+
+
+def extract_evolution_message(payload):
+    data = payload.get("data", {}) if isinstance(payload, dict) else {}
+    key = data.get("key", {}) if isinstance(data, dict) else {}
+    message = data.get("message", {}) if isinstance(data, dict) else {}
+
+    remote_jid = key.get("remoteJid", "")
+    if remote_jid.endswith("@g.us"):
+        return None, None
+
+    text = (
+        message.get("conversation")
+        or message.get("extendedTextMessage", {}).get("text")
+        or message.get("imageMessage", {}).get("caption")
+        or ""
+    ).strip()
+    phone = normalize_phone(remote_jid.replace("@s.whatsapp.net", ""))
+    return phone, text
+
+
+def load_zapi_state():
+    if not ZAPI_STATE.exists():
+        return {"last_index": 0}
+    try:
+        return json.loads(ZAPI_STATE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"last_index": 0}
+
+
+def save_zapi_state(state):
+    ZAPI_STATE.parent.mkdir(parents=True, exist_ok=True)
+    ZAPI_STATE.write_text(json.dumps(state, indent=2), encoding="utf-8")
+
+
+def extract_zapi_messages(config):
+    zapi = config.get("zapi", {})
+    messages_file = Path(
+        zapi.get("messages_file") or Path.home() / ".zapi-whatsapp" / "messages.json"
+    )
+    if not messages_file.exists():
+        return []
+    try:
+        data = json.loads(messages_file.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    return data if isinstance(data, list) else []
+
+
+def extract_zapi_text(entry):
+    text = entry.get("text", "")
+    if isinstance(text, dict):
+        text = text.get("message", "")
+    if not isinstance(text, str):
+        text = ""
+    return text.strip()
+
+
+def process_message(phone, text, config):
+    cleanup_expired_sessions()
+    if not phone or not text:
+        return
+
+    session = load_session(phone) or {"messages": [], "last_activity": time.time()}
+    session["messages"].append({"role": "user", "content": text})
+    session["last_activity"] = time.time()
+
+    try:
+        reply = generate_reply(config, session["messages"])
+    except Exception as exc:
+        log.error("erro IA: %s", exc)
+        reply = "Tive uma instabilidade agora. Me responde de novo em alguns segundos?"
+
+    session["messages"].append({"role": "assistant", "content": reply})
+    save_session(phone, session["messages"], session["last_activity"])
+
+    if send_whatsapp(phone, reply, config):
+        log.info("resposta enviada para %s", phone)
+    else:
+        log.error("falha ao enviar resposta para %s", phone)
+
+
+class EvolutionWebhookHandler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        if self.path != "/webhook":
+            self.send_response(404)
+            self.end_headers()
+            return
+
+        length = int(self.headers.get("Content-Length", "0"))
+        body = self.rfile.read(length)
+
+        try:
+            payload = json.loads(body.decode("utf-8"))
+            if is_inbound_evolution(payload):
+                phone, text = extract_evolution_message(payload)
+                process_message(phone, text, self.server.config)
+        except Exception as exc:
+            log.error("erro webhook evolution: %s", exc)
+
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(b'{"status":"ok"}')
+
+    def log_message(self, format, *args):
+        return
+
+
+def run_evolution_server(config):
+    port = int(config.get("agent_port") or DEFAULT_AGENT_PORT)
+    server = HTTPServer(("127.0.0.1", port), EvolutionWebhookHandler)
+    server.config = config
+    log.info("agent BANT ouvindo webhooks Evolution em http://127.0.0.1:%s/webhook", port)
+    server.serve_forever()
+
+
+def run_zapi_polling(config):
+    log.info("agent BANT em polling Z-API")
+    state = load_zapi_state()
+    while True:
+        try:
+            messages = extract_zapi_messages(config)
+            last_index = int(state.get("last_index", 0))
+            if last_index < len(messages):
+                for entry in messages[last_index:]:
+                    if entry.get("fromMe") or entry.get("isGroup"):
+                        continue
+                    phone = normalize_phone(entry.get("phone", ""))
+                    text = extract_zapi_text(entry)
+                    process_message(phone, text, config)
+                state["last_index"] = len(messages)
+                save_zapi_state(state)
+        except Exception as exc:
+            log.error("erro polling zapi: %s", exc)
+        time.sleep(3)
+
+
+def main():
+    config = load_config()
+    provider = config.get("whatsapp_provider")
+    if provider == "evolution":
+        run_evolution_server(config)
+    elif provider == "zapi":
+        run_zapi_polling(config)
+    else:
+        raise SystemExit(f"whatsapp_provider invalido: {provider}")
+
+
+if __name__ == "__main__":
+    main()
