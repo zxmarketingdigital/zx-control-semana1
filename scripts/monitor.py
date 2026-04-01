@@ -43,7 +43,10 @@ def save_config(config):
 
 
 def http_json(url, headers=None, method="GET", timeout=15):
-    request = urllib.request.Request(url, headers=headers or {}, method=method)
+    h = {"User-Agent": "ZXControl/1.0"}
+    if headers:
+        h.update(headers)
+    request = urllib.request.Request(url, headers=h, method=method)
     with urllib.request.urlopen(request, timeout=timeout) as response:
         body = response.read()
         return response.status, json.loads(body) if body else {}
@@ -79,7 +82,9 @@ def check_zapi(config):
         return status
 
     try:
-        _, payload = http_json(endpoint)
+        client_token = config.get("zapi", {}).get("client_token", "")
+        extra_headers = {"Client-Token": client_token} if client_token else {}
+        _, payload = http_json(endpoint, headers=extra_headers)
         connected = payload.get("connected", False) or payload.get("smartphoneConnected", False)
         status["ok"] = bool(connected)
         status["details"] = json.dumps(payload, ensure_ascii=False)[:180]

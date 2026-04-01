@@ -46,6 +46,7 @@ def normalize_phone(value):
         return ""
     if not digits.startswith("55"):
         digits = "55" + digits
+    # Mínimo: 55 + DDD(2) + número(8) = 12 dígitos (fixo) ou 13 (celular)
     if len(digits) < 12:
         return ""
     return digits
@@ -56,7 +57,10 @@ def parse_inline_contacts(first_line):
     print("Finalize com uma linha vazia.")
     lines = [first_line]
     while True:
-        line = input().strip()
+        try:
+            line = input().strip()
+        except EOFError:
+            break
         if not line:
             break
         lines.append(line)

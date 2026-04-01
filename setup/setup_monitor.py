@@ -71,17 +71,23 @@ def main():
     deploy_file(SOURCE_LOG, SCRIPTS_DIR / "dispatch_log_template.py")
 
     install = subprocess.run(
-        ["python3", str(SCRIPTS_DIR / "monitor.py"), "--install-launchagent"],
+        [sys.executable, str(SCRIPTS_DIR / "monitor.py"), "--install-launchagent"],
         capture_output=True,
         text=True,
         check=False,
     )
     print(install.stdout.strip() or install.stderr.strip())
 
-    answer = input("Quer rodar o primeiro health check agora? (s/n): ").strip().lower()
+    config["phase_completed"] = max(int(config.get("phase_completed", 0)), 9)
+    save_config(config)
+
+    try:
+        answer = input("Quer rodar o primeiro health check agora? (s/n): ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        answer = "n"
     if answer in {"s", "sim", "y", "yes"}:
         run = subprocess.run(
-            ["python3", str(SCRIPTS_DIR / "monitor.py"), "--now"],
+            [sys.executable, str(SCRIPTS_DIR / "monitor.py"), "--now"],
             capture_output=True,
             text=True,
             check=False,

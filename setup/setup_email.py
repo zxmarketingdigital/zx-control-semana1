@@ -50,9 +50,9 @@ def ask_non_empty(prompt):
 def ask_email(prompt):
     while True:
         value = ask_non_empty(prompt)
-        if re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", value):
+        if re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]{2,}$", value):
             return value
-        print("❌ Email invalido. Digite novamente.")
+        print("❌ Email invalido. Exemplo: nome@dominio.com.br")
 
 
 def send_test_email(api_key, recipient_email):
@@ -74,6 +74,7 @@ def send_test_email(api_key, recipient_email):
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "User-Agent": "ZXControl/1.0",
         },
         method="POST",
     )

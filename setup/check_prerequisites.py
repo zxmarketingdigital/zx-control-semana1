@@ -6,6 +6,7 @@ Verifica Python, Node.js, Git e Docker antes de iniciar o setup.
 
 import subprocess
 import sys
+from pathlib import Path
 
 
 def run_command(cmd):
@@ -23,26 +24,58 @@ def run_command(cmd):
         return False, ""
 
 
-def check_python():
-    """Verifica Python 3.10+."""
-    ok, output = run_command([sys.executable, "--version"])
-    if not ok:
-        ok, output = run_command(["python3", "--version"])
+def _parse_python_version(output):
+    """Extrai e valida versão do Python a partir da saída de --version."""
+    if not output:
+        return None, None
+    parts = output.split()
+    if len(parts) < 2:
+        return None, None
+    version_str = parts[1]
+    try:
+        major, minor, *_ = version_str.split(".")
+        major, minor = int(major), int(minor)
+        if major == 3 and minor >= 10:
+            return True, version_str
+        return False, f"{version_str} (precisa 3.10+)"
+    except ValueError:
+        return None, None
 
-    if ok and output:
-        # Output: "Python 3.11.4"
-        parts = output.split()
-        if len(parts) >= 2:
-            version_str = parts[1]
-            try:
-                major, minor, *_ = version_str.split(".")
-                major, minor = int(major), int(minor)
-                if major == 3 and minor >= 10:
-                    return True, version_str
-                else:
-                    return False, f"{version_str} (precisa 3.10+)"
-            except ValueError:
-                pass
+
+def check_python():
+    """Verifica Python 3.10+, buscando em múltiplos paths."""
+    # 1. Tenta o executável atual e python3 do PATH
+    for cmd in [sys.executable, "python3"]:
+        ok, output = run_command([cmd, "--version"])
+        if ok:
+            result, version = _parse_python_version(output)
+            if result is True:
+                return True, version
+
+    # 2. Busca em paths comuns onde Python pode estar instalado
+    import glob
+    search_paths = [
+        str(Path.home() / ".local" / "bin" / "python3.*"),
+        "/usr/local/bin/python3.*",
+        str(Path.home() / ".pyenv" / "shims" / "python3"),
+        "/opt/homebrew/bin/python3.*",
+    ]
+    for pattern in search_paths:
+        for candidate in sorted(glob.glob(pattern), reverse=True):
+            if candidate.endswith((".py", ".cfg", ".dist-info")):
+                continue
+            ok, output = run_command([candidate, "--version"])
+            if ok:
+                result, version = _parse_python_version(output)
+                if result is True:
+                    return True, version
+
+    # 3. Nenhum encontrado — retorna a melhor info que tiver
+    ok, output = run_command(["python3", "--version"])
+    if ok:
+        _, version = _parse_python_version(output)
+        if version:
+            return False, version
     return False, None
 
 

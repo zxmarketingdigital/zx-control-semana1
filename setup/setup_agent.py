@@ -50,7 +50,7 @@ def ask(prompt, allowed=None):
 def call_openai_test(api_key):
     payload = json.dumps(
         {
-            "model": "gpt-5.4-mini",
+            "model": "gpt-4o-mini",
             "messages": [{"role": "user", "content": "Responda apenas: OK"}],
             "max_completion_tokens": 20,
         }
@@ -58,7 +58,7 @@ def call_openai_test(api_key):
     request = urllib.request.Request(
         "https://api.openai.com/v1/chat/completions",
         data=payload,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json", "User-Agent": "ZXControl/1.0"},
         method="POST",
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -76,7 +76,7 @@ def call_gemini_test(api_key):
     request = urllib.request.Request(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
         data=payload,
-        headers={"Content-Type": "application/json", "x-goog-api-key": api_key},
+        headers={"Content-Type": "application/json", "x-goog-api-key": api_key, "User-Agent": "ZXControl/1.0"},
         method="POST",
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -99,6 +99,7 @@ def call_anthropic_test(api_key):
             "x-api-key": api_key,
             "anthropic-version": "2023-06-01",
             "content-type": "application/json",
+            "User-Agent": "ZXControl/1.0",
         },
         method="POST",
     )
@@ -139,7 +140,9 @@ def main():
     ai_provider = ask("Escolha o provider de IA (openai/gemini/anthropic)", {"openai", "gemini", "anthropic"})
     ai_api_key = ask("Cole sua API key")
     agent_name = ask("Nome do agente")
-    agent_tone = ask("Tom do agente (vendas/suporte/geral)", {"vendas", "suporte", "geral"})
+    raw_tone = ask("Tom do agente (vendas/suporte/geral)", {"vendas", "suporte", "geral", "sales", "support", "general"})
+    tone_aliases = {"sales": "vendas", "support": "suporte", "general": "geral"}
+    agent_tone = tone_aliases.get(raw_tone, raw_tone)
 
     try:
         response = validate_api_key(ai_provider, ai_api_key)
