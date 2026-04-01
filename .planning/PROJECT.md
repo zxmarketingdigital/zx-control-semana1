@@ -10,29 +10,28 @@ O aluno termina a primeira sessão com automações FUNCIONANDO no WhatsApp e Em
 
 ## Requirements
 
-### Validated
+### Validated (Phase 1-4, 2026-04-01)
 
-(None yet — ship to validate)
+- [x] Setup guiado por Claude: CLAUDE.md conduz 10 etapas sem o aluno digitar comandos
+- [x] Verificação de pré-requisitos (Python 3.10+, Node 18+, Git, Docker)
+- [x] Instalação automática da Evolution API (WhatsApp local, preferência) com fallback Z-API
+- [x] Conexão WhatsApp via QR Code com validação de estado
+- [x] Configuração de email (Resend API) com envio de teste
+- [x] Estrutura de pastas `~/.operacao-ia/` com logs, config, scripts, dados
+- [x] Importação de contatos: aluno cola/escreve ou fornece documento (CSV, texto)
+- [x] Rate limiter global WhatsApp (proteção anti-bloqueio: 30/h, 150/dia, 90s)
+- [x] Dispatch log com deduplicação (SQLite, previne envio duplicado)
+- [x] Monitor básico: health check WhatsApp + Email, relatório HTML diário
+- [x] Agente IA WhatsApp: bot BANT respondendo leads com multi-turno, multi-provider (OpenAI/Gemini/Anthropic)
+- [x] Status matinal automático: relatório diário no WhatsApp do aluno (LaunchAgent 8h)
+- [x] Teste end-to-end ao final do setup: valida todas as integrações e envia status
+- [x] Disparos programados WhatsApp com dispatcher + enviar.sh + dry-run
 
 ### Active
 
-- [ ] Setup guiado por Claude: CLAUDE.md conduz 9-10 etapas sem o aluno digitar comandos
-- [ ] Verificação de pré-requisitos (Python 3.10+, Node 18+, Git, Docker)
-- [ ] Instalação automática da Evolution API (WhatsApp local, preferência) com fallback Z-API
-- [ ] Conexão WhatsApp via QR Code com validação de estado
-- [ ] Configuração de email (Resend API) com envio de teste
-- [ ] Estrutura de pastas `~/.operacao-ia/` com logs, config, scripts, dados
-- [ ] Geração de CLAUDE.md personalizado com regras do negócio do aluno
-- [ ] Bom dia automático (WhatsApp) — mensagem diária configurável
-- [ ] Disparos programados WhatsApp para lista de contatos do aluno (conteúdo flexível: follow-up, vendas, conteúdo educacional)
-- [ ] Disparos programados Email para lista do aluno (mesmo princípio flexível)
-- [ ] Importação de contatos: aluno cola/escreve ou fornece documento (CSV, texto)
-- [ ] Rate limiter global WhatsApp (proteção anti-bloqueio)
-- [ ] Dispatch log com deduplicação (SQLite, previne envio duplicado)
-- [ ] Monitor básico: health check WhatsApp + Email a cada 5min, alerta se cair
-- [ ] Agente IA WhatsApp: bot BANT respondendo leads com multi-turno, multi-provider (OpenAI/Gemini/Anthropic)
-- [ ] Status matinal automático: relatório diário no WhatsApp do aluno com estado de tudo
-- [ ] Teste end-to-end ao final do setup: valida todas as integrações e envia status no WhatsApp do aluno
+- [ ] Bom dia automático (WhatsApp) — mensagem diária configurável (template existe, precisa de script dedicado)
+- [ ] Disparos programados Email para lista do aluno (dispatcher suporta WhatsApp, email ainda manual)
+- [ ] Geração de CLAUDE.md personalizado com regras do negócio do aluno (setup usa CLAUDE.md fixo do repo)
 
 ### Out of Scope
 
@@ -88,13 +87,16 @@ O aluno termina a primeira sessão com automações FUNCIONANDO no WhatsApp e Em
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Evolution API como preferência sobre Z-API | Gratuito, local, sem custo mensal para aluno | — Pending |
-| Agente IA incluído na Semana 1 | Prometido aos alunos, é o maior wow moment | — Pending |
-| Disparos flexíveis (não só alerta de venda) | Maioria dos alunos não vende online — precisam de infra de comunicação genérica | — Pending |
-| Contatos via input direto (sem Sheets/Supabase) | Mínima fricção no Day 1, sem dependência externa | — Pending |
-| Repo privado GitHub | Conteúdo exclusivo da mentoria, não público como agente-ia-vendas | — Pending |
-| Status matinal via WhatsApp | Aluno vê que tudo funciona todo dia sem abrir terminal | — Pending |
-| Manter agente-ia-vendas como código integrado (não clone separado) | Evita complexidade de 2 repos no Day 1, mas herda templates testados | — Pending |
+| Evolution API como preferência sobre Z-API | Gratuito, local, sem custo mensal para aluno | Validado — Evolution é default, Z-API fallback |
+| Agente IA incluído na Semana 1 | Prometido aos alunos, é o maior wow moment | Validado — funciona com OpenAI/Gemini/Anthropic |
+| Disparos flexíveis (não só alerta de venda) | Maioria dos alunos não vende online — precisam de infra de comunicação genérica | Validado — dispatcher aceita mensagem livre |
+| Contatos via input direto (sem Sheets/Supabase) | Mínima fricção no Day 1, sem dependência externa | Validado — inline + CSV, SQLite local |
+| Repo privado GitHub | Conteúdo exclusivo da mentoria, não público como agente-ia-vendas | Validado |
+| Status matinal via WhatsApp | Aluno vê que tudo funciona todo dia sem abrir terminal | Validado — LaunchAgent 8h + relatório HTML |
+| Manter agente-ia-vendas como código integrado (não clone separado) | Evita complexidade de 2 repos no Day 1, mas herda templates testados | Validado — templates copiados para ~/.operacao-ia/ |
+| Setup aguarda "INICIAR SETUP" do aluno | Evita setup automático assustando aluno não-técnico | Validado — commit 48f1b56 |
+| User-Agent obrigatório em todas as chamadas HTTP | Cloudflare bloqueia requests sem User-Agent (Resend, Z-API) | Validado — descoberto em teste real |
+| Detecção de credenciais existentes | Alunos ZX LAB já têm Z-API/Resend configurados em ~/.zxlab-mission-control/.env | Validado — reutiliza sem redigitar |
 
 ## Evolution
 
@@ -114,4 +116,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after initialization*
+*Last updated: 2026-04-01 after Phase 1-4 completion + hardening pass*
