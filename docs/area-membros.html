@@ -661,36 +661,33 @@ body {
         </div>
 
         <div class="etapa-divider"></div>
-        <div class="section-title">Instalar o Claude Code</div>
+        <div class="section-title">Como instalar cada programa</div>
         <div class="step-list">
           <div class="step-row">
             <div class="step-circle">1</div>
             <div class="step-body">
-              <h4>Instale o Claude Code no terminal</h4>
+              <h4>Claude Code — o assistente de setup</h4>
               <p>Abra o terminal e cole o comando abaixo:</p>
               <div class="code-block">
                 <div class="code-header"><span class="code-label">terminal</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
                 <div class="code-body"><pre>npm install -g @anthropic-ai/claude-code</pre></div>
               </div>
+              <div class="tip">💡 Não tem conta Anthropic? Crie gratuitamente em <strong>claude.ai</strong> antes de continuar.</div>
             </div>
           </div>
           <div class="step-row">
             <div class="step-circle">2</div>
             <div class="step-body">
-              <h4>Para os outros programas</h4>
-              <p>Consulte o guia completo de instalação por sistema operacional:</p>
+              <h4>Python, Node.js, Git e Docker Desktop</h4>
+              <p>Escolha seu sistema operacional e siga as instruções:</p>
               <div class="check-list" style="margin-top:12px">
                 <div class="check-item">
                   <div class="check-icon ok">🍎</div>
-                  <div class="check-text"><strong>macOS</strong> — use Homebrew: <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">brew install python@3.11 node git && brew install --cask docker</code></div>
-                </div>
-                <div class="check-item">
-                  <div class="check-icon ok">🐧</div>
-                  <div class="check-text"><strong>Ubuntu</strong> — apt + nodesource (ver guia completo em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">docs/prerequisitos.md</code>)</div>
+                  <div class="check-text"><strong>macOS</strong> — use Homebrew: <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">brew install python@3.11 node git && brew install --cask docker</code>. Depois abra o Docker Desktop e aguarde iniciar.</div>
                 </div>
                 <div class="check-item">
                   <div class="check-icon ok">🪟</div>
-                  <div class="check-text"><strong>Windows</strong> — instalar WSL2 primeiro, depois seguir o guia Ubuntu</div>
+                  <div class="check-text"><strong>Windows</strong> — baixe e instale: <strong>Python</strong> (python.org), <strong>Node.js</strong> (nodejs.org), <strong>Git</strong> (git-scm.com) e <strong>Docker Desktop</strong> (docker.com). Reinicie o computador após instalar o Docker.</div>
                 </div>
               </div>
             </div>
@@ -791,20 +788,20 @@ body {
           <div class="step-row">
             <div class="step-circle">3</div>
             <div class="step-body">
-              <h4>O Claude detecta sua RAM automaticamente</h4>
-              <p>Isso determina qual provedor de WhatsApp é melhor para você:</p>
+              <h4>O Claude vai perguntar qual provedor de WhatsApp você quer usar</h4>
+              <p>Você tem duas opções — escolha a que melhor se encaixa no seu cenário:</p>
               <div class="provider-grid" style="margin-top:12px">
                 <div class="provider-card recommended">
                   <span class="provider-icon">🚀</span>
                   <div class="provider-name">Evolution API</div>
-                  <div class="provider-desc">Recomendado para computadores com 16GB+ de RAM. Gratuita e open-source.</div>
+                  <div class="provider-desc">Roda no seu computador via Docker. Open-source e sem custo adicional. Recomendado para quem quer começar sem gastar.</div>
                   <span class="provider-tag tag-free">Gratuita</span>
                 </div>
                 <div class="provider-card">
                   <span class="provider-icon">📱</span>
                   <div class="provider-name">Z-API</div>
-                  <div class="provider-desc">Fallback para computadores com 8GB de RAM. Requer conta gratuita em z-api.io.</div>
-                  <span class="provider-tag tag-paid">Precisa de conta</span>
+                  <div class="provider-desc">Roda na nuvem — mais estável e não depende do seu computador ficar ligado. Plano pago a partir de R$97/mês por instância.</div>
+                  <span class="provider-tag tag-paid">R$97/mês</span>
                 </div>
               </div>
             </div>
@@ -848,24 +845,24 @@ body {
           <div class="step-row">
             <div class="step-circle">1</div>
             <div class="step-body">
-              <h4>Evolution API (16GB+ RAM)</h4>
-              <p>O Claude instala automaticamente via Docker, configura o ambiente e abre o QR Code para você escanear com o WhatsApp do celular.</p>
-              <div class="warn">⚠️ O Docker Desktop precisa estar aberto e rodando antes desta etapa.</div>
+              <h4>Evolution API — roda no seu computador</h4>
+              <p>O Claude instala e configura tudo automaticamente. Ele vai exibir um QR Code para você escanear com o WhatsApp do celular.</p>
+              <div class="warn">⚠️ O Docker Desktop precisa estar aberto antes desta etapa. Se ainda não estiver, abra agora e aguarde o ícone estabilizar na barra de tarefas.</div>
             </div>
           </div>
           <div class="step-row">
             <div class="step-circle">2</div>
             <div class="step-body">
-              <h4>Z-API (8GB RAM)</h4>
-              <p>O Claude vai pedir seu <strong>Instance ID</strong> e <strong>Token</strong> da Z-API. Você encontra esses dados no painel em <strong>app.z-api.io</strong>.</p>
-              <div class="tip">💡 Conta gratuita na Z-API inclui 1 instância. Acesse z-api.io para criar a sua.</div>
+              <h4>Z-API — roda na nuvem (R$97/mês)</h4>
+              <p>O Claude vai pedir seu <strong>Instance ID</strong> e <strong>Token</strong>. Você encontra esses dados no painel em <strong>app.z-api.io</strong> após criar sua conta.</p>
+              <div class="tip">💡 Vantagem da Z-API: funciona 24h mesmo com seu computador desligado.</div>
             </div>
           </div>
           <div class="step-row">
             <div class="step-circle">3</div>
             <div class="step-body">
-              <h4>Escaneie o QR Code</h4>
-              <p>Uma imagem vai aparecer no terminal. Abra o WhatsApp no celular → Dispositivos Conectados → Adicionar Dispositivo → escaneie o código.</p>
+              <h4>Escaneie o QR Code (apenas Evolution API)</h4>
+              <p>O QR Code vai aparecer direto na janela do Claude. Abra o WhatsApp no celular → <strong>Dispositivos Conectados → Adicionar Dispositivo</strong> → escaneie o código.</p>
             </div>
           </div>
         </div>
@@ -1072,27 +1069,24 @@ body {
           <div class="step-row">
             <div class="step-circle">1</div>
             <div class="step-body">
-              <h4>Dry-run obrigatório antes de enviar</h4>
-              <p>Sempre rode um teste primeiro. O dry-run mostra exatamente o que seria enviado — sem disparar nada de verdade.</p>
-              <div class="code-block">
-                <div class="code-header"><span class="code-label">exemplo de dry-run</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
-                <div class="code-body"><pre>~/.operacao-ia/scripts/enviar.sh \
-  --message <span class="arg">"Olá {nome}, tudo bem?"</span> \
-  --dry-run</pre></div>
-              </div>
+              <h4>Peça ao Claude para montar o disparo</h4>
+              <p>Dentro do Claude, você diz a mensagem que quer enviar e para quem. O Claude monta tudo e mostra um preview com os primeiros contatos antes de enviar qualquer coisa.</p>
+              <div class="tip">💬 Exemplo do que falar ao Claude:<br><strong>"Claude, quero enviar para minha lista: Oi {nome}, tudo bem? Tenho uma novidade para te contar. Mostra o preview antes de enviar."</strong></div>
             </div>
           </div>
           <div class="step-row">
             <div class="step-circle">2</div>
             <div class="step-body">
-              <h4>Depois de revisar, dispare de verdade</h4>
-              <p>Remova o <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">--dry-run</code> para enviar:</p>
-              <div class="code-block">
-                <div class="code-header"><span class="code-label">disparo real</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
-                <div class="code-body"><pre>~/.operacao-ia/scripts/enviar.sh \
-  --message <span class="arg">"Olá {nome}, tudo bem?"</span></pre></div>
-              </div>
-              <div class="warn">⚠️ Sempre revise o dry-run antes de enviar. O {nome} é substituído automaticamente pelo nome do contato.</div>
+              <h4>Revise o preview e confirme</h4>
+              <p>O Claude mostra como ficará cada mensagem com o nome real de cada contato. Só depois de você confirmar ele começa a enviar — nunca sem sua aprovação.</p>
+              <div class="warn">⚠️ O sistema tem proteção automática: máx. 30 mensagens/hora e 150/dia. Isso evita bloqueio do seu número.</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Filtre por grupo ou tag quando quiser</h4>
+              <p>Você pode pedir ao Claude para enviar só para um grupo específico de contatos. Exemplo: <em>"Envia só para os contatos com a tag 'clientes ativos'."</em></p>
             </div>
           </div>
         </div>
@@ -1131,8 +1125,8 @@ body {
           <div class="step-row">
             <div class="step-circle">1</div>
             <div class="step-body">
-              <h4>O Claude instala o LaunchAgent automaticamente</h4>
-              <p>No macOS, o monitor é registrado como um serviço que inicia junto com o sistema operacional. No Ubuntu, via cron.</p>
+              <h4>O Claude instala o monitor automaticamente</h4>
+              <p>O monitor é registrado como um serviço do sistema e começa a rodar todo dia às 8h — sem você precisar fazer nada.</p>
             </div>
           </div>
           <div class="step-row">
@@ -1177,14 +1171,9 @@ body {
           <div class="step-row">
             <div class="step-circle">2</div>
             <div class="step-body">
-              <h4>Primeiro disparo guiado (dry-run)</h4>
-              <p>O Claude monta o comando de teste para você ver como vai ficar a mensagem antes do primeiro envio real.</p>
-              <div class="code-block">
-                <div class="code-header"><span class="code-label">exemplo do primeiro teste</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
-                <div class="code-body"><pre>~/.operacao-ia/scripts/enviar.sh \
-  --message <span class="arg">"Oi {nome}, tudo bem? Passando para avisar que..."</span> \
-  --dry-run</pre></div>
-              </div>
+              <h4>Primeiro disparo guiado — dentro do Claude</h4>
+              <p>O Claude conduz você pelo primeiro teste de envio. Ele mostra como ficará a mensagem para cada contato antes de qualquer coisa ser enviada. Você aprova e ele dispara.</p>
+              <div class="tip">💬 Basta dizer ao Claude:<br><strong>"Faz o teste do primeiro disparo para minha lista."</strong><br>Ele cuida do resto.</div>
             </div>
           </div>
           <div class="step-row">
