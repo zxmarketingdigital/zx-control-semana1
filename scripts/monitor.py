@@ -17,7 +17,10 @@ from pathlib import Path
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+TEMPLATES_DIR = SCRIPT_DIR.parent / "templates"
 sys.path.insert(0, str(SCRIPT_DIR))
+if TEMPLATES_DIR.exists():
+    sys.path.insert(0, str(TEMPLATES_DIR))
 
 from dispatch_log_template import log_dispatch, should_send
 from rate_limiter_template import ZAPIRateLimiter
@@ -170,7 +173,11 @@ def send_summary_if_possible(config, message):
     if not limiter.can_send(student_phone):
         return False, "rate limiter bloqueou envio"
 
-    ok = send_whatsapp(student_phone, message, config)
+    try:
+        ok = send_whatsapp(student_phone, message, config)
+    except Exception as exc:
+        return False, f"falha no envio: {exc}"
+
     if ok:
         limiter.record_send(student_phone)
         log_dispatch(student_phone, message, "monitor-status")

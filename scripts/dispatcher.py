@@ -13,7 +13,10 @@ from pathlib import Path
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+TEMPLATES_DIR = SCRIPT_DIR.parent / "templates"
 sys.path.insert(0, str(SCRIPT_DIR))
+if TEMPLATES_DIR.exists():
+    sys.path.insert(0, str(TEMPLATES_DIR))
 
 from dispatch_log_template import log_dispatch, should_send
 from rate_limiter_template import ZAPIRateLimiter
@@ -78,7 +81,7 @@ def progress_bar(index, total):
 
 def report_path():
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     return LOGS_DIR / f"dispatch_{timestamp}.json"
 
 

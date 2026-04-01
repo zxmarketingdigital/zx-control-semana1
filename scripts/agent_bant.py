@@ -17,7 +17,10 @@ from pathlib import Path
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+TEMPLATES_DIR = SCRIPT_DIR.parent / "templates"
 sys.path.insert(0, str(SCRIPT_DIR))
+if TEMPLATES_DIR.exists():
+    sys.path.insert(0, str(TEMPLATES_DIR))
 
 from dispatch_log_template import log_dispatch, should_send
 from rate_limiter_template import ZAPIRateLimiter

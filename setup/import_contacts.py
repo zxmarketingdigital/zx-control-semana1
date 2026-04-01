@@ -64,6 +64,7 @@ def parse_inline_contacts(first_line):
     entries = []
     for raw in lines:
         if "," not in raw:
+            entries.append({"name": "", "phone": "", "source": "manual", "tags": ""})
             continue
         parts = [item.strip() for item in raw.split(",")]
         name = parts[0] if len(parts) >= 1 else ""
