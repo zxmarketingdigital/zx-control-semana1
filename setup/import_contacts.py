@@ -96,7 +96,8 @@ def parse_csv_contacts(path):
     phone_col = resolve_column(reader.fieldnames, ["phone", "telefone", "numero"])
     tags_col = resolve_column(reader.fieldnames, ["tags", "tag", "etiqueta", "etiquetas"])
     if not name_col or not phone_col:
-        raise SystemExit("CSV invalido: colunas esperadas name/nome e phone/telefone/numero")
+        print("Aviso: CSV invalido. Use colunas name/nome e phone/telefone/numero.")
+        return []
 
     entries = []
     for row in reader:
@@ -136,7 +137,8 @@ def main():
     _ = load_config()
     raw = input("Cole seus contatos (nome,telefone) ou informe o caminho de um CSV: ").strip()
     if not raw:
-        raise SystemExit("Nenhum dado informado.")
+        print("Aviso: nenhum dado informado. A importacao ficou pendente.")
+        return
 
     source_path = Path(raw).expanduser()
     if source_path.exists():

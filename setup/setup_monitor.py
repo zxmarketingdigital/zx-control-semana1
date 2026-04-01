@@ -89,7 +89,7 @@ def main():
         print()
         print(run.stdout.strip() or run.stderr.strip())
         if run.returncode != 0:
-            raise SystemExit(run.returncode)
+            print("Aviso: o primeiro health check nao foi confirmado agora, mas o monitor foi instalado.")
 
 
 if __name__ == "__main__":

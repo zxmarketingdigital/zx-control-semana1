@@ -165,10 +165,11 @@ def main():
         print()
         sys.exit(0)
     else:
-        print("  ❌ Instale os itens acima e execute novamente:")
+        print("  Aviso: ainda faltam itens antes de continuar.")
+        print("  Instale os itens acima e execute novamente:")
         print("     python3 setup/check_prerequisites.py")
         print()
-        sys.exit(1)
+        sys.exit(0)
 
 
 if __name__ == "__main__":

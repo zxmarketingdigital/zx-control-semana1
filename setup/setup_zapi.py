@@ -16,9 +16,9 @@ CONFIG_PATH = BASE_DIR / "config" / "config.json"
 
 def load_config():
     if not CONFIG_PATH.exists():
-        print("❌ Configuração não encontrada.")
+        print("Aviso: configuracao nao encontrada.")
         print("   Rode primeiro: python3 setup/setup_environment.py")
-        sys.exit(1)
+        return None
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
 
@@ -31,17 +31,17 @@ def save_config(config):
 
 
 def ask(prompt):
-    try:
-        value = input(f"{prompt}: ").strip()
-    except (EOFError, KeyboardInterrupt):
-        print()
-        print("Setup cancelado.")
-        sys.exit(1)
+    while True:
+        try:
+            value = input(f"{prompt}: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            print("Setup cancelado.")
+            return ""
 
-    if not value:
-        print("❌ Este campo nao pode ficar em branco.")
-        sys.exit(1)
-    return value
+        if value:
+            return value
+        print("Este campo nao pode ficar em branco. Tente novamente.")
 
 
 def validate_credentials(instance_id, token):
@@ -59,23 +59,27 @@ def main():
     print()
 
     config = load_config()
+    if not config:
+        return
 
     instance_id = ask("Digite o ZAPI_INSTANCE_ID")
     token = ask("Digite o ZAPI_TOKEN")
+    if not instance_id or not token:
+        return
 
     try:
         status_code, payload = validate_credentials(instance_id, token)
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="ignore")
-        print(f"❌ Credenciais invalidas na Z-API: {body or exc}")
-        sys.exit(1)
+        print(f"Aviso: as credenciais da Z-API nao foram validadas: {body or exc}")
+        return
     except Exception as exc:
-        print(f"❌ Nao foi possivel validar a Z-API: {exc}")
-        sys.exit(1)
+        print(f"Aviso: nao foi possivel validar a Z-API agora: {exc}")
+        return
 
     if status_code != 200:
-        print(f"❌ A Z-API respondeu com status {status_code}.")
-        sys.exit(1)
+        print(f"Aviso: a Z-API respondeu com status {status_code}.")
+        return
 
     config["whatsapp_provider"] = "zapi"
     config["zapi"] = {

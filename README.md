@@ -9,7 +9,7 @@
 
 | O que | Detalhe |
 |-------|---------|
-| WhatsApp conectado | Evolution API local (gratuita) ou Z-API (pago, leve) |
+| WhatsApp conectado | Evolution API local (gratuita) como padrão, com Z-API como fallback opcional |
 | Email configurado | Resend — 3.000 envios/mês grátis |
 | Agente IA de vendas | Responde leads automaticamente via WhatsApp (OpenAI / Gemini / Anthropic) |
 | Disparos programados | WhatsApp + Email para sua lista de contatos |
@@ -40,8 +40,10 @@ O Claude lê as instruções e conduz você por tudo — sem precisar digitar ma
 | Git | qualquer recente | Ver `docs/prerequisitos.md` |
 | Docker | 20+ | Ver `docs/prerequisitos.md` |
 
-> **RAM 8GB?** Sem problema — você usará Z-API (cloud) em vez da Evolution API local.
-> **RAM 16GB+?** Recomendado usar Evolution API (gratuita, local).
+> **Evolution API é o padrão do produto.**
+> **8GB RAM** é o mínimo recomendado para rodar bem.
+> **16GB+ RAM** é o ideal para maior estabilidade.
+> **Z-API** fica como fallback opcional, não como fluxo principal.
 
 ---
 
@@ -51,7 +53,7 @@ O Claude lê as instruções e conduz você por tudo — sem precisar digitar ma
 |----------------|:--------:|:---------:|
 | Verificação de pré-requisitos | ✅ | — |
 | Pasta `~/.operacao-ia/` configurada | ✅ | — |
-| WhatsApp conectado (Evolution ou Z-API) | ✅ | — |
+| WhatsApp conectado (Evolution padrão + fallback Z-API) | ✅ | — |
 | Email (Resend) configurado | ✅ | — |
 | Agente IA WhatsApp (BANT, multi-provider) | ✅ | — |
 | Disparos programados WhatsApp | ✅ | — |
@@ -80,7 +82,7 @@ zx-control-semana1/
 │   ├── setup_environment.py     # Cria ~/.operacao-ia/ e config inicial
 │   ├── install_evolution.py     # Instala Evolution API local
 │   ├── connect_whatsapp.py      # Conecta o WhatsApp via QR Code
-│   ├── setup_zapi.py            # Fallback Z-API para 8GB RAM
+│   ├── setup_zapi.py            # Fallback opcional Z-API
 │   ├── setup_email.py           # Configura Resend e envia teste
 │   ├── setup_agent.py           # Configura o agente IA BANT
 │   ├── import_contacts.py       # Importa contatos por texto ou CSV

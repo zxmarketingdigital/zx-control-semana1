@@ -24,9 +24,9 @@ EVOLUTION_URL = "http://localhost:8080"
 
 def load_config():
     if not CONFIG_PATH.exists():
-        print("❌ Configuração não encontrada.")
+        print("Aviso: configuracao nao encontrada.")
         print("   Rode primeiro: python3 setup/setup_environment.py")
-        sys.exit(1)
+        return None
 
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
@@ -65,9 +65,10 @@ def evolution_is_healthy():
 def ensure_provider(config):
     provider = config.get("whatsapp_provider")
     if provider != "evolution":
-        print("❌ Este setup so deve rodar quando o provedor WhatsApp for Evolution API.")
+        print("Aviso: este setup deve rodar com Evolution API como provedor.")
         print(f"   Provedor atual no config.json: {provider or 'nao definido'}")
-        sys.exit(1)
+        return False
+    return True
 
 
 def read_env_value(name):
@@ -142,8 +143,8 @@ def install_and_start():
     print("  Baixando imagem da Evolution API...")
     pull_result = run_command(["docker", "pull", EVOLUTION_IMAGE])
     if pull_result.returncode != 0:
-        print("❌ Falha ao baixar a imagem da Evolution API.")
-        sys.exit(1)
+        print("Aviso: nao foi possivel baixar a imagem da Evolution API.")
+        return False
 
     print("  Subindo container com docker compose...")
     compose_result = run_command(
@@ -151,8 +152,9 @@ def install_and_start():
         cwd=str(EVOLUTION_DIR),
     )
     if compose_result.returncode != 0:
-        print("❌ Falha ao iniciar a Evolution API com docker compose.")
-        sys.exit(1)
+        print("Aviso: nao foi possivel iniciar a Evolution API com docker compose.")
+        return False
+    return True
 
 
 def wait_until_ready(timeout_seconds=120):
@@ -171,7 +173,10 @@ def main():
     print()
 
     config = load_config()
-    ensure_provider(config)
+    if not config:
+        return
+    if not ensure_provider(config):
+        return
 
     api_key = ensure_evolution_files()
 
@@ -179,12 +184,15 @@ def main():
     if evolution_is_healthy():
         print("  ✅ Evolution API ja esta rodando.")
     else:
-        install_and_start()
+        if not install_and_start():
+            print("  A configuracao da Evolution ficou pendente.")
+            return
         print("  Aguardando API ficar pronta...")
         if not wait_until_ready():
-            print("❌ Timeout aguardando a Evolution API responder em /health.")
+            print("Aviso: a Evolution demorou mais do que o esperado para responder em /health.")
             print("   Tente verificar os logs com: docker compose logs")
-            sys.exit(1)
+            print("   A configuracao ficou pendente para tentar novamente.")
+            return
         print("  ✅ Evolution API pronta.")
 
     config["whatsapp_provider"] = "evolution"

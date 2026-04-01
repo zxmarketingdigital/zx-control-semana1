@@ -145,12 +145,15 @@ def main():
         response = validate_api_key(ai_provider, ai_api_key)
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="ignore")
-        raise SystemExit(f"Falha ao validar API key: {body or exc}") from exc
+        print(f"Aviso: nao foi possivel validar a API key agora: {body or exc}")
+        return
     except Exception as exc:
-        raise SystemExit(f"Falha ao validar API key: {exc}") from exc
+        print(f"Aviso: nao foi possivel validar a API key agora: {exc}")
+        return
 
     if "OK" not in response.upper():
-        raise SystemExit(f"Teste da IA retornou resposta inesperada: {response}")
+        print(f"Aviso: o teste da IA retornou uma resposta inesperada: {response}")
+        return
 
     SCRIPTS_DIR.mkdir(parents=True, exist_ok=True)
     LOGS_DIR.mkdir(parents=True, exist_ok=True)

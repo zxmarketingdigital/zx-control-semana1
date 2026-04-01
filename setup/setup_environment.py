@@ -46,14 +46,12 @@ def get_ram_gb():
         return 0
 
 
-def choose_whatsapp_provider(ram_gb):
+def choose_whatsapp_provider():
     """
-    Escolhe provedor WhatsApp baseado na RAM disponível.
-    Evolution API requer 16GB+. Z-API é mais leve (cloud).
+    Sempre prioriza Evolution API.
+    Z-API fica disponivel apenas como fallback manual.
     """
-    if ram_gb >= 16:
-        return "evolution"
-    return "zapi"
+    return "evolution"
 
 
 def create_directory_structure():
@@ -118,11 +116,18 @@ def main():
     else:
         print("  Não foi possível detectar RAM — usando configuração padrão.")
 
-    provider = choose_whatsapp_provider(ram_gb)
-    if provider == "evolution":
-        print(f"  Provedor WhatsApp recomendado: Evolution API (local, gratuito)")
+    provider = choose_whatsapp_provider()
+    print("  Provedor WhatsApp padrao: Evolution API (local, gratuito)")
+    if ram_gb > 0 and ram_gb < 8:
+        print("  ⚠️  Aviso: abaixo de 8GB de RAM a Evolution pode ficar instavel.")
+        print("  ⚠️  Se precisar, voce pode usar Z-API depois como fallback manual.")
+    elif ram_gb >= 8 and ram_gb < 16:
+        print("  ⚠️  Aviso: 8GB de RAM e o minimo recomendado para a Evolution rodar bem.")
+        print("  ⚠️  16GB ou mais e o ideal para maior estabilidade.")
+    elif ram_gb >= 16:
+        print("  ✅ Sua memoria esta em uma faixa ideal para rodar a Evolution com mais estabilidade.")
     else:
-        print(f"  Provedor WhatsApp recomendado: Z-API (cloud, leve para {ram_gb}GB RAM)")
+        print("  ⚠️  Nao foi possivel medir a RAM. A Evolution seguira como padrao.")
 
     print()
 
@@ -165,6 +170,7 @@ def main():
     print(f"  Aluno:          {student_name}")
     print(f"  Negócio:        {business_name}")
     print(f"  WhatsApp:       {provider}")
+    print(f"  Fallback:       zapi (opcional)")
     print(f"  Pasta de dados: ~/.operacao-ia/")
     print(f"  Configuração:   ~/.operacao-ia/config/config.json")
     print()

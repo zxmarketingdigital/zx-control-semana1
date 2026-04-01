@@ -22,9 +22,9 @@ INSTANCE_NAME = "operacao-ia"
 
 def load_config():
     if not CONFIG_PATH.exists():
-        print("❌ Configuração não encontrada.")
+        print("Aviso: configuracao nao encontrada.")
         print("   Rode primeiro: python3 setup/setup_environment.py")
-        sys.exit(1)
+        return None
 
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
@@ -42,9 +42,9 @@ def get_evolution_config(config):
     base_url = evolution.get("base_url") or "http://localhost:8080"
     api_key = evolution.get("api_key")
     if not api_key:
-        print("❌ API key da Evolution nao encontrada no config.json.")
+        print("Aviso: API key da Evolution nao encontrada no config.json.")
         print("   Rode primeiro: python3 setup/install_evolution.py")
-        sys.exit(1)
+        return None, None
     return base_url.rstrip("/"), api_key
 
 
@@ -85,8 +85,8 @@ def ensure_instance(base_url, api_key):
         response = call_api(base_url, api_key, "/instance/fetchInstances")
         instance_names = fetch_instance_names(response)
     except Exception as exc:
-        print(f"❌ Nao foi possivel listar instancias: {exc}")
-        sys.exit(1)
+        print(f"Aviso: nao foi possivel listar instancias: {exc}")
+        return False
 
     if INSTANCE_NAME in instance_names:
         print(f"  ✅ Instancia {INSTANCE_NAME} ja existe.")
@@ -107,13 +107,14 @@ def ensure_instance(base_url, api_key):
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="ignore")
         if "already" not in body.lower():
-            print(f"❌ Falha ao criar instancia: {body or exc}")
-            sys.exit(1)
+            print(f"Aviso: nao foi possivel criar a instancia: {body or exc}")
+            return False
     except Exception as exc:
-        print(f"❌ Falha ao criar instancia: {exc}")
-        sys.exit(1)
+        print(f"Aviso: nao foi possivel criar a instancia: {exc}")
+        return False
 
     print(f"  ✅ Instancia {INSTANCE_NAME} criada.")
+    return True
 
 
 def extract_qr_base64(payload):
@@ -179,37 +180,42 @@ def main():
     print()
 
     config = load_config()
+    if not config:
+        return
     base_url, api_key = get_evolution_config(config)
+    if not base_url or not api_key:
+        return
 
-    ensure_instance(base_url, api_key)
+    if not ensure_instance(base_url, api_key):
+        return
 
     print("  Gerando QR Code...")
     try:
         qr_response = call_api(base_url, api_key, f"/instance/connect/{INSTANCE_NAME}")
     except Exception as exc:
-        print(f"❌ Falha ao gerar QR Code: {exc}")
-        sys.exit(1)
+        print(f"Aviso: nao foi possivel gerar o QR Code agora: {exc}")
+        return
 
     qr_base64 = extract_qr_base64(qr_response)
     if not qr_base64:
-        print("❌ A Evolution API nao retornou um QR Code valido.")
-        sys.exit(1)
+        print("Aviso: a Evolution API nao retornou um QR Code valido.")
+        return
 
     try:
         save_qr_image(qr_base64)
         open_qr_image()
     except Exception as exc:
-        print(f"❌ Falha ao salvar/abrir QR Code: {exc}")
-        sys.exit(1)
+        print(f"Aviso: nao foi possivel salvar ou abrir o QR Code: {exc}")
+        return
 
     print(f"  ✅ QR salvo em {QR_PATH}")
     print("  Escaneie o QR com o WhatsApp do celular.")
     print("  Aguardando conexao...")
 
     if not wait_for_connection(base_url, api_key):
-        print("❌ Timeout aguardando o WhatsApp conectar.")
+        print("Aviso: o WhatsApp ainda nao conectou dentro do tempo esperado.")
         print("   Rode novamente se o QR expirar.")
-        sys.exit(1)
+        return
 
     config.setdefault("evolution", {})
     config["evolution"]["instance_name"] = INSTANCE_NAME
