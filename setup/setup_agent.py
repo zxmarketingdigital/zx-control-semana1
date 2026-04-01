@@ -5,7 +5,6 @@ Configura e deploya o agente IA BANT em ~/.operacao-ia/scripts/.
 
 import json
 import subprocess
-import sys
 import urllib.error
 import urllib.request
 from datetime import datetime
@@ -19,6 +18,8 @@ SCRIPTS_DIR = BASE_DIR / "scripts"
 LOGS_DIR = BASE_DIR / "logs"
 SOURCE_AGENT = REPO_DIR / "scripts" / "agent_bant.py"
 SOURCE_WPP = REPO_DIR / "templates" / "whatsapp_api_template.py"
+SOURCE_RATE = REPO_DIR / "templates" / "rate_limiter_template.py"
+SOURCE_LOG = REPO_DIR / "templates" / "dispatch_log_template.py"
 
 
 def load_config():
@@ -155,6 +156,8 @@ def main():
         },
     )
     deploy_file(SOURCE_WPP, SCRIPTS_DIR / "whatsapp_api_template.py")
+    deploy_file(SOURCE_RATE, SCRIPTS_DIR / "rate_limiter_template.py")
+    deploy_file(SOURCE_LOG, SCRIPTS_DIR / "dispatch_log_template.py")
 
     start_script = SCRIPTS_DIR / "start_agent.sh"
     start_script.write_text(
@@ -163,7 +166,12 @@ def main():
                 "#!/usr/bin/env bash",
                 f"# Gerado automaticamente por setup_agent.py em {datetime.now().isoformat()}",
                 "mkdir -p ~/.operacao-ia/logs",
+                "if pgrep -f 'python3 ~/.operacao-ia/scripts/agent_bant.py' >/dev/null; then",
+                "  echo \"Agente ja esta rodando.\"",
+                "  exit 0",
+                "fi",
                 "nohup python3 ~/.operacao-ia/scripts/agent_bant.py >> ~/.operacao-ia/logs/agent.log 2>&1 &",
+                "sleep 1",
                 "echo \"Agente iniciado em background.\"",
                 "",
             ]
@@ -180,10 +188,19 @@ def main():
     config["phase_completed"] = max(int(config.get("phase_completed", 1)), 3)
     save_config(config)
 
+    start_run = subprocess.run(
+        [str(start_script)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
     print("✅ Agente IA configurado com sucesso!")
     print("  Script: ~/.operacao-ia/scripts/agent_bant.py")
     print("  Start:  ~/.operacao-ia/scripts/start_agent.sh")
     print(f"  Provider: {ai_provider}")
+    if start_run.stdout.strip() or start_run.stderr.strip():
+        print(f"  Execucao inicial: {start_run.stdout.strip() or start_run.stderr.strip()}")
     print()
 
 

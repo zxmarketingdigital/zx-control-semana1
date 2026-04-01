@@ -4,15 +4,14 @@ Agente IA BANT da Operacao IA.
 Este arquivo e a fonte do script deployado em ~/.operacao-ia/scripts/agent_bant.py.
 """
 
+import hashlib
 import json
 import logging
-import os
 import sqlite3
 import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
@@ -20,14 +19,17 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
+from dispatch_log_template import log_dispatch, should_send
+from rate_limiter_template import ZAPIRateLimiter
 from whatsapp_api_template import send_whatsapp
 
 
 CONFIG_PATH = Path.home() / ".operacao-ia" / "config" / "config.json"
 SESSIONS_DB = Path.home() / ".operacao-ia" / "data" / "sessions.db"
-ZAPI_STATE = Path.home() / ".operacao-ia" / "data" / ".agent_zapi_state.json"
+AGENT_STATE = Path.home() / ".operacao-ia" / "data" / ".agent_state.json"
 DEFAULT_AGENT_PORT = 8781
 SESSION_TTL = 1800
+STATE_CACHE_LIMIT = 5000
 
 DEFAULT_AGENT_NAME = "{{AGENT_NAME}}"
 DEFAULT_AGENT_TONE = "{{AGENT_TONE}}"
@@ -44,11 +46,6 @@ def load_config():
     if not CONFIG_PATH.exists():
         raise FileNotFoundError("config.json nao encontrado em ~/.operacao-ia/config/")
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-
-
-def save_config(config):
-    CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CONFIG_PATH.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def db():
@@ -262,18 +259,37 @@ def extract_evolution_message(payload):
     return phone, text
 
 
-def load_zapi_state():
-    if not ZAPI_STATE.exists():
-        return {"last_index": 0}
+def load_agent_state():
+    if not AGENT_STATE.exists():
+        return {"seen_message_ids": []}
     try:
-        return json.loads(ZAPI_STATE.read_text(encoding="utf-8"))
+        state = json.loads(AGENT_STATE.read_text(encoding="utf-8"))
+        state.setdefault("seen_message_ids", [])
+        return state
     except Exception:
-        return {"last_index": 0}
+        return {"seen_message_ids": []}
 
 
-def save_zapi_state(state):
-    ZAPI_STATE.parent.mkdir(parents=True, exist_ok=True)
-    ZAPI_STATE.write_text(json.dumps(state, indent=2), encoding="utf-8")
+def save_agent_state(state):
+    state["seen_message_ids"] = state.get("seen_message_ids", [])[-STATE_CACHE_LIMIT:]
+    AGENT_STATE.parent.mkdir(parents=True, exist_ok=True)
+    AGENT_STATE.write_text(json.dumps(state, indent=2), encoding="utf-8")
+
+
+def build_message_id(phone, text, raw_id=""):
+    if raw_id:
+        return str(raw_id)
+    return hashlib.sha256(f"{phone}|{text}".encode("utf-8")).hexdigest()
+
+
+def was_seen(state, message_id):
+    return message_id in state.get("seen_message_ids", [])
+
+
+def mark_seen(state, message_id):
+    state.setdefault("seen_message_ids", []).append(message_id)
+    if len(state["seen_message_ids"]) > STATE_CACHE_LIMIT:
+        state["seen_message_ids"] = state["seen_message_ids"][-STATE_CACHE_LIMIT:]
 
 
 def extract_zapi_messages(config):
@@ -299,6 +315,74 @@ def extract_zapi_text(entry):
     return text.strip()
 
 
+def evolution_request(config, endpoint, payload):
+    evolution = config.get("evolution", {})
+    base_url = evolution.get("base_url", "http://localhost:8080").rstrip("/")
+    api_key = evolution.get("api_key", "")
+    instance = evolution.get("instance_name", "operacao-ia")
+    data = json.dumps(payload).encode("utf-8")
+    request = urllib.request.Request(
+        f"{base_url}{endpoint}/{instance}",
+        data=data,
+        headers={"Content-Type": "application/json", "apikey": api_key},
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=20) as response:
+        body = response.read()
+        result = json.loads(body.decode("utf-8")) if body else {}
+    if isinstance(result, list):
+        return result
+    if isinstance(result, dict):
+        if "messages" in result and isinstance(result["messages"], dict):
+            return result["messages"].get("records", [])
+        if "messages" in result and isinstance(result["messages"], list):
+            return result["messages"]
+        if "chats" in result:
+            return result["chats"]
+        if "records" in result:
+            return result["records"]
+    return result if isinstance(result, list) else []
+
+
+def fetch_evolution_chats(config):
+    return evolution_request(config, "/chat/findChats", {})
+
+
+def fetch_evolution_messages(config, jid, limit=15):
+    return evolution_request(
+        config,
+        "/chat/findMessages",
+        {"where": {"key": {"remoteJid": jid}}, "limit": limit},
+    )
+
+
+def extract_text_from_evolution_record(record):
+    msg_data = record.get("message") or {}
+    return (
+        msg_data.get("conversation")
+        or (msg_data.get("extendedTextMessage") or {}).get("text", "")
+        or (msg_data.get("imageMessage") or {}).get("caption", "")
+        or ""
+    ).strip()
+
+
+def send_agent_reply(phone, reply, config):
+    limiter = ZAPIRateLimiter()
+    if not should_send(phone, reply, window_hours=1):
+        log.info("resposta duplicada pulada para %s", phone)
+        return False
+    if not limiter.can_send(phone):
+        log.warning("rate limiter bloqueou resposta para %s", phone)
+        return False
+    if send_whatsapp(phone, reply, config):
+        limiter.record_send(phone)
+        log_dispatch(phone, reply, "agent-bant-reply")
+        log.info("resposta enviada para %s", phone)
+        return True
+    log.error("falha ao enviar resposta para %s", phone)
+    return False
+
+
 def process_message(phone, text, config):
     cleanup_expired_sessions()
     if not phone or not text:
@@ -316,11 +400,7 @@ def process_message(phone, text, config):
 
     session["messages"].append({"role": "assistant", "content": reply})
     save_session(phone, session["messages"], session["last_activity"])
-
-    if send_whatsapp(phone, reply, config):
-        log.info("resposta enviada para %s", phone)
-    else:
-        log.error("falha ao enviar resposta para %s", phone)
+    send_agent_reply(phone, reply, config)
 
 
 class EvolutionWebhookHandler(BaseHTTPRequestHandler):
@@ -358,22 +438,52 @@ def run_evolution_server(config):
     server.serve_forever()
 
 
+def run_evolution_polling(config):
+    log.info("agent BANT em polling Evolution")
+    state = load_agent_state()
+    while True:
+        try:
+            chats = fetch_evolution_chats(config)
+            for chat in chats:
+                jid = chat.get("id") or chat.get("remoteJid") or ""
+                if not jid or jid.endswith("@g.us"):
+                    continue
+                records = fetch_evolution_messages(config, jid, limit=10)
+                for record in records:
+                    key = record.get("key") or {}
+                    if key.get("fromMe"):
+                        continue
+                    phone = normalize_phone((key.get("remoteJid") or jid).replace("@s.whatsapp.net", ""))
+                    text = extract_text_from_evolution_record(record)
+                    message_id = build_message_id(phone, text, key.get("id", ""))
+                    if not text or was_seen(state, message_id):
+                        continue
+                    process_message(phone, text, config)
+                    mark_seen(state, message_id)
+            save_agent_state(state)
+        except Exception as exc:
+            log.error("erro polling evolution: %s", exc)
+        time.sleep(3)
+
+
 def run_zapi_polling(config):
     log.info("agent BANT em polling Z-API")
-    state = load_zapi_state()
+    state = load_agent_state()
     while True:
         try:
             messages = extract_zapi_messages(config)
-            last_index = int(state.get("last_index", 0))
-            if last_index < len(messages):
-                for entry in messages[last_index:]:
-                    if entry.get("fromMe") or entry.get("isGroup"):
-                        continue
-                    phone = normalize_phone(entry.get("phone", ""))
-                    text = extract_zapi_text(entry)
-                    process_message(phone, text, config)
-                state["last_index"] = len(messages)
-                save_zapi_state(state)
+            for entry in messages:
+                if entry.get("fromMe") or entry.get("isGroup"):
+                    continue
+                phone = normalize_phone(entry.get("phone", ""))
+                text = extract_zapi_text(entry)
+                raw_id = entry.get("messageId") or entry.get("id") or entry.get("message_id") or ""
+                message_id = build_message_id(phone, text, raw_id)
+                if not text or was_seen(state, message_id):
+                    continue
+                process_message(phone, text, config)
+                mark_seen(state, message_id)
+            save_agent_state(state)
         except Exception as exc:
             log.error("erro polling zapi: %s", exc)
         time.sleep(3)
@@ -383,7 +493,7 @@ def main():
     config = load_config()
     provider = config.get("whatsapp_provider")
     if provider == "evolution":
-        run_evolution_server(config)
+        run_evolution_polling(config)
     elif provider == "zapi":
         run_zapi_polling(config)
     else:

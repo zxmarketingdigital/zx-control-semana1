@@ -52,7 +52,7 @@ def normalize_phone(value):
 
 
 def parse_inline_contacts(first_line):
-    print("Cole um contato por linha no formato nome,telefone.")
+    print("Cole um contato por linha no formato nome,telefone ou nome,telefone,tag.")
     print("Finalize com uma linha vazia.")
     lines = [first_line]
     while True:
@@ -65,8 +65,11 @@ def parse_inline_contacts(first_line):
     for raw in lines:
         if "," not in raw:
             continue
-        name, phone = raw.split(",", 1)
-        entries.append({"name": name.strip(), "phone": phone.strip(), "source": "manual"})
+        parts = [item.strip() for item in raw.split(",")]
+        name = parts[0] if len(parts) >= 1 else ""
+        phone = parts[1] if len(parts) >= 2 else ""
+        tags = ",".join(parts[2:]) if len(parts) >= 3 else ""
+        entries.append({"name": name, "phone": phone, "source": "manual", "tags": tags})
     return entries
 
 
@@ -90,6 +93,7 @@ def parse_csv_contacts(path):
     reader = csv.DictReader(content.splitlines(), delimiter=delimiter)
     name_col = resolve_column(reader.fieldnames, ["name", "nome"])
     phone_col = resolve_column(reader.fieldnames, ["phone", "telefone", "numero"])
+    tags_col = resolve_column(reader.fieldnames, ["tags", "tag", "etiqueta", "etiquetas"])
     if not name_col or not phone_col:
         raise SystemExit("CSV invalido: colunas esperadas name/nome e phone/telefone/numero")
 
@@ -100,6 +104,7 @@ def parse_csv_contacts(path):
                 "name": (row.get(name_col) or "").strip(),
                 "phone": (row.get(phone_col) or "").strip(),
                 "source": str(path),
+                "tags": (row.get(tags_col) or "").strip() if tags_col else "",
             }
         )
     return entries
@@ -153,9 +158,9 @@ def main():
                 conn.execute(
                     """
                     INSERT OR REPLACE INTO contacts (name, phone, source, imported_at, tags)
-                    VALUES (?, ?, ?, ?, COALESCE((SELECT tags FROM contacts WHERE phone = ?), ''))
+                    VALUES (?, ?, ?, ?, ?)
                     """,
-                    (name, phone, entry["source"], imported_at, phone),
+                    (name, phone, entry["source"], imported_at, entry.get("tags", "")),
                 )
                 imported += 1
             except Exception:
