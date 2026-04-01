@@ -4,6 +4,7 @@ Data: 2026-04-01
 Repo: `~/projetos/zx-control-semana1/`
 Branch: `main`
 Estado atual: repo limpo, pronto para continuar
+HEAD atual: `909b495`
 
 ## Objetivo do projeto
 - Produto guiado por repositório: aluno faz `git clone && cd && claude`
@@ -82,6 +83,27 @@ Incluiu:
 - `setup_monitor.py` valida melhor `student_phone`
 - `README.md` atualizado para refletir o estado real do repo
 
+### Ajustes finais de setup e entrega
+Commits:
+- `df0b91a` — `docs: add session handoff for zx control semana 1`
+- `e49021d` — `fix: soften setup failures and prioritize evolution`
+- `909b495` — `chore: ignore wrangler cache`
+
+Incluiu:
+- handoff versionado em `docs/session-handoff-2026-04-01.md`
+- Evolution API passou a ser sempre a prioridade do produto
+- RAM deixou de decidir provider e virou apenas aviso:
+  - abaixo de 8GB -> pode ficar instavel
+  - 8GB -> minimo recomendado
+  - 16GB+ -> ideal
+- Z-API ficou apenas como fallback opcional/manual
+- scripts de setup foram suavizados para onboarding:
+  - erros esperados nao retornam mais `exit 1` em cascata
+  - falhas viram `Aviso:` com retorno limpo quando fizer sentido
+  - `setup_email.py` salva a configuracao mesmo se o teste do Resend nao for confirmado na hora
+  - `config.email.test_status` pode ser `sent` ou `pending`
+- `.wrangler/` passou a ser ignorado para nao sujar o repo
+
 ## Estado atual dos arquivos principais
 - `CLAUDE.md` cobre Etapas 1-10
 - `README.md` está alinhado com Phase 1, 2 e 3
@@ -92,8 +114,9 @@ Incluiu:
 ## Regras e decisões que devem ser mantidas
 - `~/.operacao-ia/` é o único destino dos artefatos do aluno
 - WhatsApp:
-  - `ram_gb >= 16` -> `evolution`
-  - `ram_gb < 16` -> `zapi`
+  - `evolution` é sempre o provider prioritário
+  - `zapi` existe apenas como fallback opcional/manual
+  - RAM é só aviso operacional, não decide automaticamente o provider
 - Email: Resend
 - Agente IA: BANT multi-provider
 - OpenAI usa `gpt-5.4-mini` com `max_completion_tokens`
@@ -109,6 +132,7 @@ Incluiu:
   - filtro por tag
   - geração de relatórios sem overwrite
   - `monitor.py --now` gerando HTML sem cair com traceback em falha de rede
+- setup scripts foram revisados para reduzir banners vermelhos do Claude Code em erros esperados de onboarding
 
 ## O que ainda falta validar para entrega
 - fluxo fim a fim real em máquina limpa sem `~/.operacao-ia/` prévio
@@ -123,6 +147,7 @@ Incluiu:
 1. Fazer homologação real de ponta a ponta
 2. Registrar o resultado em um checklist de QA
 3. Ajustar qualquer detalhe operacional encontrado
+4. Decidir se os commits de área de membros (`bb21ee4`, `b051e6b`) fazem parte da entrega desta fase ou de uma trilha separada
 
 ## Comando útil para retomar
 Ao abrir outra sessão do Claude Code, use algo como:
