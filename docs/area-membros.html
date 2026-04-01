@@ -728,7 +728,7 @@ body {
             <div class="step-circle">1</div>
             <div class="step-body">
               <h4>O que acontece quando você rodar esse comando</h4>
-              <p>O Git baixa o repositório, entra na pasta e abre o Claude Code. O Claude vai começar automaticamente a conduzir o setup sem que você precise fazer mais nada.</p>
+              <p>O Git baixa o repositório, entra na pasta e abre o Claude Code. O Claude vai se apresentar e aguardar você dar o sinal para começar.</p>
             </div>
           </div>
           <div class="step-row">
@@ -742,16 +742,21 @@ body {
           <div class="step-row">
             <div class="step-circle">3</div>
             <div class="step-body">
-              <h4>O Claude vai verificar seus pré-requisitos automaticamente</h4>
-              <p>Ele roda um script de verificação e te avisa se estiver faltando alguma coisa. Se tudo estiver OK, já avança para a próxima etapa do setup.</p>
+              <h4>Digite INICIAR SETUP para começar</h4>
+              <p>Quando o Claude aparecer e se apresentar, você escreve exatamente isso e pressiona Enter:</p>
+              <div class="code-block" style="margin-top:10px">
+                <div class="code-header"><span class="code-label">escreva no Claude</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre><span class="arg">INICIAR SETUP</span></pre></div>
+              </div>
+              <p style="margin-top:8px">A partir daí o Claude conduz tudo — você não precisa mais digitar nenhum comando técnico.</p>
             </div>
           </div>
         </div>
 
         <div class="etapa-footer">
-          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude abrir e começar a falar com você.</p>
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando digitar INICIAR SETUP e o Claude começar o setup.</p>
           <button class="btn-complete pending" id="complete-2" onclick="markComplete(2)">
-            <span>✓</span> Claude abriu e começou o setup
+            <span>✓</span> Claude aberto e setup iniciado
           </button>
           <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima etapa →</button>
         </div>

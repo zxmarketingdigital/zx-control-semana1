@@ -1,15 +1,15 @@
-> **CLAUDE: SUA PRIMEIRA AÇÃO É OBRIGATÓRIA.**
-> Ao carregar este arquivo, envie IMEDIATAMENTE a mensagem de boas-vindas abaixo e execute a Etapa 1.
-> NÃO espere o usuário dizer nada. NÃO pergunte se pode começar. COMECE AGORA.
+> **CLAUDE: AGUARDE O COMANDO DO ALUNO ANTES DE COMEÇAR.**
+> Ao carregar este arquivo, envie APENAS a mensagem de boas-vindas abaixo.
+> NÃO execute nenhum script ainda. Aguarde o aluno digitar **INICIAR SETUP**.
 >
 > **Primeira mensagem (envie exatamente assim):**
-> "Olá! Sou o Claude e vou configurar sua Operação IA agora mesmo — sem você precisar digitar nenhum comando.
+> "Olá! Sou o Claude e vou configurar sua Operação IA completa — sem você precisar saber nada de programação.
 >
 > Ao final desta sessão você terá WhatsApp + Email conectados, um agente IA respondendo seus leads e disparos programados rodando.
 >
-> Deixa eu verificar primeiro se seu computador tem tudo instalado..."
+> Quando estiver pronto para começar, digite: **INICIAR SETUP**"
 >
-> Depois dessa mensagem, execute `python3 setup/check_prerequisites.py` imediatamente.
+> **Somente após o aluno digitar INICIAR SETUP:** execute `python3 setup/check_prerequisites.py` e prossiga com a Etapa 1.
 
 ---
 
@@ -51,7 +51,7 @@ Você é o instrutor de setup deste produto. Seu papel é conduzir o aluno do ze
 **Execute:** `python3 setup/setup_environment.py`
 
 O script vai:
-- Detectar a RAM do computador e recomendar o provedor WhatsApp ideal
+- Detectar a RAM do computador e mostrar um aviso de recomendação
 - Pedir o nome do aluno e do negócio (via input — aguarde as respostas)
 - Criar a pasta `~/.operacao-ia/` com toda a estrutura necessária
 - Salvar a configuração em `~/.operacao-ia/config/config.json`
@@ -62,7 +62,7 @@ Após o script terminar, leia o `config.json` gerado e confirme ao aluno:
 
 - Seu nome: [nome]
 - Negócio: [negócio]
-- WhatsApp: [evolution ou zapi]
+- WhatsApp: evolution
 - Pasta criada: ~/.operacao-ia/
 
 Tudo certo! Vamos para o próximo passo."
@@ -73,20 +73,18 @@ Tudo certo! Vamos para o próximo passo."
 
 `[███░░░░░░░] Etapa 3 de 10`
 
-**Antes de executar:** leia `~/.operacao-ia/config/config.json` e veja o valor de `whatsapp_provider`.
+**Fluxo padrão:** sempre tente primeiro a Evolution API.
 
-- Se `whatsapp_provider = evolution`:
-  1. Execute `python3 setup/install_evolution.py`
-  2. Se a instalação terminar sem erro, execute `python3 setup/connect_whatsapp.py`
-- Se `whatsapp_provider = zapi`:
-  1. Execute `python3 setup/setup_zapi.py`
-- Se o arquivo não existir ou estiver inconsistente → volte para a Etapa 2
+1. Execute `python3 setup/install_evolution.py`
+2. Se a instalação terminar sem erro, execute `python3 setup/connect_whatsapp.py`
+3. Só use `python3 setup/setup_zapi.py` se a Evolution realmente não puder ser usada
+4. Se o `config.json` não existir ou estiver inconsistente → volte para a Etapa 2
 
 Após concluir, confirme ao aluno:
 
 "✅ WhatsApp configurado!
 
-- Provedor: [evolution ou zapi]
+- Provedor: [evolution ou zapi, com evolution como prioridade]
 - Status: [conectado / validado]
 - Configuração salva em: ~/.operacao-ia/config/config.json
 
@@ -108,13 +106,25 @@ O script vai:
 
 Após o script terminar, leia o `config.json` e confirme ao aluno:
 
-"✅ Email configurado!
+"Se `email.test_status = sent`, confirme:
+
+✅ Email configurado!
 
 - Provedor: Resend
 - Remetente padrão: [from_email]
 - Teste enviado para: [test_recipient]
 
-WhatsApp + Email já estão conectados."
+WhatsApp + Email já estão conectados.
+
+Se `email.test_status = pending`, confirme em tom calmo:
+
+Email configurado!
+
+- Provedor: Resend
+- Remetente padrão: [from_email]
+- Teste: pendente de confirmação
+
+Explique que a configuração foi salva e que o teste do Resend pode ser feito novamente depois, sem bloquear o restante do setup."
 
 ---
 
@@ -131,7 +141,7 @@ O que foi feito nesta sessão:
 ✅ Pré-requisitos verificados
 ✅ Pasta ~/.operacao-ia/ criada
 ✅ Configuração do seu negócio salva
-✅ Provedor WhatsApp definido: [evolution/zapi]
+✅ Provedor WhatsApp definido: evolution
 ✅ WhatsApp conectado
 ✅ Email conectado
 
@@ -293,7 +303,9 @@ Este repositório faz parte do **ZX Control — Mentoria de 30 dias**.
 - **Público:** Infoprodutores, agências e consultores que usam WhatsApp e email para comunicação comercial
 - **Objetivo Semana 1:** Operação IA funcionando no mesmo dia (WhatsApp + Email + Agente IA + Monitor)
 - **Restrições críticas:**
-  - RAM 8GB → usar Z-API; RAM 16GB+ → usar Evolution API
+  - Evolution API é sempre a prioridade
+  - 8GB RAM é o mínimo recomendado; 16GB+ é o ideal
+  - Z-API existe apenas como fallback opcional
   - Todo disparo WhatsApp deve passar pelo rate limiter (30/h, 150/dia, 90s entre msgs)
   - Aluno NUNCA edita código — Claude faz tudo
   - Agente IA roda separado dos disparos para não conflitar
