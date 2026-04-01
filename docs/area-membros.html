@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZX Control — Semana 1: Setup Operação IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1298315577491272');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1298315577491272&ev=PageView&noscript=1"/></noscript>
+
+<style>
+:root {
+  --bg:        #0a0a0f;
+  --bg2:       #12121a;
+  --bg3:       #16161f;
+  --bg4:       #1c1c28;
+  --border:    #1e1e2e;
+  --border2:   rgba(139,92,246,0.25);
+  --text:      #e8e8ed;
+  --text2:     #8b8b9e;
+  --text3:     #5a5a6e;
+  --purple:    #8b5cf6;
+  --purple2:   #6366f1;
+  --cyan:      #22d3ee;
+  --green:     #10b981;
+  --red:       #f43f5e;
+  --yellow:    #f59e0b;
+  --grad:      linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
+  --sidebar-w: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════ */
+#loginScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+#loginScreen .bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+#loginScreen .bg-glow {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+}
+#loginScreen .bg-glow::before {
+  content: '';
+  position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(99,102,241,0.12) 0%, transparent 70%);
+}
+#loginScreen .bg-glow::after {
+  content: '';
+  position: absolute; bottom: -20%; right: 10%;
+  width: 500px; height: 400px;
+  background: radial-gradient(ellipse at center, rgba(139,92,246,0.08) 0%, transparent 70%);
+}
+.login-wrap {
+  position: relative; z-index: 10;
+  width: 100%; max-width: 420px; padding: 20px;
+}
+.logo-area { text-align: center; margin-bottom: 40px; }
+.logo-icon {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 20px;
+  box-shadow: 0 0 40px rgba(139,92,246,0.2);
+}
+.logo-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 8px;
+}
+.logo-title {
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--text); letter-spacing: -0.02em; line-height: 1.2;
+}
+.logo-title span {
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.logo-sub { font-size: 0.85rem; color: var(--text2); margin-top: 8px; }
+.login-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 36px; position: relative; overflow: hidden;
+}
+.login-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.4), transparent);
+}
+.card-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.card-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 28px; }
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block; font-size: 0.78rem; font-weight: 600;
+  color: var(--text2); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;
+}
+.form-input {
+  width: 100%; background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 16px; color: var(--text);
+  font-family: 'Inter', sans-serif; font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+}
+.form-input::placeholder { color: var(--text3); }
+.form-input:focus {
+  border-color: rgba(139,92,246,0.5);
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
+}
+.input-wrap { position: relative; }
+.toggle-pass {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--text3); cursor: pointer;
+  padding: 4px; font-size: 14px; transition: color 0.2s; display: flex; align-items: center;
+}
+.toggle-pass:hover { color: var(--text2); }
+.error-msg {
+  display: none;
+  background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.2);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 0.82rem; color: #fb7185; margin-bottom: 16px;
+  align-items: center; gap: 8px;
+}
+.error-msg.show { display: flex; }
+.btn-login {
+  width: 100%; padding: 14px;
+  background: var(--grad); border: none; border-radius: 10px;
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+  margin-top: 8px; position: relative; overflow: hidden;
+}
+.btn-login:hover { opacity: 0.9; box-shadow: 0 8px 32px rgba(99,102,241,0.35); }
+.btn-login:active { transform: scale(0.98); }
+.btn-login.loading { pointer-events: none; opacity: 0.7; }
+.btn-text { transition: opacity 0.2s; }
+.btn-loader { display: none; }
+.btn-login.loading .btn-text { display: none; }
+.btn-login.loading .btn-loader { display: inline; }
+.bottom-badge {
+  text-align: center; margin-top: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--text3); letter-spacing: 0.08em;
+}
+@keyframes blink { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
+.dot1 { animation: blink 1.4s infinite 0s; }
+.dot2 { animation: blink 1.4s infinite 0.2s; }
+.dot3 { animation: blink 1.4s infinite 0.4s; }
+
+/* ══════════════════════════════════════════
+   MEMBERS AREA
+══════════════════════════════════════════ */
+#membersArea { display: none; min-height: 100vh; flex-direction: column; }
+#membersArea.active { display: flex; }
+
+/* ── TOP NAV ── */
+.top-nav {
+  height: 60px; background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-brand-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3));
+  border: 1px solid rgba(139,92,246,0.3);
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.nav-brand-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.1em; color: var(--purple);
+}
+.nav-brand-sub { font-size: 0.8rem; color: var(--text2); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-student {
+  font-size: 0.82rem; color: var(--text2);
+}
+.nav-student strong { color: var(--text); }
+.btn-logout {
+  font-size: 0.78rem; color: var(--text3);
+  background: none; border: none; cursor: pointer;
+  padding: 6px 12px; border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.btn-logout:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap {
+  position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+  height: 3px; background: var(--border);
+}
+.progress-bar-fill {
+  height: 100%; background: var(--grad);
+  transition: width 0.5s ease;
+}
+
+/* ── LAYOUT ── */
+.main-layout {
+  display: flex;
+  margin-top: 63px;
+  min-height: calc(100vh - 63px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); min-width: var(--sidebar-w);
+  background: var(--bg2); border-right: 1px solid var(--border);
+  position: fixed; top: 63px; left: 0; bottom: 0;
+  overflow-y: auto; padding: 24px 0;
+}
+.sidebar-header {
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.sidebar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+}
+.sidebar-progress {
+  font-size: 0.8rem; color: var(--text2);
+}
+.sidebar-progress span { color: var(--purple); font-weight: 600; }
+.progress-mini {
+  height: 4px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden;
+}
+.progress-mini-fill {
+  height: 100%; background: var(--grad); border-radius: 2px;
+  transition: width 0.5s ease;
+}
+.etapa-list { padding: 8px 0; }
+.etapa-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 20px; cursor: pointer;
+  transition: background 0.15s; position: relative;
+  border-left: 3px solid transparent;
+}
+.etapa-item:hover { background: rgba(255,255,255,0.03); }
+.etapa-item.active {
+  background: rgba(139,92,246,0.08);
+  border-left-color: var(--purple);
+}
+.etapa-item.completed .etapa-num {
+  background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.4);
+  color: var(--green);
+}
+.etapa-item.active .etapa-num {
+  background: rgba(139,92,246,0.2); border-color: var(--border2);
+  color: var(--purple);
+}
+.etapa-num {
+  width: 28px; height: 28px; min-width: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; color: var(--text3);
+  transition: all 0.2s;
+}
+.etapa-num.check::after { content: '✓'; }
+.etapa-item-body { flex: 1; min-width: 0; }
+.etapa-item-title {
+  font-size: 0.82rem; font-weight: 600; color: var(--text2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: color 0.15s;
+}
+.etapa-item.active .etapa-item-title { color: var(--text); }
+.etapa-item.completed .etapa-item-title { color: var(--text2); }
+.etapa-item-tag {
+  font-size: 0.65rem; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px; margin-top: 2px; display: inline-block;
+}
+.etapa-item-tag.done { background: rgba(16,185,129,0.12); color: var(--green); }
+.etapa-item-tag.active { background: rgba(139,92,246,0.12); color: var(--purple); }
+.etapa-item-tag.pending { background: rgba(255,255,255,0.04); color: var(--text3); }
+
+/* ── CONTENT AREA ── */
+.content-area {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  padding: 40px 48px;
+  max-width: 860px;
+}
+.etapa-panel { display: none; }
+.etapa-panel.active { display: block; }
+
+/* ── ETAPA HEADER ── */
+.etapa-header { margin-bottom: 32px; }
+.etapa-badge-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.etapa-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+  background: rgba(139,92,246,0.1); color: var(--purple);
+  border: 1px solid rgba(139,92,246,0.2);
+}
+.etapa-status-badge {
+  font-size: 0.72rem; font-weight: 600;
+  padding: 3px 10px; border-radius: 100px;
+}
+.etapa-status-badge.pending {
+  background: rgba(255,255,255,0.04); color: var(--text3);
+  border: 1px solid var(--border);
+}
+.etapa-status-badge.done {
+  background: rgba(16,185,129,0.1); color: var(--green);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+.etapa-title {
+  font-size: 1.8rem; font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.2;
+  color: var(--text); margin-bottom: 10px;
+}
+.etapa-sub { font-size: 1rem; color: var(--text2); line-height: 1.7; }
+.etapa-divider {
+  height: 1px; background: var(--border); margin: 32px 0;
+}
+
+/* ── CONTENT BLOCKS ── */
+.section-title {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 16px;
+}
+.step-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+.step-row { display: flex; gap: 16px; }
+.step-circle {
+  width: 32px; height: 32px; min-width: 32px; border-radius: 50%;
+  background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700; color: var(--purple);
+  margin-top: 2px;
+}
+.step-body h4 {
+  font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px;
+}
+.step-body p {
+  font-size: 0.88rem; color: var(--text2); line-height: 1.65;
+}
+.step-body .tip {
+  display: inline-flex; align-items: flex-start; gap: 8px;
+  background: rgba(34,211,238,0.06); border: 1px solid rgba(34,211,238,0.15);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 0.83rem; color: #67e8f9; margin-top: 8px; line-height: 1.55;
+}
+.step-body .warn {
+  display: inline-flex; align-items: flex-start; gap: 8px;
+  background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 0.83rem; color: #fcd34d; margin-top: 8px; line-height: 1.55;
+}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: var(--bg); border: 1px solid var(--border2);
+  border-radius: 12px; overflow: hidden; margin: 20px 0;
+}
+.code-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: rgba(139,92,246,0.06);
+  border-bottom: 1px solid var(--border2);
+}
+.code-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--purple); font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.btn-copy {
+  font-size: 0.72rem; color: var(--text3);
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 10px; cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-copy:hover { color: var(--text2); background: rgba(255,255,255,0.07); }
+.btn-copy.copied { color: var(--green); border-color: rgba(16,185,129,0.3); }
+.code-body {
+  padding: 16px 20px; overflow-x: auto;
+}
+.code-body pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; color: #c4b5fd; line-height: 1.7;
+  white-space: pre; margin: 0;
+}
+.code-body pre .comment { color: var(--text3); }
+.code-body pre .cmd { color: #a5f3fc; }
+.code-body pre .arg { color: #86efac; }
+
+/* ── PROVIDER CARDS ── */
+.provider-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px; margin: 20px 0;
+}
+.provider-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+  transition: border-color 0.2s;
+}
+.provider-card:hover { border-color: var(--border2); }
+.provider-card.recommended { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.03); }
+.provider-card.recommended .provider-name { color: var(--green); }
+.provider-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+.provider-name { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.provider-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.5; }
+.provider-tag {
+  display: inline-block; margin-top: 8px;
+  font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: 100px;
+}
+.tag-free { background: rgba(16,185,129,0.1); color: var(--green); }
+.tag-paid { background: rgba(245,158,11,0.1); color: var(--yellow); }
+.tag-best { background: rgba(139,92,246,0.1); color: var(--purple); }
+
+/* ── CHECK LIST ── */
+.check-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+.check-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.check-icon {
+  width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+}
+.check-icon.ok { background: rgba(16,185,129,0.1); color: var(--green); }
+.check-icon.num { background: rgba(139,92,246,0.1); color: var(--purple); font-weight: 700; font-size: 0.72rem; }
+.check-text { font-size: 0.88rem; color: var(--text2); }
+.check-text strong { color: var(--text); }
+
+/* ── COMPLETE BUTTON ── */
+.etapa-footer { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+.btn-complete {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px; border-radius: 12px; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+  transition: all 0.2s;
+}
+.btn-complete.pending {
+  background: var(--grad); color: #fff;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.25);
+}
+.btn-complete.pending:hover {
+  opacity: 0.9; transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.35);
+}
+.btn-complete.done {
+  background: rgba(16,185,129,0.1); color: var(--green);
+  border: 1px solid rgba(16,185,129,0.3); cursor: default;
+}
+.btn-nav-next {
+  display: inline-flex; align-items: center; gap: 8px; margin-left: 12px;
+  padding: 14px 20px; border-radius: 12px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--text2); font-family: 'Inter', sans-serif; font-size: 0.9rem;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-nav-next:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+
+/* ── SUMMARY BOX ── */
+.summary-box {
+  background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+  border-radius: 16px; padding: 28px; margin: 24px 0;
+}
+.summary-box h3 { font-size: 1rem; color: var(--green); margin-bottom: 16px; font-weight: 700; }
+.summary-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .icon { font-size: 1rem; }
+.summary-row .label { font-size: 0.85rem; color: var(--text2); flex: 1; }
+.summary-row .val { font-size: 0.85rem; color: var(--green); font-weight: 600; }
+
+/* ── MOBILE NAV ── */
+.mobile-menu-btn {
+  display: none; background: none; border: none;
+  color: var(--text2); cursor: pointer; padding: 6px;
+}
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 90;
+}
+.sidebar-overlay.show { display: block; }
+
+@media (max-width: 768px) {
+  .mobile-menu-btn { display: block; }
+  .sidebar {
+    transform: translateX(-100%); transition: transform 0.3s ease;
+    z-index: 95;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .content-area { margin-left: 0; padding: 24px 20px; }
+  .etapa-title { font-size: 1.4rem; }
+  .provider-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="login-wrap">
+    <div class="logo-area">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-name">ZX LAB · ZX Control</div>
+      <div class="logo-title">Semana 1<br><span>Setup Operação IA</span></div>
+      <div class="logo-sub">Acesse sua área de aluno</div>
+    </div>
+
+    <div class="login-card">
+      <div class="card-title">Entrar na plataforma</div>
+      <div class="card-sub">Use o email da compra e a senha enviada no seu onboarding</div>
+
+      <div class="error-msg" id="errorMsg">
+        <span>⚠️</span>
+        <span id="errorText">Email ou senha incorretos.</span>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" type="email" id="email" placeholder="seu@email.com" autocomplete="email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Senha</label>
+          <div class="input-wrap">
+            <input class="form-input" type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="toggle-pass" onclick="togglePass()">
+              <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-login" id="loginBtn">
+          <span class="btn-text">Acessar minha área</span>
+          <span class="btn-loader">Verificando<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></span>
+        </button>
+      </form>
+    </div>
+
+    <div class="bottom-badge">ZX CONTROL — SEMANA 1 · v1.0 · powered by ZX LAB</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MEMBERS AREA
+══════════════════════════════════════════ -->
+<div id="membersArea">
+
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div class="nav-brand">
+      <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="nav-brand-icon">⚡</div>
+      <div>
+        <div class="nav-brand-name">ZX Control</div>
+        <div class="nav-brand-sub">Semana 1 — Setup Operação IA</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-student">Olá, <strong id="studentName">Aluno</strong></div>
+      <button class="btn-logout" onclick="handleLogout()">Sair</button>
+    </div>
+  </nav>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBarFill" style="width:0%"></div>
+  </div>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Layout -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-label">Progresso do Setup</div>
+        <div class="sidebar-progress"><span id="completedCount">0</span> de 10 etapas concluídas</div>
+        <div class="progress-mini"><div class="progress-mini-fill" id="miniProgressFill" style="width:0%"></div></div>
+      </div>
+      <div class="etapa-list" id="etapaList">
+        <!-- Generated by JS -->
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="content-area">
+
+      <!-- ─── ETAPA 1 ─── -->
+      <div class="etapa-panel" id="panel-1">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 1 de 10</span>
+            <span class="etapa-status-badge pending" id="status-1">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Instalar Pré-requisitos</h1>
+          <p class="etapa-sub">Antes de começar, você precisa ter alguns programas instalados. Não se preocupe — o Claude vai verificar tudo automaticamente e te avisar se estiver faltando algo.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que você precisa ter instalado</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon num">1</div><div class="check-text"><strong>Claude Code CLI</strong> — o assistente que vai conduzir seu setup</div></div>
+          <div class="check-item"><div class="check-icon num">2</div><div class="check-text"><strong>Python 3.11+</strong> — linguagem dos scripts de automação</div></div>
+          <div class="check-item"><div class="check-icon num">3</div><div class="check-text"><strong>Node.js 18+</strong> — necessário para algumas dependências</div></div>
+          <div class="check-item"><div class="check-icon num">4</div><div class="check-text"><strong>Git</strong> — para clonar o repositório do curso</div></div>
+          <div class="check-item"><div class="check-icon num">5</div><div class="check-text"><strong>Docker Desktop</strong> — para rodar a Evolution API (WhatsApp)</div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="section-title">Instalar o Claude Code</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Instale o Claude Code no terminal</h4>
+              <p>Abra o terminal e cole o comando abaixo:</p>
+              <div class="code-block">
+                <div class="code-header"><span class="code-label">terminal</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre>npm install -g @anthropic-ai/claude-code</pre></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Para os outros programas</h4>
+              <p>Consulte o guia completo de instalação por sistema operacional:</p>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item">
+                  <div class="check-icon ok">🍎</div>
+                  <div class="check-text"><strong>macOS</strong> — use Homebrew: <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">brew install python@3.11 node git && brew install --cask docker</code></div>
+                </div>
+                <div class="check-item">
+                  <div class="check-icon ok">🐧</div>
+                  <div class="check-text"><strong>Ubuntu</strong> — apt + nodesource (ver guia completo em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">docs/prerequisitos.md</code>)</div>
+                </div>
+                <div class="check-item">
+                  <div class="check-icon ok">🪟</div>
+                  <div class="check-text"><strong>Windows</strong> — instalar WSL2 primeiro, depois seguir o guia Ubuntu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando todos os programas estiverem instalados.</p>
+          <button class="btn-complete pending" id="complete-1" onclick="markComplete(1)">
+            <span>✓</span> Pré-requisitos instalados
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(2)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 2 ─── -->
+      <div class="etapa-panel" id="panel-2">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 2 de 10</span>
+            <span class="etapa-status-badge pending" id="status-2">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Primeiro Acesso — Clonar e Abrir</h1>
+          <p class="etapa-sub">Com os pré-requisitos instalados, você vai clonar o repositório e abrir o Claude. A partir daí, o Claude conduz tudo sozinho — você não precisa digitar mais nenhum comando.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O único comando que você precisa rodar</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-label">terminal — cole e pressione Enter</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">git clone</span> <span class="arg">https://github.com/zxmarketingdigital/zx-control-semana1.git</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">cd</span> <span class="arg">zx-control-semana1</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">claude</span></pre></div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>O que acontece quando você rodar esse comando</h4>
+              <p>O Git baixa o repositório, entra na pasta e abre o Claude Code. O Claude vai começar automaticamente a conduzir o setup sem que você precise fazer mais nada.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Na primeira vez, o Claude vai se autenticar</h4>
+              <p>Se for seu primeiro uso do Claude Code, ele vai pedir para você fazer login com sua conta Anthropic. Siga as instruções na tela (é só abrir um link no navegador).</p>
+              <div class="tip">💡 Não tem conta Anthropic? Crie gratuitamente em <strong>claude.ai</strong> antes de continuar.</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>O Claude vai verificar seus pré-requisitos automaticamente</h4>
+              <p>Ele roda um script de verificação e te avisa se estiver faltando alguma coisa. Se tudo estiver OK, já avança para a próxima etapa do setup.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude abrir e começar a falar com você.</p>
+          <button class="btn-complete pending" id="complete-2" onclick="markComplete(2)">
+            <span>✓</span> Claude abriu e começou o setup
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 3 ─── -->
+      <div class="etapa-panel" id="panel-3">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 3 de 10</span>
+            <span class="etapa-status-badge pending" id="status-3">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Configurar o Ambiente</h1>
+          <p class="etapa-sub">O Claude vai coletar algumas informações sobre você e seu negócio, e criar toda a estrutura de pastas da sua operação IA no computador.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o Claude vai perguntar</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Seu nome</h4>
+              <p>Para personalizar o agente e os relatórios com seu nome.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Nome do seu negócio</h4>
+              <p>Usado nas mensagens do agente e nos relatórios de status.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>O Claude detecta sua RAM automaticamente</h4>
+              <p>Isso determina qual provedor de WhatsApp é melhor para você:</p>
+              <div class="provider-grid" style="margin-top:12px">
+                <div class="provider-card recommended">
+                  <span class="provider-icon">🚀</span>
+                  <div class="provider-name">Evolution API</div>
+                  <div class="provider-desc">Recomendado para computadores com 16GB+ de RAM. Gratuita e open-source.</div>
+                  <span class="provider-tag tag-free">Gratuita</span>
+                </div>
+                <div class="provider-card">
+                  <span class="provider-icon">📱</span>
+                  <div class="provider-name">Z-API</div>
+                  <div class="provider-desc">Fallback para computadores com 8GB de RAM. Requer conta gratuita em z-api.io.</div>
+                  <span class="provider-tag tag-paid">Precisa de conta</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">O que é criado na sua máquina</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-label">estrutura criada em ~/.operacao-ia/</span></div>
+          <div class="code-body"><pre><span class="arg">~/.operacao-ia/</span>
+├── <span class="cmd">config/</span>
+│   └── config.json          <span class="comment"># suas configurações</span>
+├── <span class="cmd">scripts/</span>               <span class="comment"># scripts de automação</span>
+├── <span class="cmd">data/</span>                  <span class="comment"># banco de contatos</span>
+└── <span class="cmd">logs/</span>                  <span class="comment"># relatórios e logs</span></pre></div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que a pasta foi criada.</p>
+          <button class="btn-complete pending" id="complete-3" onclick="markComplete(3)">
+            <span>✓</span> Ambiente configurado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(4)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 4 ─── -->
+      <div class="etapa-panel" id="panel-4">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 4 de 10</span>
+            <span class="etapa-status-badge pending" id="status-4">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Conectar o WhatsApp</h1>
+          <p class="etapa-sub">O Claude vai instalar e configurar o provedor de WhatsApp escolhido. Você vai escanear um QR Code com seu celular para conectar o número.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Como funciona a conexão</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Evolution API (16GB+ RAM)</h4>
+              <p>O Claude instala automaticamente via Docker, configura o ambiente e abre o QR Code para você escanear com o WhatsApp do celular.</p>
+              <div class="warn">⚠️ O Docker Desktop precisa estar aberto e rodando antes desta etapa.</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Z-API (8GB RAM)</h4>
+              <p>O Claude vai pedir seu <strong>Instance ID</strong> e <strong>Token</strong> da Z-API. Você encontra esses dados no painel em <strong>app.z-api.io</strong>.</p>
+              <div class="tip">💡 Conta gratuita na Z-API inclui 1 instância. Acesse z-api.io para criar a sua.</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Escaneie o QR Code</h4>
+              <p>Uma imagem vai aparecer no terminal. Abra o WhatsApp no celular → Dispositivos Conectados → Adicionar Dispositivo → escaneie o código.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que o WhatsApp está conectado.</p>
+          <button class="btn-complete pending" id="complete-4" onclick="markComplete(4)">
+            <span>✓</span> WhatsApp conectado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(5)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 5 ─── -->
+      <div class="etapa-panel" id="panel-5">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 5 de 10</span>
+            <span class="etapa-status-badge pending" id="status-5">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Configurar o Email</h1>
+          <p class="etapa-sub">Vamos conectar o email para envio de notificações e comunicações. Usamos a Resend, uma plataforma confiável com plano gratuito generoso.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Como obter sua API Key da Resend</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Crie uma conta gratuita em resend.com</h4>
+              <p>O plano gratuito inclui 3.000 emails/mês e 100/dia — mais do que suficiente para começar.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Acesse API Keys no painel da Resend</h4>
+              <p>No menu lateral: <strong>API Keys → Add API Key</strong>. Dê um nome como "ZX Control" e copie a chave gerada.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Cole a API Key quando o Claude pedir</h4>
+              <p>O Claude vai pedir a chave e enviar um email de teste para confirmar que tudo está funcionando.</p>
+              <div class="warn">⚠️ Guarde a API Key em lugar seguro — ela aparece apenas uma vez na Resend.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o email de teste chegar na sua caixa.</p>
+          <button class="btn-complete pending" id="complete-5" onclick="markComplete(5)">
+            <span>✓</span> Email configurado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(6)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 6 ─── -->
+      <div class="etapa-panel" id="panel-6">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 6 de 10</span>
+            <span class="etapa-status-badge pending" id="status-6">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Ativar o Agente IA</h1>
+          <p class="etapa-sub">Aqui você configura o agente IA que vai responder seus leads no WhatsApp usando metodologia BANT — qualificando e encaminhando para o fechamento automaticamente.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Escolha seu provedor de IA</div>
+        <div class="provider-grid">
+          <div class="provider-card">
+            <span class="provider-icon">⚡</span>
+            <div class="provider-name">OpenAI</div>
+            <div class="provider-desc">GPT-5.4 mini. O mais rápido para respostas no WhatsApp. Recomendado para alto volume.</div>
+            <span class="provider-tag tag-paid">Pago por uso</span>
+          </div>
+          <div class="provider-card recommended">
+            <span class="provider-icon">✨</span>
+            <div class="provider-name">Google Gemini</div>
+            <div class="provider-desc">Gemini Flash. Plano gratuito generoso — ideal para começar sem custo de IA.</div>
+            <span class="provider-tag tag-free">Grátis para começar</span>
+          </div>
+          <div class="provider-card">
+            <span class="provider-icon">🧠</span>
+            <div class="provider-name">Anthropic (Claude)</div>
+            <div class="provider-desc">Claude Haiku. O mais inteligente e natural nas respostas. Pago por uso.</div>
+            <span class="provider-tag tag-best">Melhor qualidade</span>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:24px">O que o Claude vai configurar</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>API Key do provedor escolhido</h4>
+              <p>O Claude vai pedir sua chave e testar com uma mensagem simples para garantir que está funcionando.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Nome e tom do agente</h4>
+              <p>Como o agente vai se apresentar para seus leads: nome, se é mais formal ou informal, foco em vendas ou suporte.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>O agente é instalado em ~/.operacao-ia/scripts/</h4>
+              <p>Com um script de inicialização pronto para rodar quando você quiser ativar.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que a API Key funcionou.</p>
+          <button class="btn-complete pending" id="complete-6" onclick="markComplete(6)">
+            <span>✓</span> Agente IA configurado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(7)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 7 ─── -->
+      <div class="etapa-panel" id="panel-7">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 7 de 10</span>
+            <span class="etapa-status-badge pending" id="status-7">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Importar seus Contatos</h1>
+          <p class="etapa-sub">Importe a lista de contatos para quem você quer enviar mensagens. O sistema aceita CSV ou colagem direta — sem precisar de planilha online.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Formas de importar</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Colar diretamente no terminal</h4>
+              <p>O Claude vai pedir que você cole seus contatos no formato abaixo, um por linha. Quando terminar, deixe uma linha em branco e pressione Enter.</p>
+              <div class="code-block">
+                <div class="code-header"><span class="code-label">formato de colagem</span></div>
+                <div class="code-body"><pre><span class="comment"># nome,telefone (com DDD, sem espaços)</span>
+<span class="arg">João Silva,11999990001</span>
+<span class="arg">Maria Santos,21988880002</span>
+<span class="arg">Carlos Oliveira,31977770003</span></pre></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Informar o caminho de um arquivo CSV</h4>
+              <p>Se tiver um arquivo CSV, informe o caminho completo (ex: <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/Downloads/contatos.csv</code>). O Claude detecta o separador automaticamente.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>O que acontece automaticamente</h4>
+              <p>Telefones são validados e normalizados (DDI +55 adicionado automaticamente). Uma lista é salva em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/data/contacts.db</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude mostrar o resumo dos contatos importados.</p>
+          <button class="btn-complete pending" id="complete-7" onclick="markComplete(7)">
+            <span>✓</span> Contatos importados
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(8)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 8 ─── -->
+      <div class="etapa-panel" id="panel-8">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 8 de 10</span>
+            <span class="etapa-status-badge pending" id="status-8">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Configurar Disparos</h1>
+          <p class="etapa-sub">O sistema de disparo envia mensagens para sua lista com proteção automática contra bloqueio. Você sempre revisa antes de enviar qualquer coisa.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Proteção automática contra bloqueio</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">🛡️</div><div class="check-text"><strong>Máximo 30 mensagens por hora</strong> — ritmo seguro para evitar banimento</div></div>
+          <div class="check-item"><div class="check-icon ok">🛡️</div><div class="check-text"><strong>Máximo 150 mensagens por dia</strong> — limite diário para operação saudável</div></div>
+          <div class="check-item"><div class="check-icon ok">🛡️</div><div class="check-text"><strong>90 segundos entre mensagens</strong> — intervalo mínimo entre envios</div></div>
+          <div class="check-item"><div class="check-icon ok">🛡️</div><div class="check-text"><strong>Deduplicação automática</strong> — nunca envia a mesma mensagem duas vezes para o mesmo contato</div></div>
+        </div>
+
+        <div class="section-title" style="margin-top:24px">Como usar o dispatcher</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Dry-run obrigatório antes de enviar</h4>
+              <p>Sempre rode um teste primeiro. O dry-run mostra exatamente o que seria enviado — sem disparar nada de verdade.</p>
+              <div class="code-block">
+                <div class="code-header"><span class="code-label">exemplo de dry-run</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre>~/.operacao-ia/scripts/enviar.sh \
+  --message <span class="arg">"Olá {nome}, tudo bem?"</span> \
+  --dry-run</pre></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Depois de revisar, dispare de verdade</h4>
+              <p>Remova o <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">--dry-run</code> para enviar:</p>
+              <div class="code-block">
+                <div class="code-header"><span class="code-label">disparo real</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre>~/.operacao-ia/scripts/enviar.sh \
+  --message <span class="arg">"Olá {nome}, tudo bem?"</span></pre></div>
+              </div>
+              <div class="warn">⚠️ Sempre revise o dry-run antes de enviar. O {nome} é substituído automaticamente pelo nome do contato.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que o dispatcher foi instalado.</p>
+          <button class="btn-complete pending" id="complete-8" onclick="markComplete(8)">
+            <span>✓</span> Disparos configurados
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(9)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 9 ─── -->
+      <div class="etapa-panel" id="panel-9">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 9 de 10</span>
+            <span class="etapa-status-badge pending" id="status-9">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Ativar o Monitor Diário</h1>
+          <p class="etapa-sub">O monitor verifica automaticamente se todos os serviços estão funcionando e te envia um relatório no próprio WhatsApp todo dia às 8h da manhã.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o monitor verifica</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">📡</div><div class="check-text"><strong>WhatsApp conectado</strong> — verifica se a instância está ativa</div></div>
+          <div class="check-item"><div class="check-icon ok">📧</div><div class="check-text"><strong>Email funcionando</strong> — teste silencioso de envio</div></div>
+          <div class="check-item"><div class="check-icon ok">🤖</div><div class="check-text"><strong>Agente IA rodando</strong> — verifica se o processo está ativo</div></div>
+          <div class="check-item"><div class="check-icon ok">📊</div><div class="check-text"><strong>Relatório HTML</strong> — salvo em ~/.operacao-ia/logs/ com histórico</div></div>
+        </div>
+
+        <div class="section-title" style="margin-top:24px">Instalação automática</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>O Claude instala o LaunchAgent automaticamente</h4>
+              <p>No macOS, o monitor é registrado como um serviço que inicia junto com o sistema operacional. No Ubuntu, via cron.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Primeiro health check imediato</h4>
+              <p>O Claude vai perguntar se você quer rodar o monitor agora para ver o status de tudo que foi configurado.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o monitor estiver instalado e o primeiro health check mostrar tudo verde.</p>
+          <button class="btn-complete pending" id="complete-9" onclick="markComplete(9)">
+            <span>✓</span> Monitor ativado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(10)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── ETAPA 10 ─── -->
+      <div class="etapa-panel" id="panel-10">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 10 de 10</span>
+            <span class="etapa-status-badge pending" id="status-10">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Teste Final e Operação Pronta</h1>
+          <p class="etapa-sub">Último passo! O Claude vai guiar você pelo primeiro teste de disparo e confirmar que a Operação IA está completamente funcional.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que acontece nesta etapa</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Resumo de tudo que foi configurado</h4>
+              <p>O Claude mostra um painel completo com status de cada componente: WhatsApp, Email, Agente IA, Contatos, Dispatcher e Monitor.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Primeiro disparo guiado (dry-run)</h4>
+              <p>O Claude monta o comando de teste para você ver como vai ficar a mensagem antes do primeiro envio real.</p>
+              <div class="code-block">
+                <div class="code-header"><span class="code-label">exemplo do primeiro teste</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre>~/.operacao-ia/scripts/enviar.sh \
+  --message <span class="arg">"Oi {nome}, tudo bem? Passando para avisar que..."</span> \
+  --dry-run</pre></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Operação IA pronta</h4>
+              <p>A partir de agora, sua operação funciona de forma autônoma. O agente responde leads, o monitor avisa se algo der errado, e você dispara quando quiser.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-box" id="finalSummary">
+          <h3>✅ Checklist da Operação IA Completa</h3>
+          <div class="summary-row"><span class="icon">📱</span><span class="label">WhatsApp conectado</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">📧</span><span class="label">Email configurado (Resend)</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">🤖</span><span class="label">Agente IA BANT ativo</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">👥</span><span class="label">Contatos importados</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">🚀</span><span class="label">Sistema de disparos com rate limiter</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">📊</span><span class="label">Monitor diário às 8h</span><span class="val">✓</span></div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">🎉 Parabéns! Marque como concluída quando o teste final rodar sem erros.</p>
+          <button class="btn-complete pending" id="complete-10" onclick="markComplete(10)">
+            <span>🎉</span> Setup completo! Operação IA no ar
+          </button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//   CONFIG
+// ══════════════════════════════════════════
+const AUTH_URL = 'https://pnfvlszwlumetdjsuktj.supabase.co/functions/v1/check-zxcontrol-access'
+
+const ETAPAS = [
+  { id: 1, title: 'Instalar Pré-requisitos' },
+  { id: 2, title: 'Primeiro Acesso' },
+  { id: 3, title: 'Configurar Ambiente' },
+  { id: 4, title: 'Conectar WhatsApp' },
+  { id: 5, title: 'Configurar Email' },
+  { id: 6, title: 'Ativar Agente IA' },
+  { id: 7, title: 'Importar Contatos' },
+  { id: 8, title: 'Configurar Disparos' },
+  { id: 9, title: 'Monitor Diário' },
+  { id: 10, title: 'Teste Final' },
+]
+
+// ══════════════════════════════════════════
+//   STATE
+// ══════════════════════════════════════════
+function getState() {
+  try {
+    return JSON.parse(localStorage.getItem('zxcontrol_s1') || '{}')
+  } catch { return {} }
+}
+function saveState(s) {
+  localStorage.setItem('zxcontrol_s1', JSON.stringify(s))
+}
+function getCompleted() {
+  return getState().completed || []
+}
+function getCurrentEtapa() {
+  return getState().current || 1
+}
+function getStudent() {
+  return getState().student || {}
+}
+
+// ══════════════════════════════════════════
+//   LOGIN
+// ══════════════════════════════════════════
+function togglePass() {
+  const input = document.getElementById('password')
+  const icon = document.getElementById('eyeIcon')
+  if (input.type === 'password') {
+    input.type = 'text'
+    icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+  } else {
+    input.type = 'password'
+    icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault()
+  const email = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value
+  const errorMsg = document.getElementById('errorMsg')
+  const btn = document.getElementById('loginBtn')
+
+  errorMsg.classList.remove('show')
+
+  if (!email || !password) {
+    document.getElementById('errorText').textContent = 'Preencha email e senha.'
+    errorMsg.classList.add('show')
+    return
+  }
+
+  btn.classList.add('loading')
+
+  try {
+    const res = await fetch(AUTH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
+    const data = await res.json()
+
+    if (!res.ok || !data.success) {
+      btn.classList.remove('loading')
+      document.getElementById('errorText').textContent = data.error || 'Email ou senha incorretos.'
+      errorMsg.classList.add('show')
+      return
+    }
+
+    // Save student info and open members area
+    const state = getState()
+    state.student = { name: data.name, email: data.email }
+    state.loggedIn = true
+    saveState(state)
+    openMembersArea(data.name)
+
+  } catch (err) {
+    btn.classList.remove('loading')
+    document.getElementById('errorText').textContent = 'Erro de conexão. Tente novamente.'
+    errorMsg.classList.add('show')
+  }
+}
+
+// ══════════════════════════════════════════
+//   MEMBERS AREA
+// ══════════════════════════════════════════
+function openMembersArea(name) {
+  document.getElementById('loginScreen').style.display = 'none'
+  const area = document.getElementById('membersArea')
+  area.classList.add('active')
+
+  // Show first name only
+  const firstName = (name || 'Aluno').split(' ')[0]
+  document.getElementById('studentName').textContent = firstName
+
+  buildSidebar()
+  goToEtapa(getCurrentEtapa())
+  updateProgress()
+}
+
+function handleLogout() {
+  const state = getState()
+  delete state.loggedIn
+  delete state.student
+  saveState(state)
+  location.reload()
+}
+
+function buildSidebar() {
+  const completed = getCompleted()
+  const current = getCurrentEtapa()
+  const list = document.getElementById('etapaList')
+  list.innerHTML = ''
+
+  ETAPAS.forEach(({ id, title }) => {
+    const isDone = completed.includes(id)
+    const isActive = id === current
+    const div = document.createElement('div')
+    div.className = `etapa-item${isDone ? ' completed' : ''}${isActive ? ' active' : ''}`
+    div.id = `sidebar-item-${id}`
+    div.onclick = () => goToEtapa(id)
+
+    const tag = isDone ? 'done' : isActive ? 'active' : 'pending'
+    const tagLabel = isDone ? 'Concluída' : isActive ? 'Em andamento' : 'Pendente'
+
+    div.innerHTML = `
+      <div class="etapa-num${isDone ? ' check' : ''}">${isDone ? '' : id}</div>
+      <div class="etapa-item-body">
+        <div class="etapa-item-title">${title}</div>
+        <span class="etapa-item-tag ${tag}">${tagLabel}</span>
+      </div>
+    `
+    list.appendChild(div)
+  })
+}
+
+function goToEtapa(id) {
+  // Hide all panels
+  document.querySelectorAll('.etapa-panel').forEach(p => p.classList.remove('active'))
+  document.getElementById(`panel-${id}`).classList.add('active')
+
+  // Update sidebar
+  document.querySelectorAll('.etapa-item').forEach((item, i) => {
+    item.classList.toggle('active', (i + 1) === id)
+    const tag = item.querySelector('.etapa-item-tag')
+    const completed = getCompleted()
+    if (completed.includes(i + 1)) {
+      tag.className = 'etapa-item-tag done'
+      tag.textContent = 'Concluída'
+    } else if (i + 1 === id) {
+      tag.className = 'etapa-item-tag active'
+      tag.textContent = 'Em andamento'
+    } else {
+      tag.className = 'etapa-item-tag pending'
+      tag.textContent = 'Pendente'
+    }
+  })
+
+  // Save current
+  const state = getState()
+  state.current = id
+  saveState(state)
+
+  // Scroll to top of content
+  document.querySelector('.content-area').scrollTop = 0
+  window.scrollTo(0, 0)
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open')
+    document.getElementById('sidebarOverlay').classList.remove('show')
+  }
+}
+
+function markComplete(id) {
+  const state = getState()
+  if (!state.completed) state.completed = []
+  if (!state.completed.includes(id)) state.completed.push(id)
+  saveState(state)
+
+  // Update button
+  const btn = document.getElementById(`complete-${id}`)
+  btn.className = 'btn-complete done'
+  btn.innerHTML = '<span>✓</span> Etapa concluída!'
+  btn.disabled = true
+
+  // Update status badge
+  const statusBadge = document.getElementById(`status-${id}`)
+  statusBadge.className = 'etapa-status-badge done'
+  statusBadge.textContent = 'Concluída'
+
+  updateProgress()
+  buildSidebar()
+
+  // Auto-advance to next etapa if not last
+  if (id < 10) {
+    setTimeout(() => goToEtapa(id + 1), 800)
+  }
+}
+
+function updateProgress() {
+  const completed = getCompleted()
+  const count = completed.length
+  const pct = (count / 10) * 100
+
+  document.getElementById('completedCount').textContent = count
+  document.getElementById('progressBarFill').style.width = pct + '%'
+  document.getElementById('miniProgressFill').style.width = pct + '%'
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar')
+  const overlay = document.getElementById('sidebarOverlay')
+  sidebar.classList.toggle('open')
+  overlay.classList.toggle('show')
+}
+
+// ══════════════════════════════════════════
+//   COPY CODE
+// ══════════════════════════════════════════
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre')
+  const text = pre.innerText || pre.textContent
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado!'
+    btn.classList.add('copied')
+    setTimeout(() => {
+      btn.textContent = 'Copiar'
+      btn.classList.remove('copied')
+    }, 2000)
+  })
+}
+
+// ══════════════════════════════════════════
+//   INIT
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  const state = getState()
+  if (state.loggedIn && state.student) {
+    openMembersArea(state.student.name)
+  }
+
+  // Restore completed button states
+  const completed = getCompleted()
+  completed.forEach(id => {
+    const btn = document.getElementById(`complete-${id}`)
+    if (btn) {
+      btn.className = 'btn-complete done'
+      btn.innerHTML = '<span>✓</span> Etapa concluída!'
+      btn.disabled = true
+    }
+    const statusBadge = document.getElementById(`status-${id}`)
+    if (statusBadge) {
+      statusBadge.className = 'etapa-status-badge done'
+      statusBadge.textContent = 'Concluída'
+    }
+  })
+
+  document.getElementById('password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('loginForm').requestSubmit()
+  })
+})
+</script>
+
+</body>
+</html>
