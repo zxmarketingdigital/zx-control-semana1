@@ -118,7 +118,7 @@ WhatsApp + Email já estão conectados."
 
 ---
 
-## Etapa 5 — Confirmação e Próximos Passos
+## Etapa 5 — Confirmação da Fundação
 
 `[█████░░░░░] Etapa 5 de 10`
 
@@ -136,7 +136,7 @@ O que foi feito nesta sessão:
 ✅ Email conectado
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Próxima sessão — o que vem a seguir:
+Agora vamos continuar com a automação completa:
 
   Etapa 6: Ativar o Agente IA
   Etapa 7: Importar seus contatos
@@ -264,6 +264,25 @@ Depois encerre com uma instrução prática de primeiro teste:
 
 E explique em linguagem simples:
 "Esse comando faz um teste sem enviar nada de verdade. Ele serve para você revisar tudo antes do primeiro disparo real."
+
+Depois mostre exatamente esta mensagem final:
+
+```
+✅ Operação IA pronta!
+
+Resumo final:
+- WhatsApp: [provider + status]
+- Email: OK
+- Agente IA: [provider configurado]
+- Contatos: importados
+- Disparos: prontos com dry-run
+- Monitor: ativo
+
+Primeiro teste recomendado:
+~/.operacao-ia/scripts/enviar.sh --message "Oi {nome}, passando para te avisar..." --dry-run
+
+Esse teste nao envia nada de verdade. Ele serve para voce revisar a mensagem e a lista antes do primeiro disparo real.
+```
 
 ---
 

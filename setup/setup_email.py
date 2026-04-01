@@ -4,6 +4,7 @@ Configura o envio de email via Resend e executa um teste simples.
 """
 
 import json
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -32,18 +33,26 @@ def save_config(config):
     )
 
 
-def ask(prompt):
-    try:
-        value = input(f"{prompt}: ").strip()
-    except (EOFError, KeyboardInterrupt):
-        print()
-        print("Setup cancelado.")
-        sys.exit(1)
+def ask_non_empty(prompt):
+    while True:
+        try:
+            value = input(f"{prompt}: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            print("Setup cancelado.")
+            sys.exit(1)
 
-    if not value:
-        print("❌ Este campo nao pode ficar em branco.")
-        sys.exit(1)
-    return value
+        if value:
+            return value
+        print("❌ Este campo nao pode ficar em branco. Tente novamente.")
+
+
+def ask_email(prompt):
+    while True:
+        value = ask_non_empty(prompt)
+        if re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", value):
+            return value
+        print("❌ Email invalido. Digite novamente.")
 
 
 def send_test_email(api_key, recipient_email):
@@ -82,8 +91,8 @@ def main():
 
     config = load_config()
 
-    api_key = ask("Digite sua RESEND_API_KEY")
-    student_email = ask("Digite o email onde voce quer receber o teste")
+    api_key = ask_non_empty("Digite sua RESEND_API_KEY")
+    student_email = ask_email("Digite o email onde voce quer receber o teste")
 
     try:
         status_code, payload = send_test_email(api_key, student_email)

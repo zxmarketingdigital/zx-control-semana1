@@ -28,6 +28,22 @@ def save_config(config):
     CONFIG_PATH.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def ask_student_phone():
+    while True:
+        try:
+            phone = input("Digite seu numero para receber o resumo diario (com DDD): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            raise SystemExit("Setup cancelado.")
+
+        digits = "".join(ch for ch in phone if ch.isdigit())
+        if not digits.startswith("55"):
+            digits = "55" + digits
+        if len(digits) >= 12:
+            return digits
+        print("Numero invalido. Digite com DDD. Exemplo: 85999998888")
+
+
 def deploy_file(source, target):
     text = source.read_text(encoding="utf-8")
     lines = text.splitlines()
@@ -45,11 +61,7 @@ def main():
 
     config = load_config()
     if not config.get("student_phone"):
-        phone = input("Digite seu numero para receber o resumo diario (com DDD): ").strip()
-        digits = "".join(ch for ch in phone if ch.isdigit())
-        if not digits.startswith("55"):
-            digits = "55" + digits
-        config["student_phone"] = digits
+        config["student_phone"] = ask_student_phone()
         save_config(config)
 
     SCRIPTS_DIR.mkdir(parents=True, exist_ok=True)

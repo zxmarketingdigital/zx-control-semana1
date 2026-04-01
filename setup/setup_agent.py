@@ -31,12 +31,20 @@ def save_config(config):
 
 
 def ask(prompt, allowed=None):
-    value = input(f"{prompt}: ").strip()
-    if not value:
-        raise SystemExit("Campo obrigatorio nao informado.")
-    if allowed and value not in allowed:
-        raise SystemExit(f"Valor invalido. Use: {', '.join(allowed)}")
-    return value
+    while True:
+        try:
+            value = input(f"{prompt}: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            raise SystemExit("Setup cancelado.")
+
+        if not value:
+            print("Campo obrigatorio. Tente novamente.")
+            continue
+        if allowed and value not in allowed:
+            print(f"Valor invalido. Use: {', '.join(allowed)}")
+            continue
+        return value
 
 
 def call_openai_test(api_key):

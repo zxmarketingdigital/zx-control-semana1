@@ -77,9 +77,24 @@ zx-control-semana1/
 ├── README.md               # Este arquivo
 ├── setup/
 │   ├── check_prerequisites.py   # Verifica Python, Node, Git, Docker
-│   └── setup_environment.py     # Cria ~/.operacao-ia/ e config inicial
+│   ├── setup_environment.py     # Cria ~/.operacao-ia/ e config inicial
+│   ├── install_evolution.py     # Instala Evolution API local
+│   ├── connect_whatsapp.py      # Conecta o WhatsApp via QR Code
+│   ├── setup_zapi.py            # Fallback Z-API para 8GB RAM
+│   ├── setup_email.py           # Configura Resend e envia teste
+│   ├── setup_agent.py           # Configura o agente IA BANT
+│   ├── import_contacts.py       # Importa contatos por texto ou CSV
+│   ├── setup_dispatcher.py      # Prepara o dispatcher de disparos
+│   └── setup_monitor.py         # Ativa o monitor diario
+├── scripts/
+│   ├── agent_bant.py            # Fonte do agente deployado em ~/.operacao-ia/scripts/
+│   ├── dispatcher.py            # Fonte do dispatcher deployado
+│   └── monitor.py               # Fonte do monitor deployado
 ├── templates/
-│   └── claude_md_template.md    # Template para CLAUDE.md personalizado do aluno
+│   ├── claude_md_template.md    # Template para CLAUDE.md personalizado do aluno
+│   ├── rate_limiter_template.py # Rate limiter local em SQLite
+│   ├── dispatch_log_template.py # Deduplicacao de disparos em SQLite
+│   └── whatsapp_api_template.py # Abstracao Evolution vs Z-API
 └── docs/
     └── prerequisitos.md         # Guia de instalação por sistema operacional
 ```
