@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZX Control — Semana 1: Setup Operação IA</title>
+<title>ZX Control — Área de Membros</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -534,6 +534,165 @@ body {
   .etapa-title { font-size: 1.4rem; }
   .provider-grid { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════
+   WEEK SELECTOR
+═══════════════════════════════════════ */
+#weekSelector {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+#weekSelector.active { display: flex; }
+.selector-top {
+  height: 60px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  position: sticky; top: 0; z-index: 100;
+}
+.selector-top .nav-brand { display: flex; align-items: center; gap: 10px; }
+.selector-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+.selector-wrap { width: 100%; max-width: 1100px; }
+.selector-title {
+  font-size: 2rem; font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.selector-sub {
+  font-size: 0.95rem; color: var(--text2);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 24px;
+}
+.week-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.week-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.4), transparent);
+}
+.week-card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 12px 40px rgba(139,92,246,0.15);
+  transform: translateY(-2px);
+}
+.week-card-progress {
+  position: absolute; top: 20px; right: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; font-weight: 600;
+  padding: 3px 10px; border-radius: 100px;
+  background: rgba(16,185,129,0.1); color: var(--green);
+  border: 1px solid rgba(16,185,129,0.25);
+}
+.week-card-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 8px;
+}
+.week-card-title {
+  font-size: 1.6rem; font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.week-card-tagline {
+  font-size: 0.88rem; color: var(--text2);
+  margin-bottom: 16px;
+}
+.week-card-thesis {
+  font-size: 0.88rem; color: var(--text2);
+  line-height: 1.65;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border-left: 2px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 20px;
+}
+.benefit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: var(--text2);
+}
+.benefit-item .b-icon { flex-shrink: 0; font-size: 1rem; line-height: 1.6; }
+.benefit-item .b-name { color: var(--text); font-weight: 600; }
+.benefit-item .b-desc { color: var(--text3); font-size: 0.8rem; }
+.week-card-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--text3);
+  margin-bottom: 20px;
+}
+.week-card-cta {
+  width: 100%; padding: 14px;
+  background: var(--grad); border: none; border-radius: 10px;
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+.week-card-cta:hover { opacity: 0.9; box-shadow: 0 8px 32px rgba(99,102,241,0.35); }
+.week-card-cta:active { transform: scale(0.98); }
+.week-card.s2 .week-card-cta {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1, #8b5cf6);
+}
+.week-card.s3 .week-card-cta {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+.week-card.s4 .week-card-cta {
+  background: linear-gradient(135deg, #06b6d4, #2563eb);
+}
+.week-card.s4::before {
+  background: linear-gradient(90deg, #06b6d4, #2563eb);
+}
+.btn-switch-week {
+  background: none; border: none;
+  color: var(--text2);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem; font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px; border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+  margin-right: 8px;
+}
+.btn-switch-week:hover { color: var(--purple); background: rgba(139,92,246,0.08); }
+@media (max-width: 768px) {
+  .week-grid { grid-template-columns: 1fr; }
+  .selector-title { font-size: 1.5rem; }
+  .selector-body { padding: 40px 16px; }
+}
 </style>
 </head>
 <body>
@@ -549,7 +708,7 @@ body {
     <div class="logo-area">
       <div class="logo-icon">⚡</div>
       <div class="logo-name">ZX LAB · ZX Control</div>
-      <div class="logo-title">Semana 1<br><span>Setup Operação IA</span></div>
+      <div class="logo-title">Área de Membros<br><span>ZX Control</span></div>
       <div class="logo-sub">Acesse sua área de aluno</div>
     </div>
 
@@ -586,7 +745,117 @@ body {
       </form>
     </div>
 
-    <div class="bottom-badge">ZX CONTROL — SEMANA 1 · v1.0 · powered by ZX LAB</div>
+    <div class="bottom-badge">ZX CONTROL — ÁREA DE MEMBROS · v2.0 · powered by ZX LAB</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     WEEK SELECTOR
+══════════════════════════════════════════ -->
+<div id="weekSelector">
+  <nav class="selector-top">
+    <div class="nav-brand">
+      <div class="nav-brand-icon">⚡</div>
+      <div>
+        <div class="nav-brand-name">ZX Control</div>
+        <div class="nav-brand-sub">Área de Membros</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="nav-student">Olá, <strong id="selectorStudentName">Aluno</strong></div>
+      <button class="btn-logout" onclick="handleLogout()">Sair</button>
+    </div>
+  </nav>
+
+  <div class="selector-body">
+    <div class="selector-wrap">
+      <h1 class="selector-title">Escolha por onde começar</h1>
+      <p class="selector-sub">Sem trava. Você decide a ordem.</p>
+
+      <div class="week-grid">
+        <!-- Semana 1 -->
+        <div class="week-card" onclick="openWeek(1)">
+          <div class="week-card-progress" id="s1Progress" style="display:none"></div>
+          <div class="week-card-badge">Setup 1</div>
+          <div class="week-card-title">Fundação Operacional</div>
+          <div class="week-card-tagline">Setup completo em ~1 hora</div>
+          <div class="week-card-thesis">Ao final: WhatsApp + Email conectados, agente IA respondendo leads, disparos programados rodando, monitor diário ativo.</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">WhatsApp conectado</span> — <span class="b-desc">seu número respondendo leads via Evolution API (grátis) ou Z-API</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email automatizado</span> — <span class="b-desc">integração Resend com plano gratuito 3.000 emails/mês</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente IA BANT</span> — <span class="b-desc">qualifica leads automaticamente (OpenAI, Gemini ou Claude)</span></div></div>
+            <div class="benefit-item"><span class="b-icon">👥</span><div><span class="b-name">Base de contatos</span> — <span class="b-desc">importa sua lista e organiza em banco local</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🚀</span><div><span class="b-name">Disparos seguros</span> — <span class="b-desc">rate limiter (30/h, 150/dia) e dry-run obrigatório</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Monitor diário</span> — <span class="b-desc">relatório de saúde às 8h, sem você precisar lembrar</span></div></div>
+          </div>
+          <div class="week-card-meta">⏱ ~1 hora · 10 etapas</div>
+          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(1)">Começar Setup 1 →</button>
+        </div>
+
+        <!-- Semana 2 -->
+        <div class="week-card s2" onclick="openWeek(2)">
+          <div class="week-card-progress" id="s2Progress" style="display:none"></div>
+          <div class="week-card-badge">Setup 2</div>
+          <div class="week-card-title">Operação Robusta</div>
+          <div class="week-card-tagline">Profissionaliza sua operação em ~1h15</div>
+          <div class="week-card-thesis">Ao final: sua operação vira profissional — economiza 60-90% em tokens, se monitora sozinha, roda na nuvem e você publica seu primeiro mini-CRM online.</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="b-icon">🎯</span><div><span class="b-name">Mission Control</span> — <span class="b-desc">painel único com tudo da sua operação num HTML que você abre no browser</span></div></div>
+            <div class="benefit-item"><span class="b-icon">💰</span><div><span class="b-name">RTK Token Killer</span> — <span class="b-desc">60-90% menos tokens Claude Code em operações repetitivas</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🛠</span><div><span class="b-name">Pack de skills pro</span> — <span class="b-desc">/status, /healthcheck, /fix, /dedup, /preflight, /harvest, /encerrar</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🛡</span><div><span class="b-name">Agente Guardião + Heartbeat</span> — <span class="b-desc">detecta queda e te avisa no WhatsApp em minutos</span></div></div>
+            <div class="benefit-item"><span class="b-icon">☁️</span><div><span class="b-name">Supabase + Auth</span> — <span class="b-desc">banco de dados na nuvem com login pronto, grátis</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📦</span><div><span class="b-name">Contatos na nuvem</span> — <span class="b-desc">migra sua base da Sem1 (ou cola CSV) direto pro Supabase</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🌐</span><div><span class="b-name">Mini-CRM publicado</span> — <span class="b-desc">deploy real no Cloudflare Pages com login, listagem e CRUD</span></div></div>
+            <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Checklist final</span> — <span class="b-desc">Mission Control populado com links e status de cada módulo</span></div></div>
+          </div>
+          <div class="week-card-meta">⏱ ~1h15 · 8 etapas</div>
+          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(2)">Começar Setup 2 →</button>
+        </div>
+
+        <!-- Semana 3 -->
+        <div class="week-card s3" onclick="openWeek(3)">
+          <div class="week-card-progress" id="s3Progress" style="display:none"></div>
+          <div class="week-card-badge">Setup 3</div>
+          <div class="week-card-title">Prospecção Automatizada</div>
+          <div class="week-card-tagline">Máquina de prospecção em ~1h30</div>
+          <div class="week-card-thesis">Ao final: APIFY buscando leads do seu nicho automaticamente, dashboard com score e temperatura de cada lead, disparos de WhatsApp (30/dia) e Email (200/dia) com sequência de 7 dias, tudo rodando sozinho às 8h toda manhã.</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="b-icon">🔍</span><div><span class="b-name">APIFY buscando leads</span> — <span class="b-desc">encontra empresas do seu nicho no Google Maps automaticamente</span></div></div>
+            <div class="benefit-item"><span class="b-icon">👤</span><div><span class="b-name">Perfil de prospecção</span> — <span class="b-desc">define exatamente quem você quer como cliente (nicho, cidade, serviço)</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Dashboard de leads</span> — <span class="b-desc">vê score, temperatura e potencial de cada lead num painel dark</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">Disparos WhatsApp seguros</span> — <span class="b-desc">30/dia com rate limiter anti-bloqueio e delay randomizado</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email em escala</span> — <span class="b-desc">200/dia com sequência personalizada por segmento</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Copy de 7 dias</span> — <span class="b-desc">mensagens que parecem escritas a mão, geradas automaticamente por segmento</span></div></div>
+            <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Motor de campanhas</span> — <span class="b-desc">decide quando e para quem enviar, respeitando limites e priorizando por score</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🕐</span><div><span class="b-name">Automação diária</span> — <span class="b-desc">roda às 8h toda manhã sem você fazer nada — busca + disparo + dashboard</span></div></div>
+          </div>
+          <div class="week-card-meta">⏱ ~1h30 · 10 etapas</div>
+          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(3)">Começar Setup 3 →</button>
+        </div>
+
+        <!-- Semana 4 -->
+        <div class="week-card s4" onclick="openWeek(4)">
+          <div class="week-card-progress" id="s4Progress" style="display:none"></div>
+          <div class="week-card-badge">Setup 4</div>
+          <div class="week-card-title">Inteligência & Escala</div>
+          <div class="week-card-tagline">Segundo cérebro + Instagram no automático em ~1h30</div>
+          <div class="week-card-thesis">Ao final: Codex revisando seus projetos automaticamente, memória unificada entre Desktop e Terminal, skills sincronizadas, Graphify mapeando cada projeto, Instagram respondendo sozinho e Mission Control 2.0 com métricas de tudo.</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Codex Revisor</span> — <span class="b-desc">revisa seus projetos automaticamente e economiza 60-90% de tokens em revisão</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🧠</span><div><span class="b-name">Memória unificada</span> — <span class="b-desc">Claude Desktop e Terminal compartilhando a mesma memória via symlink</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Skills + MCPs em Sync</span> — <span class="b-desc">skills sincronizadas via git entre máquinas, sem perder configurações</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🕸</span><div><span class="b-name">Graphify — Segundo Cérebro</span> — <span class="b-desc">knowledge graph de cada projeto para contexto instantâneo</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📸</span><div><span class="b-name">Instagram Auto-Responder</span> — <span class="b-desc">comentários e DMs respondidos automaticamente com keywords e rate limit</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Funil IG automatizado</span> — <span class="b-desc">comentário → DM → lead qualificado sem intervenção humana</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 2.0</span> — <span class="b-desc">widgets de Codex, Graphify e IG no painel de controle</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Log automático de sessão</span> — <span class="b-desc">feedback e dados enviados ao Supabase para evolução do produto</span></div></div>
+          </div>
+          <div class="week-card-meta">⏱ ~1h30 · 10 etapas</div>
+          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(4)">Começar Setup 4 →</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -601,10 +870,11 @@ body {
       <button class="mobile-menu-btn" onclick="toggleSidebar()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
+      <button class="btn-switch-week" onclick="backToSelector()">← Trocar setup</button>
       <div class="nav-brand-icon">⚡</div>
       <div>
         <div class="nav-brand-name">ZX Control</div>
-        <div class="nav-brand-sub">Semana 1 — Setup Operação IA</div>
+        <div class="nav-brand-sub" id="weekSubtitle">Setup 1 — Fundação Operacional</div>
       </div>
     </div>
     <div class="nav-right">
@@ -628,7 +898,7 @@ body {
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-label">Progresso do Setup</div>
-        <div class="sidebar-progress"><span id="completedCount">0</span> de 10 etapas concluídas</div>
+        <div class="sidebar-progress"><span id="completedCount">0</span> de <span id="totalCount">10</span> etapas concluídas</div>
         <div class="progress-mini"><div class="progress-mini-fill" id="miniProgressFill" style="width:0%"></div></div>
       </div>
       <div class="etapa-list" id="etapaList">
@@ -638,6 +908,54 @@ body {
 
     <!-- Content -->
     <main class="content-area">
+
+      <!-- ─── AULAS ─── -->
+      <div class="etapa-panel" id="panel-0">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge" style="background:rgba(34,211,238,0.1);color:var(--cyan);border-color:rgba(34,211,238,0.3)">Aulas</span>
+          </div>
+          <h1 class="etapa-title">Aulas — Setup 1</h1>
+          <p class="etapa-sub">Assista as aulas gravadas do Setup 1 antes de começar o setup. Cada aula complementa as etapas práticas que você vai executar a seguir.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que você vai construir nesta semana</div>
+        <div class="benefit-list" style="margin-bottom:32px">
+          <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">WhatsApp conectado</span> — <span class="b-desc">seu número respondendo leads via Evolution API (grátis) ou Z-API</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email automatizado</span> — <span class="b-desc">integração Resend com plano gratuito 3.000 emails/mês</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente IA BANT</span> — <span class="b-desc">qualifica leads automaticamente (OpenAI, Gemini ou Claude)</span></div></div>
+          <div class="benefit-item"><span class="b-icon">👥</span><div><span class="b-name">Base de contatos</span> — <span class="b-desc">importa sua lista e organiza em banco local</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🚀</span><div><span class="b-name">Disparos seguros</span> — <span class="b-desc">rate limiter (30/h, 150/dia) e dry-run obrigatório</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Monitor diário</span> — <span class="b-desc">relatório de saúde às 8h, sem você precisar lembrar</span></div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <!-- Aula 1 -->
+        <div class="section-title">Aula 1 — Instalação CLI</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/091e9e77-b2fc-462e-bf50-e19c11ae3e60?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <!-- Aula 2 -->
+        <div class="section-title">Aula 2 — Gerenciamento de Modelos de IA</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/a924ead3-048b-4a73-985e-3613eeab4c84?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <!-- Aula 3 -->
+        <div class="section-title">Aula 3 — Setup 1 ZX Control</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/08b91dc6-e64d-43a9-bb45-a5ff8a002dcc?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="btn-complete pending" onclick="goToEtapa(1)" style="cursor:pointer">
+            <span>→</span> Começar o Setup
+          </button>
+        </div>
+      </div>
 
       <!-- ─── ETAPA 1 ─── -->
       <div class="etapa-panel" id="panel-1">
@@ -1208,6 +1526,1602 @@ body {
         </div>
       </div>
 
+      <!-- ══════════════════════════════════════════
+           SEMANA 2 PANELS
+      ══════════════════════════════════════════ -->
+
+      <!-- ─── S2 AULAS ─── -->
+      <div class="etapa-panel" id="panel-s2-0">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge" style="background:rgba(34,211,238,0.1);color:var(--cyan);border-color:rgba(34,211,238,0.3)">Aulas</span>
+            <span class="etapa-badge" style="background:rgba(14,165,233,0.1);color:#38bdf8;border-color:rgba(14,165,233,0.3)">Setup 2</span>
+          </div>
+          <h1 class="etapa-title">Aulas — Setup 2</h1>
+          <p class="etapa-sub">Assista a gravação da Mentoria com o passo a passo completo do Setup 2 antes de começar.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <!-- Mentoria Setup 2 -->
+        <div class="section-title">Mentoria — Passo a Passo do Setup 2</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/446a344d-1761-4505-a45e-d5246885fef0?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <div class="section-title">O que você vai construir nesta semana</div>
+        <div class="benefit-list" style="margin-bottom:32px">
+          <div class="benefit-item"><span class="b-icon">🎯</span><div><span class="b-name">Mission Control</span> — <span class="b-desc">painel único com tudo da sua operação num HTML que você abre no browser</span></div></div>
+          <div class="benefit-item"><span class="b-icon">💰</span><div><span class="b-name">RTK Token Killer</span> — <span class="b-desc">60-90% menos tokens Claude Code em operações repetitivas</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🛠</span><div><span class="b-name">Pack de skills pro</span> — <span class="b-desc">/status, /healthcheck, /fix, /dedup, /preflight, /harvest, /encerrar</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🛡</span><div><span class="b-name">Agente Guardião + Heartbeat</span> — <span class="b-desc">detecta queda e te avisa no WhatsApp em minutos</span></div></div>
+          <div class="benefit-item"><span class="b-icon">☁️</span><div><span class="b-name">Supabase + Auth</span> — <span class="b-desc">banco de dados na nuvem com login pronto, grátis</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📦</span><div><span class="b-name">Contatos na nuvem</span> — <span class="b-desc">migra sua base da Sem1 (ou cola CSV) direto pro Supabase</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🌐</span><div><span class="b-name">Mini-CRM publicado</span> — <span class="b-desc">deploy real no Cloudflare Pages com login, listagem e CRUD</span></div></div>
+          <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Checklist final</span> — <span class="b-desc">Mission Control populado com links e status de cada módulo</span></div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="btn-complete pending" onclick="goToEtapa(1)" style="cursor:pointer">
+            <span>→</span> Começar o Setup
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 1 ─── -->
+      <div class="etapa-panel" id="panel-s2-1">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 1 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-1">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Primeiro Acesso — Setup 2</h1>
+          <p class="etapa-sub">Clone o repositório do Setup 2 e abra o Claude. A partir daí, o Claude conduz todo o setup — você não precisa digitar mais nenhum comando técnico.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Pré-requisitos do Setup 2</div>
+  <div class="check-list">
+    <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Claude Code CLI</strong> — instalado e autenticado (<code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">claude --version</code> deve funcionar)</div></div>
+    <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>GitHub CLI</strong> — para clonar o repositório (<code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">gh auth status</code> deve mostrar "Logged in")</div></div>
+    <div class="check-item"><div class="check-icon num">?</div><div class="check-text"><strong>Setup 1 concluído</strong> — recomendado, mas não obrigatório. Se não fez, o Claude cria o ambiente mínimo automaticamente.</div></div>
+  </div>
+  <div class="etapa-divider"></div>
+
+        <div class="section-title">O único comando que você precisa rodar</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-label">terminal — cole e pressione Enter</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">gh repo clone</span> <span class="arg">zxmarketingdigital/zx-control-semana2</span> <span class="arg">~/zx-control-semana2</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">cd</span> <span class="arg">~/zx-control-semana2</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">claude</span></pre></div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>O que acontece quando você rodar esse comando</h4>
+              <p>O GitHub CLI baixa o repositório, entra na pasta e abre o Claude Code. O Claude vai se apresentar e aguardar você dar o sinal para começar.</p>
+              <div class="tip">💡 Não tem o GitHub CLI? Instale com <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">brew install gh</code> (macOS) ou acesse <strong>cli.github.com</strong>.</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Digite INICIAR SETUP 2 para começar</h4>
+              <p>Quando o Claude aparecer e se apresentar, você escreve exatamente isso:</p>
+              <div class="code-block" style="margin-top:10px">
+                <div class="code-header"><span class="code-label">escreva no Claude</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre><span class="arg">INICIAR SETUP 2</span></pre></div>
+              </div>
+              <p style="margin-top:8px">O Claude faz tudo a partir daqui — você não precisa digitar mais nada.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Independente do Setup 1</h4>
+              <p>Se você pulou o Setup 1, o setup do Setup 2 cria o ambiente mínimo necessário automaticamente. Nada vai quebrar.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">4</div>
+            <div class="step-body">
+              <h4>O que o Claude faz automaticamente</h4>
+              <p>Ao receber o comando de início, o Claude executa uma série de verificações sem você precisar digitar mais nada:</p>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Verifica quais módulos do Setup 1 já estão instalados</div></div>
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Instala dependências faltantes automaticamente</div></div>
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Cria a estrutura de pastas do Setup 2</div></div>
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Pergunta suas credenciais uma vez e salva em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/config/config.json</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando digitar INICIAR SETUP 2 e o Claude começar o setup.</p>
+          <button class="btn-complete pending" id="complete-s2-1" onclick="markComplete(1)">
+            <span>✓</span> Claude aberto e setup iniciado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(2)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 2 ─── -->
+      <div class="etapa-panel" id="panel-s2-2">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 2 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-2">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Mission Control</h1>
+          <p class="etapa-sub">Um painel HTML gerado pelo Claude que centraliza tudo da sua operação — links, status, scripts e logs — num arquivo que você abre direto no browser.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o Mission Control inclui</div>
+  <div class="check-list" style="margin-bottom:24px">
+    <div class="check-item"><div class="check-icon ok">🔗</div><div class="check-text"><strong>Links dos serviços</strong> — WhatsApp, agente IA, email, Supabase — tudo com um clique</div></div>
+    <div class="check-item"><div class="check-icon ok">🟢</div><div class="check-text"><strong>Status visual</strong> — cards verdes/amarelos/vermelhos indicam se cada serviço está rodando</div></div>
+    <div class="check-item"><div class="check-icon ok">📋</div><div class="check-text"><strong>Últimas entradas de log</strong> — os últimos registros de cada script sem abrir o terminal</div></div>
+    <div class="check-item"><div class="check-icon ok">⚡</div><div class="check-text"><strong>Atalhos rápidos</strong> — botões para iniciar, parar ou reiniciar cada serviço com um clique</div></div>
+  </div>
+  <div class="etapa-divider"></div>
+
+  <div class="step-list">
+    <div class="step-row">
+      <div class="step-circle">1</div>
+      <div class="step-body">
+        <h4>Como o Claude gera o Mission Control</h4>
+        <p>O Claude analisa os serviços que você instalou e gera automaticamente um arquivo HTML em:</p>
+        <div class="code-block" style="margin-top:10px">
+          <div class="code-header"><span class="code-label">caminho do arquivo</span></div>
+          <div class="code-body"><pre><span class="arg">~/.zxlab-mission-control/dashboard.html</span></pre></div>
+        </div>
+        <p style="margin-top:8px">Cada módulo instalado (WhatsApp, agente IA, email, disparos) ganha um card próprio com status e links.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">2</div>
+      <div class="step-body">
+        <h4>Como abrir no browser</h4>
+        <p>Após o Claude confirmar a criação, abra o arquivo direto no browser:</p>
+        <div class="code-block" style="margin-top:10px">
+          <div class="code-header"><span class="code-label">terminal</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">open</span> <span class="arg">~/.zxlab-mission-control/dashboard.html</span></pre></div>
+        </div>
+        <div class="tip">💡 Adicione o arquivo como favorito no browser — assim você abre com um clique toda manhã sem precisar do terminal.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">3</div>
+      <div class="step-body">
+        <h4>Como personalizar</h4>
+        <p>O Mission Control é um HTML puro — você pode pedir ao Claude para adicionar novos cards, mudar cores ou incluir links de serviços externos. Basta dizer <em>"adicione um card para X no Mission Control"</em> em qualquer sessão Claude.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">4</div>
+      <div class="step-body">
+        <h4>Uso no dia a dia</h4>
+        <p>Toda manhã, antes de qualquer sessão Claude, abra o Mission Control para verificar se todos os serviços estão verdes. Se algum card estiver vermelho, acione <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">/status</code> dentro do Claude para diagnóstico detalhado.</p>
+      </div>
+    </div>
+  </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que o Mission Control foi gerado.</p>
+          <button class="btn-complete pending" id="complete-s2-2" onclick="markComplete(2)">
+            <span>✓</span> Mission Control criado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 3 ─── -->
+      <div class="etapa-panel" id="panel-s2-3">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 3 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-3">Pendente</span>
+          </div>
+          <h1 class="etapa-title">RTK Token Killer</h1>
+          <p class="etapa-sub">Uma ferramenta que filtra a saída de comandos antes de passar para o Claude, eliminando ruído e economizando 60-90% dos tokens em operações repetitivas.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Como o RTK funciona</div>
+  <div class="code-block" style="margin-bottom:24px">
+    <div class="code-header"><span class="code-label">fluxo sem RTK vs com RTK</span></div>
+    <div class="code-body"><pre><span class="comment"># Sem RTK — Claude recebe tudo</span>
+<span class="cmd">git log --oneline -50</span>  →  <span class="arg">50 linhas para o Claude processar</span>
+
+<span class="comment"># Com RTK — Claude recebe só o relevante</span>
+<span class="cmd">git log --oneline -50</span>  →  <span class="arg">RTK filtra</span>  →  <span class="arg">5 linhas relevantes</span>
+<span class="comment">                              economia: ~90% dos tokens desta operação</span></pre></div>
+  </div>
+  <div class="etapa-divider"></div>
+
+  <div class="step-list">
+    <div class="step-row">
+      <div class="step-circle">1</div>
+      <div class="step-body">
+        <h4>O que é o RTK</h4>
+        <p>O RTK (Rust Token Killer) é um proxy de linha de comando que intercepta a saída de <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">git</code>, <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">ls</code>, <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">cat</code> e outros antes de chegar ao Claude, removendo ruído e economizando 60-90% dos tokens em operações repetitivas.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">2</div>
+      <div class="step-body">
+        <h4>Verificar instalação</h4>
+        <p>Após o Claude instalar o RTK, confirme que está funcionando:</p>
+        <div class="code-block" style="margin-top:10px">
+          <div class="code-header"><span class="code-label">terminal</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">rtk</span> <span class="arg">--version</span>   <span class="comment"># deve mostrar: rtk X.Y.Z</span>
+<span class="cmd">rtk</span> <span class="arg">gain</span>        <span class="comment"># mostra economia acumulada de tokens</span></pre></div>
+        </div>
+        <div class="tip">💡 Se aparecer "command not found", rode <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">source ~/.zshrc</code> para recarregar o PATH e tente novamente.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">3</div>
+      <div class="step-body">
+        <h4>Uso no dia a dia — transparente</h4>
+        <p>Você não muda nada no fluxo. O Claude Code usa o RTK automaticamente via hook. Para acompanhar as economias acumuladas ao longo do tempo:</p>
+        <div class="code-block" style="margin-top:10px">
+          <div class="code-header"><span class="code-label">ver histórico de economia</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">rtk</span> <span class="arg">gain --history</span></pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que o RTK foi instalado.</p>
+          <button class="btn-complete pending" id="complete-s2-3" onclick="markComplete(3)">
+            <span>✓</span> RTK instalado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(4)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 4 ─── -->
+      <div class="etapa-panel" id="panel-s2-4">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 4 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-4">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Pack de Skills Profissionais</h1>
+          <p class="etapa-sub">Sete comandos prontos que automatizam as tarefas mais comuns do Claude Code — do diagnóstico ao encerramento de sessão.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">As 7 skills incluídas no pack</div>
+  <div class="check-list" style="margin-bottom:24px">
+    <div class="check-item"><div class="check-icon ok">⚡</div><div class="check-text"><strong>/status</strong> — health check completo: verifica 10+ serviços (WhatsApp, agente, email, scripts) e gera relatório visual</div></div>
+    <div class="check-item"><div class="check-icon ok">🔍</div><div class="check-text"><strong>/healthcheck</strong> — versão leve do /status, roda em ~30 segundos, ideal para verificações rápidas</div></div>
+    <div class="check-item"><div class="check-icon ok">🔧</div><div class="check-text"><strong>/fix</strong> — analisa o último erro reportado e propõe correção automática</div></div>
+    <div class="check-item"><div class="check-icon ok">🧹</div><div class="check-text"><strong>/dedup</strong> — remove contatos duplicados da base, preservando o registro mais recente</div></div>
+    <div class="check-item"><div class="check-icon ok">✅</div><div class="check-text"><strong>/preflight</strong> — valida credenciais, conexões e dependências antes de rodar um script crítico</div></div>
+    <div class="check-item"><div class="check-icon ok">📚</div><div class="check-text"><strong>/harvest</strong> — salva os aprendizados e decisões da sessão atual em memória persistente</div></div>
+    <div class="check-item"><div class="check-icon ok">🔐</div><div class="check-text"><strong>/encerrar</strong> — encerramento limpo: faz commit, salva contexto e fecha a sessão com tudo registrado</div></div>
+  </div>
+  <div class="etapa-divider"></div>
+
+  <div class="step-list">
+    <div class="step-row">
+      <div class="step-circle">1</div>
+      <div class="step-body">
+        <h4>Como usar as skills</h4>
+        <p>Dentro de qualquer sessão Claude, digite o nome da skill diretamente no chat:</p>
+        <div class="code-block" style="margin-top:10px">
+          <div class="code-header"><span class="code-label">exemplos de uso</span></div>
+          <div class="code-body"><pre><span class="arg">/status</span>        <span class="comment"># relatório completo de saúde</span>
+<span class="arg">/preflight</span>    <span class="comment"># verificar antes de um disparo importante</span>
+<span class="arg">/encerrar</span>     <span class="comment"># sempre ao final de cada sessão</span></pre></div>
+        </div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">2</div>
+      <div class="step-body">
+        <h4>Para que serve no dia a dia</h4>
+        <p>As skills substituem tarefas que você faria manualmente ou simplesmente esqueceria. O <strong>/encerrar</strong> garante que cada sessão termine com o trabalho salvo e commitado. O <strong>/status</strong> evita surpresas ao verificar tudo de uma vez antes de começar o dia.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-circle">3</div>
+      <div class="step-body">
+        <h4>Expandir com mais skills</h4>
+        <p>As skills ficam em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.claude/skills/</code>. Você pode criar novas ou instalar pacotes adicionais — o Claude pode criar skills personalizadas para sua operação sob demanda.</p>
+      </div>
+    </div>
+  </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que as skills foram instaladas.</p>
+          <button class="btn-complete pending" id="complete-s2-4" onclick="markComplete(4)">
+            <span>✓</span> Skills instaladas
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(5)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 5 ─── -->
+      <div class="etapa-panel" id="panel-s2-5">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 5 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-5">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Agente Guardião + Heartbeat</h1>
+          <p class="etapa-sub">Um processo de monitoramento que verifica sua operação a cada 5 minutos e te avisa no WhatsApp se algo cair — antes de você perceber.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o Guardião monitora</div>
+        <div class="check-list" style="margin-bottom:24px">
+          <div class="check-item"><div class="check-icon ok">📱</div><div class="check-text"><strong>WhatsApp conectado</strong> — verifica se Evolution API / Z-API ainda tem sessão ativa</div></div>
+          <div class="check-item"><div class="check-icon ok">🤖</div><div class="check-text"><strong>Agente IA respondendo</strong> — testa se o processo do agente está vivo e aceitando mensagens</div></div>
+          <div class="check-item"><div class="check-icon ok">⚙️</div><div class="check-text"><strong>Scripts em execução</strong> — confirma que disparos, monitor diário e heartbeat estão rodando</div></div>
+          <div class="check-item"><div class="check-icon ok">💻</div><div class="check-text"><strong>Recursos do sistema</strong> — CPU, memória e disco dentro dos limites normais</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>O que são o Guardião e o Heartbeat</h4>
+              <p>O <strong>Guardião</strong> é um script que roda em background via LaunchAgent (macOS). O <strong>Heartbeat</strong> é o sinal de vida que ele envia regularmente — e que dispara um alerta no seu WhatsApp quando para de chegar.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>O que fazer quando receber um alerta</h4>
+              <p>Se chegar uma mensagem de alerta no WhatsApp, siga este passo-a-passo:</p>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Abra o terminal e inicie uma sessão Claude na pasta da operação</div></div>
+                <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Digite <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">/status</code> — o Claude identifica o que caiu e o que precisa ser reiniciado</div></div>
+                <div class="check-item"><div class="check-icon num">3</div><div class="check-text">Siga as instruções do Claude — geralmente é reiniciar um processo ou reconectar o WhatsApp</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Verificar se o Guardião está ativo</h4>
+              <p>Para confirmar que o LaunchAgent do Guardião está rodando:</p>
+              <div class="code-block" style="margin-top:10px">
+                <div class="code-header"><span class="code-label">terminal</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre><span class="cmd">launchctl list</span> | <span class="cmd">grep</span> <span class="arg">zxlab</span></pre></div>
+              </div>
+              <p style="margin-top:8px">Se retornar alguma linha, o Guardião está registrado no sistema.</p>
+              <div class="warn" style="margin-top:12px;padding:10px 14px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:8px;font-size:0.85rem;color:#fbbf24">⚠️ O heartbeat é pausado automaticamente em feriados — comportamento intencional para evitar alertas falsos.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que o Guardião está ativo e o heartbeat funcionando.</p>
+          <button class="btn-complete pending" id="complete-s2-5" onclick="markComplete(5)">
+            <span>✓</span> Guardião ativado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(6)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 6 ─── -->
+      <div class="etapa-panel" id="panel-s2-6">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 6 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-6">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Supabase + Auth</h1>
+          <p class="etapa-sub">Configure um banco de dados na nuvem com autenticação pronta — gratuitamente. É a base para o mini-CRM que você vai publicar na próxima etapa.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que é configurado automaticamente</div>
+        <div class="check-list" style="margin-bottom:24px">
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Projeto Supabase criado</strong> — na região mais próxima de você, com nome da operação</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Tabela <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">contacts</code> configurada</strong> — com schema compatível com os dados do Setup 1</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Row Level Security ativada</strong> — cada usuário acessa apenas seus próprios dados</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Auth por email/senha habilitada</strong> — login pronto, sem implementar nada</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Credenciais salvas</strong> — em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/config/config.json</code> para uso pelos scripts</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Criar conta Supabase antes desta etapa</h4>
+              <p>O Claude vai precisar das suas credenciais de API. Crie sua conta gratuitamente antes de começar:</p>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Acesse <strong>supabase.com</strong> e crie uma conta gratuita</div></div>
+                <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Vá em <strong>Account → API Keys</strong> e copie sua <strong>service_role key</strong></div></div>
+                <div class="check-item"><div class="check-icon num">3</div><div class="check-text">Tenha a key em mãos — o Claude vai pedir quando chegar nesta etapa</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>O que o banco habilita</h4>
+              <p>Com o Supabase configurado, seus dados saem do computador local e ficam na nuvem — acessíveis de qualquer lugar, com backup automático e autenticação pronta. O mini-CRM da Etapa 8 usa exatamente este banco.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Plano gratuito e limites</h4>
+              <p>O plano gratuito suporta até 500MB de dados e 50.000 usuários — mais que suficiente para começar.</p>
+              <div class="tip">💡 O Supabase pausa projetos inativos após 7 dias sem acesso. Se o CRM parar de responder, acesse o painel Supabase → seu projeto → clique em "Restore project".</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que o projeto Supabase foi criado e as tabelas configuradas.</p>
+          <button class="btn-complete pending" id="complete-s2-6" onclick="markComplete(6)">
+            <span>✓</span> Supabase configurado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(7)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 7 ─── -->
+      <div class="etapa-panel" id="panel-s2-7">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 7 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-7">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Importar Contatos para a Nuvem</h1>
+          <p class="etapa-sub">Migre seus contatos do banco local (Setup 1) para o Supabase — ou cole um CSV novo. A partir daqui, sua base fica acessível de qualquer lugar.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Formatos de entrada aceitos</div>
+        <div class="check-list" style="margin-bottom:24px">
+          <div class="check-item"><div class="check-icon ok">🗄️</div><div class="check-text"><strong>SQLite do Setup 1</strong> — migrado automaticamente de <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/data/contacts.db</code></div></div>
+          <div class="check-item"><div class="check-icon ok">📄</div><div class="check-text"><strong>CSV</strong> — com colunas: <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">nome, telefone, email, tag, status</code></div></div>
+          <div class="check-item"><div class="check-icon ok">✏️</div><div class="check-text"><strong>Entrada manual</strong> — cole os dados diretamente no chat com o Claude, que formata e importa</div></div>
+        </div>
+
+        <div class="section-title">Formato do CSV (exemplo)</div>
+        <div class="code-block" style="margin-bottom:24px">
+          <div class="code-header"><span class="code-label">exemplo de linha do CSV</span></div>
+          <div class="code-body"><pre><span class="comment">nome,telefone,email,tag,status</span>
+<span class="arg">João Silva,5511999998888,joao@email.com,lead,ativo</span></pre></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>O que acontece durante a migração</h4>
+              <p>O Claude lê o banco local (ou CSV que você fornecer), normaliza os dados e insere na tabela <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">contacts</code> do Supabase criado na Etapa 6. Duplicatas são detectadas e ignoradas automaticamente.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Verificar a importação</h4>
+              <p>Após o Claude confirmar o import, verifique diretamente no painel Supabase:</p>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Acesse <strong>supabase.com</strong> → seu projeto</div></div>
+                <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Clique em <strong>Table Editor → contacts</strong></div></div>
+                <div class="check-item"><div class="check-icon num">3</div><div class="check-text">Confira se o número de linhas bate com os contatos importados</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>A partir de agora, tudo vai para a nuvem</h4>
+              <p>Após a migração, novos contatos adicionados pelo agente BANT ou pelos disparos são registrados diretamente no Supabase — sem depender do banco local.</p>
+              <div class="tip">💡 Pulou o Setup 1? Sem problema — diga ao Claude "não tenho banco local" e ele vai pedir para você colar ou importar um CSV.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar que os contatos foram importados para o Supabase.</p>
+          <button class="btn-complete pending" id="complete-s2-7" onclick="markComplete(7)">
+            <span>✓</span> Contatos na nuvem
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(8)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S2 ETAPA 8 ─── -->
+      <div class="etapa-panel" id="panel-s2-8">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 8 de 8</span>
+            <span class="etapa-status-badge pending" id="status-s2-8">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Mini-CRM Publicado</h1>
+          <p class="etapa-sub">Deploy real no Cloudflare Pages — um CRM com login, listagem de contatos e CRUD básico, publicado online. Seu primeiro produto web funcional.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que é criado no deploy</div>
+        <div class="check-list" style="margin-bottom:24px">
+          <div class="check-item"><div class="check-icon ok">🔐</div><div class="check-text"><strong>Página de login</strong> — com Supabase Auth, email/senha, sem código adicional</div></div>
+          <div class="check-item"><div class="check-icon ok">📋</div><div class="check-text"><strong>Listagem de contatos</strong> — com paginação, ordenação e busca por nome/email/tag</div></div>
+          <div class="check-item"><div class="check-icon ok">✏️</div><div class="check-text"><strong>Edição de contatos</strong> — modal para editar dados e alterar status de cada lead</div></div>
+          <div class="check-item"><div class="check-icon ok">🌐</div><div class="check-text"><strong>URL pública no Cloudflare Pages</strong> — acessível de qualquer dispositivo, sem servidor para gerenciar</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Como o deploy acontece</h4>
+              <p>O Claude gera o código do mini-CRM e faz o deploy no Cloudflare Pages automaticamente. O processo completo leva menos de 2 minutos:</p>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Claude gera os arquivos HTML/CSS/JS do CRM com suas credenciais Supabase embutidas</div></div>
+                <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Deploy via Wrangler CLI para o Cloudflare Pages (gratuito)</div></div>
+                <div class="check-item"><div class="check-icon num">3</div><div class="check-text">URL pública gerada no formato <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">seu-crm.pages.dev</code></div></div>
+              </div>
+              <div class="warn" style="margin-top:12px;padding:10px 14px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:8px;font-size:0.85rem;color:#fbbf24">⚠️ O primeiro deploy pode levar 1-2 minutos para propagar no Cloudflare. Se a URL não abrir imediatamente, aguarde e tente novamente.</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Para que serve</h4>
+              <p>O mini-CRM é seu primeiro produto web funcional — do banco de dados ao deploy em produção. Use-o para gerenciar seus leads de qualquer dispositivo e mostre como entregável para clientes da sua agência.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Após o deploy</h4>
+              <p>O link do seu CRM é adicionado automaticamente ao Mission Control ao final desta etapa. Faça o login com as credenciais do Supabase Auth para confirmar que tudo está funcionando.</p>
+              <div class="tip">💡 Quer um domínio personalizado? No painel Cloudflare Pages → Custom Domains, você pode vincular um domínio próprio gratuitamente.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <h3>✅ Checklist da Operação Robusta</h3>
+          <div class="summary-row"><span class="icon">🎯</span><span class="label">Mission Control criado</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">💰</span><span class="label">RTK Token Killer instalado</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">🛠</span><span class="label">Pack de skills (/status, /fix, /encerrar…)</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">🛡</span><span class="label">Agente Guardião + Heartbeat ativo</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">☁️</span><span class="label">Supabase + Auth configurado</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">📦</span><span class="label">Contatos migrados para a nuvem</span><span class="val">✓</span></div>
+          <div class="summary-row"><span class="icon">🌐</span><span class="label">Mini-CRM publicado no Cloudflare Pages</span><span class="val">✓</span></div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">🎉 Parabéns! Marque como concluída quando o deploy estiver online e o Mission Control atualizado.</p>
+          <button class="btn-complete pending" id="complete-s2-8" onclick="markComplete(8)">
+            <span>🎉</span> Setup 2 completo! Operação Robusta no ar
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SEMANA 3 PANELS
+      ══════════════════════════════════════════ -->
+
+      <!-- ─── S3 AULAS ─── -->
+      <div class="etapa-panel" id="panel-s3-0">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge" style="background:rgba(34,211,238,0.1);color:var(--cyan);border-color:rgba(34,211,238,0.3)">Aulas</span>
+            <span class="etapa-badge" style="background:rgba(16,185,129,0.1);color:#34d399;border-color:rgba(16,185,129,0.3)">Setup 3</span>
+          </div>
+          <h1 class="etapa-title">Aulas — Setup 3</h1>
+          <p class="etapa-sub">Assista a gravação da Mentoria com o passo a passo completo do Setup 3 antes de começar. Cada aula complementa as etapas práticas que você vai executar a seguir.</p>
+        </div>
+        <!-- Mentoria Setup 3 -->
+        <div class="section-title">Mentoria — Passo a Passo do Setup 3</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/92e46cf1-ba9f-4c52-a18f-abb3e638066b?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que você vai construir nesta semana</div>
+        <div class="benefit-list" style="margin-bottom:32px">
+          <div class="benefit-item"><span class="b-icon">🔍</span><div><span class="b-name">APIFY buscando leads</span> — <span class="b-desc">encontra empresas do seu nicho no Google Maps automaticamente</span></div></div>
+          <div class="benefit-item"><span class="b-icon">👤</span><div><span class="b-name">Perfil de prospecção</span> — <span class="b-desc">define exatamente quem você quer como cliente (nicho, cidade, serviço)</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Dashboard de leads</span> — <span class="b-desc">vê score, temperatura e potencial de cada lead num painel dark</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">Disparos WhatsApp seguros</span> — <span class="b-desc">30/dia com rate limiter anti-bloqueio e delay randomizado</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email em escala</span> — <span class="b-desc">200/dia com sequência personalizada por segmento</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Copy de 7 dias</span> — <span class="b-desc">mensagens que parecem escritas a mão, geradas automaticamente por segmento</span></div></div>
+          <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Motor de campanhas</span> — <span class="b-desc">decide quando e para quem enviar, respeitando limites e priorizando por score</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🕐</span><div><span class="b-name">Automação diária</span> — <span class="b-desc">roda às 8h toda manhã sem você fazer nada — busca + disparo + dashboard</span></div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="btn-complete pending" onclick="goToEtapa(1)" style="cursor:pointer">
+            <span>→</span> Começar o Setup
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 1 ─── -->
+      <div class="etapa-panel" id="panel-s3-1">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 1 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-1">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Boas-vindas + Diagnóstico</h1>
+          <p class="etapa-sub">Clone o repositório do Setup 3 e abra o Claude. A partir daí, o Claude conduz todo o setup — você não precisa digitar mais nenhum comando técnico.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Pré-requisitos do Setup 3</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Claude Code CLI</strong> — instalado e autenticado (<code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">claude --version</code> deve funcionar)</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>GitHub CLI</strong> — para clonar o repositório (<code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">gh auth status</code> deve mostrar "Logged in")</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Semanas 1 e 2 concluídas</strong> — o Setup 3 exige a base instalada nas semanas anteriores.</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O único comando que você precisa rodar</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-label">terminal — cole e pressione Enter</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">gh repo clone</span> <span class="arg">zxmarketingdigital/zx-control-semana3</span> <span class="arg">~/zx-control-semana3</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">cd</span> <span class="arg">~/zx-control-semana3</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">claude</span></pre></div>
+        </div>
+
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>O que acontece quando você rodar esse comando</h4>
+              <p>O GitHub CLI baixa o repositório, entra na pasta e abre o Claude Code. O Claude vai se apresentar e aguardar você dar o sinal para começar.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Digite INICIAR SETUP SEMANA 3 para começar</h4>
+              <p>Quando o Claude aparecer e se apresentar, você escreve exatamente isso:</p>
+              <div class="code-block" style="margin-top:10px">
+                <div class="code-header"><span class="code-label">escreva no Claude</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre><span class="arg">INICIAR SETUP SEMANA 3</span></pre></div>
+              </div>
+              <p style="margin-top:8px">O Claude faz tudo a partir daqui — você não precisa digitar mais nada.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>O que o Claude instala automaticamente</h4>
+              <div class="check-list" style="margin-top:12px">
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Verifica se Semanas 1 e 2 estão presentes</div></div>
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Cria subpastas de prospecção em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/prospecting/</code></div></div>
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Exibe o plano das 9 etapas com benefícios</div></div>
+                <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Detecta sistema operacional (macOS/Windows/Linux)</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando digitar INICIAR SETUP SEMANA 3 e o Claude começar o diagnóstico.</p>
+          <button class="btn-complete pending" id="complete-s3-1" onclick="markComplete(1)">
+            <span>✓</span> Claude aberto e setup iniciado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(2)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 2 ─── -->
+      <div class="etapa-panel" id="panel-s3-2">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 2 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-2">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Perfil do Cliente Ideal</h1>
+          <p class="etapa-sub">Uma entrevista guiada pelo Claude para definir exatamente quem você quer prospectar. Sem isso, a busca traz lixo. Com o perfil definido, o robô busca leads certeiros.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o Claude vai perguntar</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Nome da sua agência ou negócio</div></div>
+          <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Segmentos que quer prospectar (ex: restaurantes, clínicas, academias)</div></div>
+          <div class="check-item"><div class="check-icon num">3</div><div class="check-text">Cidade ou região alvo</div></div>
+          <div class="check-item"><div class="check-icon num">4</div><div class="check-text">Serviço que você oferece</div></div>
+          <div class="check-item"><div class="check-icon num">5</div><div class="check-text">Faixa de preço do seu serviço</div></div>
+          <div class="check-item"><div class="check-icon num">6</div><div class="check-text">Quantos leads por rodada de busca</div></div>
+          <div class="check-item"><div class="check-icon num">7</div><div class="check-text">Canais preferidos (WhatsApp, Email ou ambos)</div></div>
+          <div class="check-item"><div class="check-icon num">8</div><div class="check-text">Seus diferenciais competitivos</div></div>
+          <div class="check-item"><div class="check-icon num">9</div><div class="check-text">Quantas buscas por dia quer fazer</div></div>
+          <div class="check-item"><div class="check-icon num">10</div><div class="check-text">Horário preferido para automação rodar</div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="tip">💡 Pode rodar de novo a qualquer momento para mudar de nicho ou cidade — sem perder os leads já encontrados.</div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar o perfil de prospecção salvo.</p>
+          <button class="btn-complete pending" id="complete-s3-2" onclick="markComplete(2)">
+            <span>✓</span> Perfil de prospecção configurado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 3 ─── -->
+      <div class="etapa-panel" id="panel-s3-3">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 3 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-3">Pendente</span>
+          </div>
+          <h1 class="etapa-title">APIFY — Busca de Leads</h1>
+          <p class="etapa-sub">Um robô que pesquisa na internet — entra no Google Maps e sites de busca para encontrar empresas do seu nicho com telefone e email. Em vez de horas pesquisando, o robô entrega uma lista pronta em minutos.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Antes de começar — Criar conta gratuita no APIFY</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Acesse apify.com e crie sua conta</h4>
+              <p>O plano gratuito inclui créditos suficientes para centenas de buscas por mês. Não precisa cartão.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Copie seu API Token</h4>
+              <p>Em Settings → Integrations → API tokens. O Claude vai pedir esse token para configurar a busca automaticamente.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Busca de teste com 5 leads</h4>
+              <p>O Claude faz uma busca de teste para confirmar que tudo está funcionando — você vê os primeiros leads com nome, telefone, email e rating.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="section-title">Como o sistema pontua cada lead (Score 0–10)</div>
+        <div style="overflow-x:auto;margin-bottom:24px">
+          <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Critério</th>
+                <th style="text-align:center;padding:8px 12px;color:var(--text2);font-weight:600">Pontos</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Por quê</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px">Tem telefone</td>
+                <td style="text-align:center;padding:8px 12px;color:#34d399">+2</td>
+                <td style="padding:8px 12px;color:var(--text2)">Pode receber WhatsApp</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px">Tem email</td>
+                <td style="text-align:center;padding:8px 12px;color:#34d399">+1</td>
+                <td style="padding:8px 12px;color:var(--text2)">Pode receber email</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px">Sem site ou site simples</td>
+                <td style="text-align:center;padding:8px 12px;color:#34d399">+2</td>
+                <td style="padding:8px 12px;color:var(--text2)">Provavelmente precisa de ajuda digital</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px">Rating &lt; 4.5 no Google</td>
+                <td style="text-align:center;padding:8px 12px;color:#34d399">+1</td>
+                <td style="padding:8px 12px;color:var(--text2)">Dor visível — pode querer melhorar</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px">Muitas avaliações</td>
+                <td style="text-align:center;padding:8px 12px;color:#34d399">+1</td>
+                <td style="padding:8px 12px;color:var(--text2)">Negócio ativo, investe em marketing</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px">Aberto agora</td>
+                <td style="text-align:center;padding:8px 12px;color:#34d399">+1</td>
+                <td style="padding:8px 12px;color:var(--text2)">Maior chance de resposta imediata</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok" style="background:rgba(239,68,68,0.15);color:#f87171;border-color:rgba(239,68,68,0.3)">🔥</div><div class="check-text"><strong>Quente</strong> — Score 8–10: prioridade máxima, aborda primeiro</div></div>
+          <div class="check-item"><div class="check-icon ok" style="background:rgba(234,179,8,0.15);color:#fbbf24;border-color:rgba(234,179,8,0.3)">🌡</div><div class="check-text"><strong>Morno</strong> — Score 5–7.9: bom potencial, segue sequência normal</div></div>
+          <div class="check-item"><div class="check-icon ok" style="background:rgba(99,102,241,0.15);color:#818cf8;border-color:rgba(99,102,241,0.3)">❄️</div><div class="check-text"><strong>Frio</strong> — Score 0–4.9: potencial baixo, entra no final da fila</div></div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o APIFY encontrar os primeiros leads de teste.</p>
+          <button class="btn-complete pending" id="complete-s3-3" onclick="markComplete(3)">
+            <span>✓</span> APIFY configurado e primeiros leads encontrados
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(4)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 4 ─── -->
+      <div class="etapa-panel" id="panel-s3-4">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 4 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-4">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Canais de Disparo</h1>
+          <p class="etapa-sub">Verificação e configuração dos canais por onde as mensagens serão enviadas. O Claude checa WhatsApp e Email automaticamente — se já estiver configurado do Setup 1, não precisa fazer nada.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o Claude verifica e configura</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">📱</div><div class="check-text"><strong>WhatsApp (Evolution API ou Z-API)</strong> — verifica se está conectado do Setup 1. Configura automaticamente se necessário.</div></div>
+          <div class="check-item"><div class="check-icon ok">📧</div><div class="check-text"><strong>Email (Resend)</strong> — verifica API key e domínio. Configura se necessário.</div></div>
+          <div class="check-item"><div class="check-icon ok">🛡</div><div class="check-text"><strong>Rate Limiter</strong> — instala proteção automática: 30 mensagens WhatsApp/dia e 200 emails/dia.</div></div>
+          <div class="check-item"><div class="check-icon ok">⏱</div><div class="check-text"><strong>Delay randomizado</strong> — intervalo de 60–120s entre mensagens WhatsApp e 15–30s entre emails para evitar bloqueio.</div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="tip">⚠️ O Rate Limiter é obrigatório — protege sua conta de ser banida pelo WhatsApp. Não tem como desativar sem alterar o código.</div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar WhatsApp e Email conectados com Rate Limiter ativo.</p>
+          <button class="btn-complete pending" id="complete-s3-4" onclick="markComplete(4)">
+            <span>✓</span> Canais configurados e Rate Limiter ativo
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(5)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 5 ─── -->
+      <div class="etapa-panel" id="panel-s3-5">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 5 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-5">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Gerador de Copy</h1>
+          <p class="etapa-sub">O sistema que cria as mensagens de prospecção automaticamente, personalizadas para cada lead e segmento. Cada lead recebe uma mensagem que parece escrita a mão — mencionando nome da empresa, segmento e um problema real.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Sequência de 7 dias gerada automaticamente</div>
+        <div style="overflow-x:auto;margin-bottom:24px">
+          <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="text-align:center;padding:8px 12px;color:var(--text2);font-weight:600">Dia</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Tema</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">WhatsApp</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">1</td>
+                <td style="padding:8px 12px">Primeiro Contato</td>
+                <td style="padding:8px 12px;color:var(--text2)">Curto, emoji, pergunta direta</td>
+                <td style="padding:8px 12px;color:var(--text2)">Formal, subject personalizado</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">2</td>
+                <td style="padding:8px 12px">O Problema</td>
+                <td style="padding:8px 12px;color:var(--text2)">Aponta dor específica do segmento</td>
+                <td style="padding:8px 12px;color:var(--text2)">Contexto + estatística</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">3</td>
+                <td style="padding:8px 12px">Prova Social</td>
+                <td style="padding:8px 12px;color:var(--text2)">Resultado de cliente similar</td>
+                <td style="padding:8px 12px;color:var(--text2)">Case study completo</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">4</td>
+                <td style="padding:8px 12px">Pergunta Rápida</td>
+                <td style="padding:8px 12px;color:var(--text2)">Só uma pergunta simples</td>
+                <td style="padding:8px 12px;color:var(--text2)">Pergunta + link agenda</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">5</td>
+                <td style="padding:8px 12px">Case Study</td>
+                <td style="padding:8px 12px;color:var(--text2)">Antes/depois em 3 linhas</td>
+                <td style="padding:8px 12px;color:var(--text2)">Case detalhado com números</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">6</td>
+                <td style="padding:8px 12px">Urgência</td>
+                <td style="padding:8px 12px;color:var(--text2)">Motivo para agir agora</td>
+                <td style="padding:8px 12px;color:var(--text2)">Proposta de valor + prazo</td>
+              </tr>
+              <tr>
+                <td style="text-align:center;padding:8px 12px;color:#34d399;font-weight:700">7</td>
+                <td style="padding:8px 12px">Última Mensagem</td>
+                <td style="padding:8px 12px;color:var(--text2)">Encerra com elegância</td>
+                <td style="padding:8px 12px;color:var(--text2)">Fecha a sequência, deixa porta aberta</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip">💡 O Claude mostra preview do Dia 1 para você aprovar antes de salvar. Pode pedir ajustes no tom ou no foco.</div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar os templates salvos para seus segmentos.</p>
+          <button class="btn-complete pending" id="complete-s3-5" onclick="markComplete(5)">
+            <span>✓</span> Sequência de 7 dias criada e aprovada
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(6)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 6 ─── -->
+      <div class="etapa-panel" id="panel-s3-6">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 6 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-6">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Dashboard de Prospecção</h1>
+          <p class="etapa-sub">Uma página HTML simples onde você vê seus leads, o potencial de cada um e marca o status manualmente. Dark theme, auto-refresh a cada 5 minutos, abre direto no browser.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Colunas do dashboard</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">#</div><div class="check-text"><strong>Nome + Segmento</strong> — empresa e categoria do lead</div></div>
+          <div class="check-item"><div class="check-icon ok">📞</div><div class="check-text"><strong>Telefone + Email</strong> — contatos encontrados pelo APIFY</div></div>
+          <div class="check-item"><div class="check-icon ok">📊</div><div class="check-text"><strong>Score</strong> — pontuação 0–10 calculada automaticamente</div></div>
+          <div class="check-item"><div class="check-icon ok">🌡</div><div class="check-text"><strong>Temperatura</strong> — Quente / Morno / Frio baseado no score</div></div>
+          <div class="check-item"><div class="check-icon ok">💰</div><div class="check-text"><strong>Potencial</strong> — estimativa de oportunidade por segmento</div></div>
+          <div class="check-item"><div class="check-icon ok">📍</div><div class="check-text"><strong>Step</strong> — dia atual na sequência (1–7)</div></div>
+          <div class="check-item"><div class="check-icon ok">🏷</div><div class="check-text"><strong>Status</strong> — dropdown manual: Novo / Em Sequência / Respondeu / Sem Interesse / Convertido</div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="tip">💡 O status que você marca no browser é salvo localmente (localStorage). Não precisa de servidor — funciona offline.</div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o dashboard abrir no browser (ainda vazio — será preenchido quando leads chegarem).</p>
+          <button class="btn-complete pending" id="complete-s3-6" onclick="markComplete(6)">
+            <span>✓</span> Dashboard de prospecção aberto no browser
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(7)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 7 ─── -->
+      <div class="etapa-panel" id="panel-s3-7">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 7 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-7">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Motor de Campanhas</h1>
+          <p class="etapa-sub">O coração da prospecção — decide quando e para quem enviar cada mensagem, respeitando os limites. Todo dia de manhã, verifica quem precisa receber mensagem, prioriza por score e dispara sozinho.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">Flags disponíveis no motor</div>
+        <div style="overflow-x:auto;margin-bottom:24px">
+          <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Flag</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">O que faz</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#c4b5fd">--search</td>
+                <td style="padding:8px 12px;color:var(--text2)">Busca novos leads no APIFY agora</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#c4b5fd">--send</td>
+                <td style="padding:8px 12px;color:var(--text2)">Executa os disparos do dia</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#c4b5fd">--dry-run</td>
+                <td style="padding:8px 12px;color:var(--text2)">Simula sem enviar — mostra preview do que seria disparado</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#c4b5fd">--dashboard</td>
+                <td style="padding:8px 12px;color:var(--text2)">Regenera o dashboard HTML com leads atuais</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#c4b5fd">--daily</td>
+                <td style="padding:8px 12px;color:var(--text2)">Combo completo: busca + disparo + dashboard (usado pela automação)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-title">Lógica de priorização</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Leads Quentes (score 8–10) são disparados primeiro</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Respeita intervalo de 24h desde o último envio para cada lead</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Para automaticamente ao atingir 30 WhatsApp ou 200 emails no dia</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Claude testa com <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">--dry-run</code> antes de ativar o envio real</div></div>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o dry-run mostrar o preview de disparos sem erros.</p>
+          <button class="btn-complete pending" id="complete-s3-7" onclick="markComplete(7)">
+            <span>✓</span> Motor de campanhas instalado e testado
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(8)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 8 ─── -->
+      <div class="etapa-panel" id="panel-s3-8">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 8 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-8">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Automação Diária</h1>
+          <p class="etapa-sub">Um agendador que roda a prospecção automaticamente toda manhã. Às 8h, o sistema busca novos leads, atualiza a lista e dispara as mensagens do dia — sem você fazer nada.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que o Claude instala</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">🍎</div><div class="check-text"><strong>macOS</strong> — LaunchAgent registrado automaticamente. Roda às 8h mesmo com o computador em modo de economia.</div></div>
+          <div class="check-item"><div class="check-icon ok">🪟</div><div class="check-text"><strong>Windows</strong> — Task Scheduler configurado automaticamente. Aparece em "Agendador de Tarefas".</div></div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="section-title">4 skills instaladas no Claude Code</div>
+        <div style="overflow-x:auto;margin-bottom:24px">
+          <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Skill</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">O que faz</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/prospectar</td>
+                <td style="padding:8px 12px;color:var(--text2)">Busca novos leads e dispara mensagens agora</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/leads</td>
+                <td style="padding:8px 12px;color:var(--text2)">Abre o dashboard de prospecção no browser</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/pausar-prospeccao</td>
+                <td style="padding:8px 12px;color:var(--text2)">Desliga a automação das 8h</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/retomar-prospeccao</td>
+                <td style="padding:8px 12px;color:var(--text2)">Religa a automação das 8h</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar o agendamento das 8h registrado.</p>
+          <button class="btn-complete pending" id="complete-s3-8" onclick="markComplete(8)">
+            <span>✓</span> Automação diária configurada
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(9)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 9 ─── -->
+      <div class="etapa-panel" id="panel-s3-9">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 9 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-9">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Auditoria Técnica</h1>
+          <p class="etapa-sub">Uma revisão automática que verifica tudo o que foi instalado, encontra problemas e corrige. Garante que tudo está funcionando de verdade antes de encerrar. Recomendado — leva menos de 1 minuto.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">13 checks automáticos</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Config.json com credenciais preenchidas</div></div>
+          <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Perfil de prospecção salvo</div></div>
+          <div class="check-item"><div class="check-icon num">3</div><div class="check-text">APIFY API Token válido</div></div>
+          <div class="check-item"><div class="check-icon num">4</div><div class="check-text">WhatsApp conectado e respondendo</div></div>
+          <div class="check-item"><div class="check-icon num">5</div><div class="check-text">Email (Resend) configurado</div></div>
+          <div class="check-item"><div class="check-icon num">6</div><div class="check-text">Rate Limiter ativo com limites corretos</div></div>
+          <div class="check-item"><div class="check-icon num">7</div><div class="check-text">Templates de copy gerados para todos os segmentos</div></div>
+          <div class="check-item"><div class="check-icon num">8</div><div class="check-text">Dashboard HTML gerado e acessível</div></div>
+          <div class="check-item"><div class="check-icon num">9</div><div class="check-text">Scripts do motor de campanhas presentes</div></div>
+          <div class="check-item"><div class="check-icon num">10</div><div class="check-text">Automação das 8h registrada no sistema</div></div>
+          <div class="check-item"><div class="check-icon num">11</div><div class="check-text">Arquivo leads.json inicializado</div></div>
+          <div class="check-item"><div class="check-icon num">12</div><div class="check-text">Banco SQLite de histórico de envios</div></div>
+          <div class="check-item"><div class="check-icon num">13</div><div class="check-text">Checkpoint da Semana 3 no config.json</div></div>
+        </div>
+        <div class="tip">🔧 Problemas encontrados são corrigidos automaticamente pelo Claude. Você só vê o relatório final.</div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando a auditoria mostrar todos os checks passando.</p>
+          <button class="btn-complete pending" id="complete-s3-9" onclick="markComplete(9)">
+            <span>✓</span> Auditoria concluída — tudo funcionando
+          </button>
+          <button class="btn-nav-next" onclick="goToEtapa(10)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S3 ETAPA 10 ─── -->
+      <div class="etapa-panel" id="panel-s3-10">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 10 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s3-10">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Finalização — Primeira Busca Real</h1>
+          <p class="etapa-sub">O momento final — o APIFY busca os primeiros leads reais do seu nicho, o dashboard abre com eles listados e a operação de prospecção está no ar.</p>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <div class="section-title">O que acontece na finalização</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h4>Primeira busca real de leads</h4>
+              <p>O APIFY faz uma busca completa no nicho e cidade que você configurou. Os leads chegam com score e temperatura calculados.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Dashboard abre com leads reais</h4>
+              <p>O browser abre automaticamente com o dashboard populado — você vê seus primeiros leads prontos para prospecção.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h4>Semana 3 marcada como concluída</h4>
+              <p>O checkpoint é salvo no config.json — a operação está no ar e rodará automaticamente às 8h toda manhã.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="etapa-divider"></div>
+        <div class="section-title">Comandos do dia a dia</div>
+        <div style="overflow-x:auto;margin-bottom:24px">
+          <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Skill</th>
+                <th style="text-align:left;padding:8px 12px;color:var(--text2);font-weight:600">Quando usar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/prospectar</td>
+                <td style="padding:8px 12px;color:var(--text2)">Buscar e disparar fora do horário automático</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/leads</td>
+                <td style="padding:8px 12px;color:var(--text2)">Ver dashboard e marcar status dos leads</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/pausar-prospeccao</td>
+                <td style="padding:8px 12px;color:var(--text2)">Pausar quando estiver fora ou em viagem</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;font-family:JetBrains Mono,monospace;color:#34d399">/retomar-prospeccao</td>
+                <td style="padding:8px 12px;color:var(--text2)">Reativar quando voltar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">🎉 Parabéns! Marque como concluída quando o dashboard abrir com os primeiros leads reais.</p>
+          <button class="btn-complete pending" id="complete-s3-10" onclick="markComplete(10)">
+            <span>🎉</span> Setup 3 completo! Prospecção no piloto automático
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SEMANA 4 PANELS
+      ══════════════════════════════════════════ -->
+
+      <!-- ─── S4 AULAS ─── -->
+      <div class="etapa-panel" id="panel-s4-0">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge" style="background:rgba(34,211,238,0.1);color:var(--cyan);border-color:rgba(34,211,238,0.3)">Aulas</span>
+            <span class="etapa-badge" style="background:rgba(6,182,212,0.1);color:#22d3ee;border-color:rgba(6,182,212,0.3)">Setup 4</span>
+          </div>
+          <h1 class="etapa-title">Aulas — Setup 4</h1>
+          <p class="etapa-sub">Assista à gravação da Mentoria com o passo a passo completo do Setup 4 antes de começar. Cada aula complementa as etapas práticas que você vai executar a seguir.</p>
+        </div>
+        <div class="section-title">Mentoria — Passo a Passo do Setup 4</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/00000000-0000-0000-0000-00000000s400?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que você vai construir nesta semana</div>
+        <div class="benefit-list" style="margin-bottom:32px">
+          <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Codex Revisor</span> — <span class="b-desc">revisa projetos automaticamente, economiza 60-90% de tokens</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🧠</span><div><span class="b-name">Memória unificada</span> — <span class="b-desc">Claude Desktop e Terminal com a mesma memória via symlink</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Skills em Sync</span> — <span class="b-desc">sincronizadas via git entre máquinas</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🕸</span><div><span class="b-name">Graphify</span> — <span class="b-desc">knowledge graph de cada projeto</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📸</span><div><span class="b-name">Instagram automatizado</span> — <span class="b-desc">comentários e DMs respondidos automaticamente</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 2.0</span> — <span class="b-desc">métricas de Codex, Graphify e IG no painel</span></div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="btn-complete pending" onclick="goToEtapa(1)" style="cursor:pointer">
+            <span>→</span> Começar o Setup
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 1 ─── -->
+      <div class="etapa-panel" id="panel-s4-1">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 1 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-1">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Boas-vindas + Base</h1>
+          <p class="etapa-sub">Clone o repositório do Setup 4 e abra o Claude. A partir daí, o Claude conduz todo o setup — você não precisa digitar mais nenhum comando técnico.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Pré-requisitos do Setup 4</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Semanas 1, 2 e 3 concluídas</strong> — o Setup 4 exige <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">phase_completed >= 3</code></div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Node.js ≥ 20</strong> — necessário para o plugin Codex (<code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">node --version</code>)</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Claude Code CLI atualizado</strong> — <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">claude --version</code></div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O único comando que você precisa rodar</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-label">terminal — cole e pressione Enter</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">gh repo clone</span> <span class="arg">zxmarketingdigital/zx-control-semana4</span> <span class="arg">~/zx-control-semana4</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">cd</span> <span class="arg">~/zx-control-semana4</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">claude</span></pre></div>
+        </div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body"><h4>Claude abre e se apresenta</h4><p>Aguarde a mensagem de boas-vindas do Claude. Ele vai listar o que você vai construir nesta semana.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Digite INICIAR SETUP SEMANA 4</h4>
+              <div class="code-block" style="margin-top:10px">
+                <div class="code-header"><span class="code-label">escreva no Claude</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre><span class="arg">INICIAR SETUP SEMANA 4</span></pre></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar o ambiente e exibir o plano das 10 etapas.</p>
+          <button class="btn-complete pending" id="complete-s4-1" onclick="markComplete(1)"><span>✓</span> Base configurada</button>
+          <button class="btn-nav-next" onclick="goToEtapa(2)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 2 ─── -->
+      <div class="etapa-panel" id="panel-s4-2">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 2 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-2">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Codex Plugin + Revisor Diário</h1>
+          <p class="etapa-sub">Instala o plugin Codex no Claude Code e configura 3 agendadores automáticos de revisão — diário, semanal e profundo. Economiza 60-90% de tokens em revisão de código.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que o Claude instala</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Plugin Codex via <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">claude plugin install</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Projeto de revisão em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.codex/automations/project-review/</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">3 agendadores: diário 9h, segunda 8h30, domingo 22h</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Agendamentos configurados</div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:8px 12px;color:var(--text2)">Agente</th>
+            <th style="text-align:left;padding:8px 12px;color:var(--text2)">Horário</th>
+            <th style="text-align:left;padding:8px 12px;color:var(--text2)">Esforço</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:8px 12px;color:#22d3ee;font-family:JetBrains Mono,monospace">codex-review-daily</td><td style="padding:8px 12px;color:var(--text2)">Todo dia 9h</td><td style="padding:8px 12px;color:var(--text2)">low</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:8px 12px;color:#22d3ee;font-family:JetBrains Mono,monospace">codex-review-morning</td><td style="padding:8px 12px;color:var(--text2)">Toda segunda 8h30</td><td style="padding:8px 12px;color:var(--text2)">medium</td></tr>
+            <tr><td style="padding:8px 12px;color:#22d3ee;font-family:JetBrains Mono,monospace">codex-review-weekly</td><td style="padding:8px 12px;color:var(--text2)">Domingo 22h</td><td style="padding:8px 12px;color:var(--text2)">high</td></tr>
+          </tbody>
+        </table>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-2" onclick="markComplete(2)"><span>✓</span> Plugin instalado e agendadores ativos</button>
+          <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 3 ─── -->
+      <div class="etapa-panel" id="panel-s4-3">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 3 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-3">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Memória Desktop ↔ Terminal</h1>
+          <p class="etapa-sub">Cria um symlink para que Claude Desktop e Terminal compartilhem exatamente a mesma memória. Sem isso, cada ambiente acumula contexto separado e você perde continuidade entre sessões.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="tip">💡 <strong>Apenas macOS.</strong> Linux: etapa ignorada automaticamente. Windows: Claude mostra o comando PowerShell de admin.</div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que acontece</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Backup automático da memória Desktop em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.zxlab-backup/</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Arquivos exclusivos do Desktop migrados para o Terminal</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Symlink criado: Desktop memory → Terminal memory</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Sincronização em tempo real, zero cron</div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-3" onclick="markComplete(3)"><span>✓</span> Memória unificada</button>
+          <button class="btn-nav-next" onclick="goToEtapa(4)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 4 ─── -->
+      <div class="etapa-panel" id="panel-s4-4">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 4 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-4">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Skills e MCPs em Sync</h1>
+          <p class="etapa-sub">Inicializa um repositório git em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.claude/skills/</code> e configura sync automático a cada 15 minutos. Troca de máquina sem perder skills.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que o Claude configura</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Git init em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.claude/skills/</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Remote GitHub opcional (para sync entre máquinas)</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Agente de sync a cada 15 minutos (LaunchAgent/systemd)</div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-4" onclick="markComplete(4)"><span>✓</span> Skills em sync</button>
+          <button class="btn-nav-next" onclick="goToEtapa(5)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 5 ─── -->
+      <div class="etapa-panel" id="panel-s4-5">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 5 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-5">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Graphify — Segundo Cérebro</h1>
+          <p class="etapa-sub">Configura o Graphify para mapear seus projetos como knowledge graphs. Com isso, o Claude tem contexto instantâneo de qualquer projeto sem precisar reler todo o código.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Como funciona</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Escolha qual projeto mapear primeiro</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Claude executa <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">/graphify</code> e salva o grafo em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/graphs/</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Config salvo em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/config/graphify_config.json</code></div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-5" onclick="markComplete(5)"><span>✓</span> Graphify configurado</button>
+          <button class="btn-nav-next" onclick="goToEtapa(6)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 6 ─── -->
+      <div class="etapa-panel" id="panel-s4-6">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 6 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-6">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Instagram — Facebook App + Tokens</h1>
+          <p class="etapa-sub">Configuração do App Meta e obtenção do long-lived access token. O Claude guia você pelos 6 passos no Meta Developers — você só cola os valores que ele pede.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="tip">⚠️ Esta etapa leva ~20 minutos e requer conta no <strong>Meta Developers</strong>. Se ainda não tem, acesse <strong>developers.facebook.com</strong> e crie antes de começar.</div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">6 passos no Meta Dashboard (Claude guia cada um)</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon num">1</div><div class="check-text">Criar App tipo "Business" em developers.facebook.com/apps</div></div>
+          <div class="check-item"><div class="check-icon num">2</div><div class="check-text">Adicionar produto "Instagram Graph API"</div></div>
+          <div class="check-item"><div class="check-icon num">3</div><div class="check-text">Copiar App ID e App Secret em Settings → Basic</div></div>
+          <div class="check-item"><div class="check-icon num">4</div><div class="check-text">Adicionar seu Instagram como testador em Roles → Instagram Testers</div></div>
+          <div class="check-item"><div class="check-icon num">5</div><div class="check-text">Aceitar convite no app mobile do Instagram</div></div>
+          <div class="check-item"><div class="check-icon num">6</div><div class="check-text">Gerar token curto em Tools → Graph API Explorer e colar no terminal</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que o Claude faz automaticamente</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Troca token curto por long-lived (~60 dias) via Graph API</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Valida conta: <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">@{username}</code> confirmado</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Salva credenciais em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.openclaw/workspace/.env</code></div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-6" onclick="markComplete(6)"><span>✓</span> Token Instagram configurado</button>
+          <button class="btn-nav-next" onclick="goToEtapa(7)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 7 ─── -->
+      <div class="etapa-panel" id="panel-s4-7">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 7 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-7">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Instagram — Auto-Responder + DM</h1>
+          <p class="etapa-sub">Configura o bot que responde comentários com keywords e envia DMs automáticas de boas-vindas. Roda a cada 30 minutos sem intervenção humana.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que o Claude configura</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Keywords que ativam resposta automática (ex: "info", "preço", "quero")</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Mensagem de boas-vindas para DMs novos</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Rate limit: 20 respostas/hora, 10 DMs/hora</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Deduplicação: sem resposta duplicada ao mesmo comentário</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Cron a cada 30 minutos + token manager automático</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Skills instaladas</div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:8px 12px;color:#22d3ee;font-family:JetBrains Mono,monospace">/ig-status</td><td style="padding:8px 12px;color:var(--text2)">Ver status do bot e últimas respostas</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:8px 12px;color:#22d3ee;font-family:JetBrains Mono,monospace">/ig-pausar</td><td style="padding:8px 12px;color:var(--text2)">Pausar auto-responder temporariamente</td></tr>
+            <tr><td style="padding:8px 12px;color:#22d3ee;font-family:JetBrains Mono,monospace">/ig-retomar</td><td style="padding:8px 12px;color:var(--text2)">Reativar após pausar</td></tr>
+          </tbody>
+        </table>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-7" onclick="markComplete(7)"><span>✓</span> Auto-responder ativo</button>
+          <button class="btn-nav-next" onclick="goToEtapa(8)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 8 ─── -->
+      <div class="etapa-panel" id="panel-s4-8">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 8 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-8">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Mission Control 2.0</h1>
+          <p class="etapa-sub">Atualiza o painel de controle com 3 novos widgets — Codex reviews, Graphify graphs e IG auto replies — e registra os 4 novos agentes no Heartbeat.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Patches aplicados automaticamente</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">zx_daily_dashboard.py</code> — 3 widgets S4: codex_reviews_24h, graphify_graphs, ig_auto_replies_24h</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">heartbeat.py</code> — 4 novos agentes monitorados</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">config-backup.py</code> — ~/.codex/ e .env adicionados ao backup</div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s4-8" onclick="markComplete(8)"><span>✓</span> Mission Control 2.0 ativo</button>
+          <button class="btn-nav-next" onclick="goToEtapa(9)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 9 ─── -->
+      <div class="etapa-panel" id="panel-s4-9">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 9 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-9">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Auditoria Técnica</h1>
+          <p class="etapa-sub">Verificação automática de 15 componentes instalados nas Semanas 1-4. Corrige automaticamente o que encontrar e exibe relatório final.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">15 checks da auditoria</div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:6px 10px;color:var(--text2)">#</th>
+            <th style="text-align:left;padding:6px 10px;color:var(--text2)">Check</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">1</td><td style="padding:6px 10px;color:var(--text2)">Claude Code CLI disponível</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">2</td><td style="padding:6px 10px;color:var(--text2)">Plugin Codex instalado</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">3</td><td style="padding:6px 10px;color:var(--text2)">Memory symlink Desktop→Terminal</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">4</td><td style="padding:6px 10px;color:var(--text2)">Skills git repo inicializado</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">5</td><td style="padding:6px 10px;color:var(--text2)">Skills LaunchAgent/systemd ativo</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">6</td><td style="padding:6px 10px;color:var(--text2)">Graphify dir com ao menos 1 projeto</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">7</td><td style="padding:6px 10px;color:var(--text2)">Token Instagram válido</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">8</td><td style="padding:6px 10px;color:var(--text2)">Script ig_auto_responder.py existe</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">9</td><td style="padding:6px 10px;color:var(--text2)">Cron IG a cada 30 minutos</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">10</td><td style="padding:6px 10px;color:var(--text2)">Codex LaunchAgent diário ativo</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">11</td><td style="padding:6px 10px;color:var(--text2)">Codex projects.json configurado</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">12</td><td style="padding:6px 10px;color:var(--text2)">config.json phase >= 3</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">13</td><td style="padding:6px 10px;color:var(--text2)">Checkpoints S4 etapas 1-8 concluídas</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#22d3ee">14</td><td style="padding:6px 10px;color:var(--text2)">Mission Control dir existe</td></tr>
+            <tr><td style="padding:6px 10px;color:#22d3ee">15</td><td style="padding:6px 10px;color:var(--text2)">Session logs dir existe</td></tr>
+          </tbody>
+        </table>
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude exibir o relatório com 13/15 ou mais checks aprovados.</p>
+          <button class="btn-complete pending" id="complete-s4-9" onclick="markComplete(9)"><span>✓</span> Auditoria concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(10)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S4 ETAPA 10 — FINALIZAÇÃO ─── -->
+      <div class="etapa-panel" id="panel-s4-10">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 10 de 10</span>
+            <span class="etapa-status-badge pending" id="status-s4-10">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Finalização + ZX Control 2.0</h1>
+          <p class="etapa-sub">Encerramento oficial da Semana 4. Log de sessão enviado automaticamente, revisão final opcional e pitch do ZX Control 2.0 — Turma 2.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que acontece na finalização</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Coleta dados da sessão e checkpoints concluídos</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Pergunta feedback: "O que você gostaria nos próximos Setups?"</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Salva log em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#c4b5fd">~/.operacao-ia/data/logs/session-s4-{timestamp}.json</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Envia log para Supabase automaticamente</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Revisão final opt-in: /encerrar → Codex → Claude Opus</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Atualiza config.json: phase_completed = 4</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <!-- ZX Control 2.0 CTA -->
+        <div style="background:linear-gradient(135deg,rgba(6,182,212,0.12),rgba(37,99,235,0.12));border:1px solid rgba(6,182,212,0.3);border-radius:16px;padding:32px;text-align:center;margin-bottom:24px">
+          <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.12em;color:#22d3ee;text-transform:uppercase;margin-bottom:12px">ZX Control 2.0</div>
+          <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:8px;background:linear-gradient(135deg,#06b6d4,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Turma 2 — Maio 2026</h2>
+          <p style="color:var(--text2);font-size:0.95rem;margin-bottom:24px">Modelo de assinatura: acesse todas as semanas enquanto ativo, incluindo versões futuras.</p>
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+            <div style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:16px 24px;min-width:160px">
+              <div style="font-size:0.75rem;color:var(--text2);margin-bottom:4px">Compra individual</div>
+              <div style="font-size:1rem;font-weight:700">Preço cheio</div>
+              <div style="font-size:0.75rem;color:var(--text2);margin-top:4px">Só o que comprou</div>
+            </div>
+            <div style="background:linear-gradient(135deg,rgba(6,182,212,0.15),rgba(37,99,235,0.15));border:1px solid rgba(6,182,212,0.4);border-radius:10px;padding:16px 24px;min-width:160px;position:relative">
+              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#06b6d4,#2563eb);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px">RECOMENDADO</div>
+              <div style="font-size:0.75rem;color:#22d3ee;margin-bottom:4px">Assinatura</div>
+              <div style="font-size:1rem;font-weight:700;color:#22d3ee">50% OFF vitalício</div>
+              <div style="font-size:0.75rem;color:var(--text2);margin-top:4px">Todas as versões futuras</div>
+            </div>
+          </div>
+          <a href="https://zx-control-renovacao.pages.dev/" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(135deg,#06b6d4,#2563eb);color:#fff;font-weight:700;font-size:1rem;padding:14px 36px;border-radius:10px;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Garantir 50% OFF vitalício →</a>
+          <p style="font-size:0.78rem;color:var(--text2);margin-top:12px">Cancele quando quiser. Sem fidelidade.</p>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">🎉 Parabéns! Você concluiu as 4 semanas do ZX Control.</p>
+          <button class="btn-complete pending" id="complete-s4-10" onclick="markComplete(10)">
+            <span>🎉</span> Setup 4 completo! Operação inteligente e escalável
+          </button>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -1218,7 +3132,8 @@ body {
 // ══════════════════════════════════════════
 const AUTH_URL = 'https://pnfvlszwlumetdjsuktj.supabase.co/functions/v1/check-zxcontrol-access'
 
-const ETAPAS = [
+const ETAPAS_S1 = [
+  { id: 0, title: 'Aulas', icon: '▶' },
   { id: 1, title: 'Instalar Pré-requisitos' },
   { id: 2, title: 'Primeiro Acesso' },
   { id: 3, title: 'Configurar Ambiente' },
@@ -1231,25 +3146,99 @@ const ETAPAS = [
   { id: 10, title: 'Teste Final' },
 ]
 
+const ETAPAS_S2 = [
+  { id: 0, title: 'Aulas', icon: '▶' },
+  { id: 1, title: 'Primeiro Acesso' },
+  { id: 2, title: 'Mission Control' },
+  { id: 3, title: 'RTK Token Killer' },
+  { id: 4, title: 'Skills Profissionais' },
+  { id: 5, title: 'Guardião + Heartbeat' },
+  { id: 6, title: 'Supabase + Auth' },
+  { id: 7, title: 'Importar Contatos' },
+  { id: 8, title: 'Mini-CRM Publicado' },
+]
+
+const ETAPAS_S3 = [
+  { id: 0, title: 'Aulas', icon: '▶' },
+  { id: 1, title: 'Boas-vindas + Diagnóstico' },
+  { id: 2, title: 'Perfil do Cliente Ideal' },
+  { id: 3, title: 'APIFY — Busca de Leads' },
+  { id: 4, title: 'Canais de Disparo' },
+  { id: 5, title: 'Gerador de Copy' },
+  { id: 6, title: 'Dashboard de Prospecção' },
+  { id: 7, title: 'Motor de Campanhas' },
+  { id: 8, title: 'Automação Diária' },
+  { id: 9, title: 'Auditoria Técnica' },
+  { id: 10, title: 'Finalização' },
+]
+
+const ETAPAS_S4 = [
+  { id: 0, title: 'Aulas', icon: '▶' },
+  { id: 1, title: 'Boas-vindas + Base' },
+  { id: 2, title: 'Codex Plugin + Revisor Diário' },
+  { id: 3, title: 'Memória Desktop ↔ Terminal' },
+  { id: 4, title: 'Skills e MCPs em Sync' },
+  { id: 5, title: 'Graphify — Segundo Cérebro' },
+  { id: 6, title: 'Instagram — Facebook App' },
+  { id: 7, title: 'Instagram — Auto-Responder + DM' },
+  { id: 8, title: 'Mission Control 2.0' },
+  { id: 9, title: 'Auditoria Técnica' },
+  { id: 10, title: 'Finalização + ZX Control 2.0' },
+]
+
+let activeWeek = 1
+
+function activeEtapas() {
+  if (activeWeek === 1) return ETAPAS_S1
+  if (activeWeek === 2) return ETAPAS_S2
+  if (activeWeek === 4) return ETAPAS_S4
+  return ETAPAS_S3
+}
+function panelId(id)    { return activeWeek === 1 ? `panel-${id}` : `panel-s${activeWeek}-${id}` }
+function completeId(id) { return activeWeek === 1 ? `complete-${id}` : `complete-s${activeWeek}-${id}` }
+function statusId(id)   { return activeWeek === 1 ? `status-${id}` : `status-s${activeWeek}-${id}` }
+
 // ══════════════════════════════════════════
 //   STATE
 // ══════════════════════════════════════════
+function stateKey() { return `zxcontrol_s${activeWeek}` }
+
 function getState() {
+  try { return JSON.parse(localStorage.getItem(stateKey()) || '{}') }
+  catch { return {} }
+}
+function saveState(s) { localStorage.setItem(stateKey(), JSON.stringify(s)) }
+
+function getStateForWeek(week) {
+  try { return JSON.parse(localStorage.getItem(`zxcontrol_s${week}`) || '{}') }
+  catch { return {} }
+}
+
+function getAuth() {
   try {
-    return JSON.parse(localStorage.getItem('zxcontrol_s1') || '{}')
+    const auth = JSON.parse(localStorage.getItem('zxcontrol_auth') || '{}')
+    if (auth.student) return auth
+    // Fallback: migrate existing sessions stored in zxcontrol_s1
+    const s1 = JSON.parse(localStorage.getItem('zxcontrol_s1') || '{}')
+    if (s1.loggedIn && s1.student) {
+      const migrated = { loggedIn: true, student: s1.student }
+      localStorage.setItem('zxcontrol_auth', JSON.stringify(migrated))
+      // Scrub legacy auth fields from zxcontrol_s1 to prevent re-migration after logout
+      delete s1.loggedIn
+      delete s1.student
+      localStorage.setItem('zxcontrol_s1', JSON.stringify(s1))
+      return migrated
+    }
+    return {}
   } catch { return {} }
 }
-function saveState(s) {
-  localStorage.setItem('zxcontrol_s1', JSON.stringify(s))
-}
-function getCompleted() {
-  return getState().completed || []
-}
+function saveAuth(a) { localStorage.setItem('zxcontrol_auth', JSON.stringify(a)) }
+
+function getCompleted()    { return getState().completed || [] }
 function getCurrentEtapa() {
-  return getState().current || 1
-}
-function getStudent() {
-  return getState().student || {}
+  const c = getState().current
+  const validIds = activeEtapas().map(e => e.id)
+  return validIds.includes(c) ? c : 0
 }
 
 // ══════════════════════════════════════════
@@ -1299,12 +3288,9 @@ async function handleLogin(e) {
       return
     }
 
-    // Save student info and open members area
-    const state = getState()
-    state.student = { name: data.name, email: data.email }
-    state.loggedIn = true
-    saveState(state)
-    openMembersArea(data.name)
+    // Save auth separately to preserve per-week progress keys
+    saveAuth({ loggedIn: true, student: { name: data.name, email: data.email } })
+    showSelector(data.name)
 
   } catch (err) {
     btn.classList.remove('loading')
@@ -1314,90 +3300,157 @@ async function handleLogin(e) {
 }
 
 // ══════════════════════════════════════════
-//   MEMBERS AREA
+//   WEEK SELECTOR
 // ══════════════════════════════════════════
-function openMembersArea(name) {
+function showSelector(name) {
   document.getElementById('loginScreen').style.display = 'none'
+  document.getElementById('membersArea').classList.remove('active')
+
+  const selector = document.getElementById('weekSelector')
+  selector.classList.add('active')
+
+  const firstName = (name || 'Aluno').split(' ')[0]
+  document.getElementById('selectorStudentName').textContent = firstName
+
+  // Update progress badges
+  const s1Done = (getStateForWeek(1).completed || []).length
+  const s1Badge = document.getElementById('s1Progress')
+  if (s1Done > 0) { s1Badge.textContent = `${s1Done}/10 concluídas`; s1Badge.style.display = '' }
+  else { s1Badge.style.display = 'none' }
+
+  const s2Done = (getStateForWeek(2).completed || []).length
+  const s2Badge = document.getElementById('s2Progress')
+  if (s2Done > 0) { s2Badge.textContent = `${s2Done}/8 concluídas`; s2Badge.style.display = '' }
+  else { s2Badge.style.display = 'none' }
+
+  const s3Done = (getStateForWeek(3).completed || []).length
+  const s3Badge = document.getElementById('s3Progress')
+  if (s3Badge) {
+    if (s3Done > 0) { s3Badge.textContent = `${s3Done}/10 concluídas`; s3Badge.style.display = '' }
+    else { s3Badge.style.display = 'none' }
+  }
+
+  const s4Done = (getStateForWeek(4).completed || []).length
+  const s4Badge = document.getElementById('s4Progress')
+  if (s4Badge) {
+    if (s4Done > 0) { s4Badge.textContent = `${s4Done}/10 concluídas`; s4Badge.style.display = '' }
+    else { s4Badge.style.display = 'none' }
+  }
+}
+
+function openWeek(n) {
+  activeWeek = n
+
+  document.getElementById('weekSelector').classList.remove('active')
+  document.getElementById('loginScreen').style.display = 'none'
+
   const area = document.getElementById('membersArea')
   area.classList.add('active')
 
-  // Show first name only
-  const firstName = (name || 'Aluno').split(' ')[0]
+  // Update nav subtitle
+  const subEl = document.getElementById('weekSubtitle')
+  const subtitles = { 1: 'Setup 1 — Fundação Operacional', 2: 'Setup 2 — Operação Robusta', 3: 'Setup 3 — Prospecção Automatizada', 4: 'Setup 4 — Inteligência & Escala' }
+  if (subEl) subEl.textContent = subtitles[n] || ''
+
+  // Update sidebar total count
+  const totalEl = document.getElementById('totalCount')
+  if (totalEl) totalEl.textContent = activeEtapas().length - 1
+
+  // Student name
+  const auth = getAuth()
+  const firstName = auth.student ? auth.student.name.split(' ')[0] : 'Aluno'
   document.getElementById('studentName').textContent = firstName
 
   buildSidebar()
+  restoreCompletedUI()
   goToEtapa(getCurrentEtapa())
   updateProgress()
 }
 
+function backToSelector() {
+  document.getElementById('membersArea').classList.remove('active')
+  const auth = getAuth()
+  showSelector(auth.student ? auth.student.name : 'Aluno')
+}
+
+// ══════════════════════════════════════════
+//   MEMBERS AREA
+// ══════════════════════════════════════════
 function handleLogout() {
-  const state = getState()
-  delete state.loggedIn
-  delete state.student
-  saveState(state)
+  localStorage.removeItem('zxcontrol_auth')
   location.reload()
 }
 
 function buildSidebar() {
   const completed = getCompleted()
   const current = getCurrentEtapa()
+  const etapas = activeEtapas()
   const list = document.getElementById('etapaList')
   list.innerHTML = ''
 
-  ETAPAS.forEach(({ id, title }) => {
-    const isDone = completed.includes(id)
+  etapas.forEach(({ id, title }) => {
+    const isDone = id > 0 && completed.includes(id)
     const isActive = id === current
     const div = document.createElement('div')
     div.className = `etapa-item${isDone ? ' completed' : ''}${isActive ? ' active' : ''}`
     div.id = `sidebar-item-${id}`
     div.onclick = () => goToEtapa(id)
 
-    const tag = isDone ? 'done' : isActive ? 'active' : 'pending'
-    const tagLabel = isDone ? 'Concluída' : isActive ? 'Em andamento' : 'Pendente'
-
-    div.innerHTML = `
-      <div class="etapa-num${isDone ? ' check' : ''}">${isDone ? '' : id}</div>
-      <div class="etapa-item-body">
-        <div class="etapa-item-title">${title}</div>
-        <span class="etapa-item-tag ${tag}">${tagLabel}</span>
-      </div>
-    `
+    if (id === 0) {
+      div.innerHTML = `
+        <div class="etapa-num" style="background:rgba(34,211,238,0.15);color:var(--cyan)">▶</div>
+        <div class="etapa-item-body">
+          <div class="etapa-item-title">${title}</div>
+          <span class="etapa-item-tag ${isActive ? 'active' : 'pending'}">${isActive ? 'Assistindo' : 'Aulas'}</span>
+        </div>
+      `
+    } else {
+      const tag = isDone ? 'done' : isActive ? 'active' : 'pending'
+      const tagLabel = isDone ? 'Concluída' : isActive ? 'Em andamento' : 'Pendente'
+      div.innerHTML = `
+        <div class="etapa-num${isDone ? ' check' : ''}">${isDone ? '' : id}</div>
+        <div class="etapa-item-body">
+          <div class="etapa-item-title">${title}</div>
+          <span class="etapa-item-tag ${tag}">${tagLabel}</span>
+        </div>
+      `
+    }
     list.appendChild(div)
   })
 }
 
 function goToEtapa(id) {
-  // Hide all panels
   document.querySelectorAll('.etapa-panel').forEach(p => p.classList.remove('active'))
-  document.getElementById(`panel-${id}`).classList.add('active')
+  const panel = document.getElementById(panelId(id))
+  if (panel) panel.classList.add('active')
 
-  // Update sidebar
+  const etapas = activeEtapas()
+  const completed = getCompleted()
   document.querySelectorAll('.etapa-item').forEach((item, i) => {
-    item.classList.toggle('active', (i + 1) === id)
+    if (i >= etapas.length) return
+    const etapaId = etapas[i].id
+    item.classList.toggle('active', etapaId === id)
     const tag = item.querySelector('.etapa-item-tag')
-    const completed = getCompleted()
-    if (completed.includes(i + 1)) {
-      tag.className = 'etapa-item-tag done'
-      tag.textContent = 'Concluída'
-    } else if (i + 1 === id) {
-      tag.className = 'etapa-item-tag active'
-      tag.textContent = 'Em andamento'
+    if (!tag) return
+    if (etapaId === 0) {
+      tag.className = `etapa-item-tag ${etapaId === id ? 'active' : 'pending'}`
+      tag.textContent = etapaId === id ? 'Assistindo' : 'Aulas'
+    } else if (completed.includes(etapaId)) {
+      tag.className = 'etapa-item-tag done'; tag.textContent = 'Concluída'
+    } else if (etapaId === id) {
+      tag.className = 'etapa-item-tag active'; tag.textContent = 'Em andamento'
     } else {
-      tag.className = 'etapa-item-tag pending'
-      tag.textContent = 'Pendente'
+      tag.className = 'etapa-item-tag pending'; tag.textContent = 'Pendente'
     }
   })
 
-  // Save current
   const state = getState()
   state.current = id
   saveState(state)
 
-  // Scroll to top of content
   document.querySelector('.content-area').scrollTop = 0
   window.scrollTo(0, 0)
 
-  // Close sidebar on mobile
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.remove('open')
     document.getElementById('sidebarOverlay').classList.remove('show')
@@ -1410,34 +3463,38 @@ function markComplete(id) {
   if (!state.completed.includes(id)) state.completed.push(id)
   saveState(state)
 
-  // Update button
-  const btn = document.getElementById(`complete-${id}`)
-  btn.className = 'btn-complete done'
-  btn.innerHTML = '<span>✓</span> Etapa concluída!'
-  btn.disabled = true
+  const btn = document.getElementById(completeId(id))
+  if (btn) { btn.className = 'btn-complete done'; btn.innerHTML = '<span>✓</span> Etapa concluída!'; btn.disabled = true }
 
-  // Update status badge
-  const statusBadge = document.getElementById(`status-${id}`)
-  statusBadge.className = 'etapa-status-badge done'
-  statusBadge.textContent = 'Concluída'
+  const statusBadge = document.getElementById(statusId(id))
+  if (statusBadge) { statusBadge.className = 'etapa-status-badge done'; statusBadge.textContent = 'Concluída' }
 
   updateProgress()
   buildSidebar()
 
-  // Auto-advance to next etapa if not last
-  if (id < 10) {
-    setTimeout(() => goToEtapa(id + 1), 800)
-  }
+  const etapas = activeEtapas()
+  const maxId = etapas[etapas.length - 1].id
+  if (id < maxId) setTimeout(() => goToEtapa(id + 1), 800)
 }
 
 function updateProgress() {
   const completed = getCompleted()
   const count = completed.length
-  const pct = (count / 10) * 100
+  const total = activeEtapas().length - 1 // exclude Aulas (id=0)
+  const pct = total > 0 ? (count / total) * 100 : 0
 
   document.getElementById('completedCount').textContent = count
   document.getElementById('progressBarFill').style.width = pct + '%'
   document.getElementById('miniProgressFill').style.width = pct + '%'
+}
+
+function restoreCompletedUI() {
+  getCompleted().forEach(id => {
+    const btn = document.getElementById(completeId(id))
+    if (btn) { btn.className = 'btn-complete done'; btn.innerHTML = '<span>✓</span> Etapa concluída!'; btn.disabled = true }
+    const statusBadge = document.getElementById(statusId(id))
+    if (statusBadge) { statusBadge.className = 'etapa-status-badge done'; statusBadge.textContent = 'Concluída' }
+  })
 }
 
 function toggleSidebar() {
@@ -1456,10 +3513,7 @@ function copyCode(btn) {
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = 'Copiado!'
     btn.classList.add('copied')
-    setTimeout(() => {
-      btn.textContent = 'Copiar'
-      btn.classList.remove('copied')
-    }, 2000)
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied') }, 2000)
   })
 }
 
@@ -1467,26 +3521,10 @@ function copyCode(btn) {
 //   INIT
 // ══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  const state = getState()
-  if (state.loggedIn && state.student) {
-    openMembersArea(state.student.name)
+  const auth = getAuth()
+  if (auth.loggedIn && auth.student) {
+    showSelector(auth.student.name)
   }
-
-  // Restore completed button states
-  const completed = getCompleted()
-  completed.forEach(id => {
-    const btn = document.getElementById(`complete-${id}`)
-    if (btn) {
-      btn.className = 'btn-complete done'
-      btn.innerHTML = '<span>✓</span> Etapa concluída!'
-      btn.disabled = true
-    }
-    const statusBadge = document.getElementById(`status-${id}`)
-    if (statusBadge) {
-      statusBadge.className = 'etapa-status-badge done'
-      statusBadge.textContent = 'Concluída'
-    }
-  })
 
   document.getElementById('password').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('loginForm').requestSubmit()
