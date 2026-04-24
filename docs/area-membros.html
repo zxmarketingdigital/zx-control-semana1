@@ -234,12 +234,63 @@ body {
   transition: width 0.5s ease;
 }
 
+/* ── RENEWAL BANNER ── */
+#renewal-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: linear-gradient(135deg, #1a0a00 0%, #1f0f00 100%);
+  border-bottom: 1px solid rgba(249,115,22,0.45);
+  padding: 10px 48px 10px 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+#renewal-banner.show { display: flex; }
+.rb-badge {
+  background: linear-gradient(135deg,#f97316,#ea580c);
+  color:#fff; font-size:0.68rem; font-weight:800;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:3px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0;
+}
+.rb-copy { font-size:0.88rem; color:#e8e8ed; text-align:center; }
+.rb-copy strong { color:#fb923c; }
+.rb-countdown { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+.rb-block {
+  display:flex; flex-direction:column; align-items:center;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(249,115,22,0.3);
+  border-radius:7px; padding:3px 9px; min-width:40px;
+}
+.rb-num { font-size:1rem; font-weight:800; color:#fb923c; font-variant-numeric:tabular-nums; line-height:1; }
+.rb-lbl { font-size:0.55rem; color:#94a3b8; text-transform:uppercase; letter-spacing:0.05em; margin-top:1px; }
+.rb-sep { font-size:1rem; font-weight:800; color:#7c3108; margin-bottom:10px; }
+.rb-cta {
+  display:inline-block;
+  background:linear-gradient(135deg,#f97316,#ea580c);
+  color:#fff; font-weight:700; font-size:0.8rem;
+  padding:8px 18px; border-radius:8px; text-decoration:none;
+  white-space:nowrap; flex-shrink:0; transition:opacity 0.15s;
+}
+.rb-cta:hover { opacity:0.85; }
+.rb-close {
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:#7c3108; font-size:1rem;
+  cursor:pointer; padding:4px 6px; border-radius:4px; transition:color 0.15s;
+  line-height:1;
+}
+.rb-close:hover { color:#fb923c; }
+
 /* ── LAYOUT ── */
 .main-layout {
   display: flex;
   margin-top: 63px;
   min-height: calc(100vh - 63px);
 }
+body.banner-on .top-nav           { top: 48px; }
+body.banner-on .progress-bar-wrap { top: calc(60px + 48px) !important; }
+body.banner-on #loginScreen       { padding-top: 48px; }
+body.banner-on #weekSelector      { padding-top: 48px; }
+body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: calc(100vh - 111px); }
 
 /* ── SIDEBAR ── */
 .sidebar {
@@ -696,6 +747,25 @@ body {
 </style>
 </head>
 <body>
+
+<!-- ── RENEWAL BANNER (fixed, above all screens) ── -->
+<div id="renewal-banner">
+  <span class="rb-badge">⚡ Exclusivo Alunos 1.0</span>
+  <div class="rb-copy">
+    <strong>Turma 2 começa 01/05</strong> — De R$997 por <strong>R$497/mês</strong> · 50% OFF
+  </div>
+  <div class="rb-countdown">
+    <div class="rb-block"><span class="rb-num" id="rb-d">--</span><span class="rb-lbl">dias</span></div>
+    <span class="rb-sep">:</span>
+    <div class="rb-block"><span class="rb-num" id="rb-h">--</span><span class="rb-lbl">horas</span></div>
+    <span class="rb-sep">:</span>
+    <div class="rb-block"><span class="rb-num" id="rb-m">--</span><span class="rb-lbl">min</span></div>
+    <span class="rb-sep">:</span>
+    <div class="rb-block"><span class="rb-num" id="rb-s">--</span><span class="rb-lbl">seg</span></div>
+  </div>
+  <a class="rb-cta" href="https://zx-control-renovacao.pages.dev/" target="_blank" rel="noopener">Garantir 50% OFF →</a>
+  <button class="rb-close" onclick="closeBanner()" title="Fechar">✕</button>
+</div>
 
 <!-- ══════════════════════════════════════════
      LOGIN SCREEN
@@ -2758,7 +2828,7 @@ body {
         </div>
         <div class="section-title">Mentoria — Passo a Passo do Setup 4</div>
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
-          <iframe src="https://iframe.mediadelivery.net/embed/629692/00000000-0000-0000-0000-00000000s400?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/83de835e-f928-444f-948a-070d2a440740?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
         </div>
         <div class="etapa-divider"></div>
         <div class="section-title">O que você vai construir nesta semana</div>
@@ -3261,6 +3331,8 @@ function showSelector(name) {
     if (s4Done > 0) { s4Badge.textContent = `${s4Done}/10 concluídas`; s4Badge.style.display = '' }
     else { s4Badge.style.display = 'none' }
   }
+
+  initBanner()
 }
 
 function openWeek(n) {
@@ -3290,6 +3362,7 @@ function openWeek(n) {
   restoreCompletedUI()
   goToEtapa(getCurrentEtapa())
   updateProgress()
+  initBanner()
 }
 
 function backToSelector() {
@@ -3446,6 +3519,8 @@ function copyCode(btn) {
 //   INIT
 // ══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  initBanner()
+
   const auth = getAuth()
   if (auth.loggedIn && auth.student) {
     showSelector(auth.student.name)
@@ -3455,6 +3530,40 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') document.getElementById('loginForm').requestSubmit()
   })
 })
+
+// ── RENEWAL BANNER ──────────────────────────────────────────
+const BANNER_DEADLINE = new Date('2026-04-30T23:59:59').getTime()
+let _bannerTimer = null
+
+function initBanner() {
+  if (localStorage.getItem('zxbanner_closed') === '1') return
+  if (Date.now() >= BANNER_DEADLINE) return
+  const banner = document.getElementById('renewal-banner')
+  if (banner.classList.contains('show')) return  // já iniciado
+  banner.classList.add('show')
+  document.body.classList.add('banner-on')
+  updateBannerCountdown()
+  if (!_bannerTimer) _bannerTimer = setInterval(updateBannerCountdown, 1000)
+}
+
+function closeBanner() {
+  document.getElementById('renewal-banner').classList.remove('show')
+  document.body.classList.remove('banner-on')
+  localStorage.setItem('zxbanner_closed', '1')
+}
+
+function updateBannerCountdown() {
+  const diff = Math.max(0, BANNER_DEADLINE - Date.now())
+  if (diff === 0) { closeBanner(); return }
+  const d = Math.floor(diff / 86400000)
+  const h = Math.floor((diff % 86400000) / 3600000)
+  const m = Math.floor((diff % 3600000) / 60000)
+  const s = Math.floor((diff % 60000) / 1000)
+  document.getElementById('rb-d').textContent = String(d).padStart(2,'0')
+  document.getElementById('rb-h').textContent = String(h).padStart(2,'0')
+  document.getElementById('rb-m').textContent = String(m).padStart(2,'0')
+  document.getElementById('rb-s').textContent = String(s).padStart(2,'0')
+}
 </script>
 
 </body>
