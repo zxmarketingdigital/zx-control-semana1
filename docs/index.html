@@ -765,6 +765,198 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
 .week-card.s5::before {
   background: linear-gradient(90deg, #f59e0b, #d97706);
 }
+
+/* ══════════════════════════════════════════
+   PRÉ-REQUISITO — Base de Claude Code
+   ══════════════════════════════════════════ */
+.prereq-block {
+  background: linear-gradient(180deg, rgba(139,92,246,0.06), rgba(139,92,246,0.02));
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.prereq-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad);
+}
+.prereq-header {
+  display: flex; gap: 16px; align-items: flex-start;
+  margin-bottom: 20px;
+}
+.prereq-icon { font-size: 2rem; line-height: 1; }
+.prereq-text { flex: 1; min-width: 0; }
+.prereq-badge {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--purple);
+  background: rgba(139,92,246,0.12);
+  padding: 4px 10px; border-radius: 12px;
+  margin-bottom: 10px;
+}
+.prereq-text h2 {
+  font-size: 1.35rem; font-weight: 700;
+  color: var(--text); letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.prereq-tagline { font-size: 0.92rem; color: var(--text2); line-height: 1.5; }
+.prereq-module {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-top: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.prereq-module:hover { border-color: var(--border2); }
+.prereq-module-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+}
+.prereq-module-num {
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text2); margin-bottom: 4px;
+}
+.prereq-module-title {
+  font-size: 1rem; font-weight: 600; color: var(--text);
+}
+.prereq-chevron {
+  color: var(--text2); font-size: 0.9rem;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+.prereq-module.open .prereq-chevron { transform: rotate(180deg); }
+.prereq-module-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+.prereq-module.open .prereq-module-body {
+  max-height: 12000px;
+  transition: max-height 1s ease-in;
+}
+.prereq-module-body-inner {
+  padding: 0 20px 20px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.prereq-lesson {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.prereq-lesson-title {
+  font-size: 0.95rem; font-weight: 600; color: var(--text);
+  margin-bottom: 12px;
+}
+.prereq-lesson-video iframe {
+  display: block;
+  border-radius: 8px;
+  background: #000;
+}
+
+.btn-reopen-welcome {
+  background: none; border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem; font-weight: 500;
+  cursor: pointer;
+  padding: 7px 12px; border-radius: 8px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  margin-right: 8px;
+}
+.btn-reopen-welcome:hover {
+  color: var(--purple); border-color: var(--border2);
+  background: rgba(139,92,246,0.08);
+}
+
+/* ══════════════════════════════════════════
+   WELCOME MODAL
+   ══════════════════════════════════════════ */
+.welcome-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  animation: welcomeFadeIn 0.25s ease-out;
+}
+@keyframes welcomeFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.welcome-modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 480px; width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.welcome-modal::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad);
+  border-radius: 16px 16px 0 0;
+}
+.welcome-modal h2 {
+  font-size: 1.4rem; font-weight: 700; color: var(--text);
+  margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.welcome-question {
+  font-size: 1rem; color: var(--text2);
+  margin-bottom: 24px;
+}
+.welcome-actions {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 14px;
+}
+.welcome-btn {
+  display: block; width: 100%;
+  padding: 13px 18px; border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem; font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  transition: transform 0.15s, background 0.2s, border-color 0.2s;
+}
+.welcome-btn:hover { transform: translateY(-1px); }
+.welcome-btn-primary {
+  background: var(--grad);
+  color: #fff;
+  border: none;
+}
+.welcome-btn-secondary {
+  background: var(--bg3);
+  color: var(--text);
+}
+.welcome-btn-secondary:hover { background: var(--bg4); border-color: var(--purple); }
+.welcome-skip {
+  display: inline-block;
+  font-size: 0.82rem; color: var(--text3);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 4px;
+}
+.welcome-skip:hover { color: var(--text2); }
+@media (max-width: 600px) {
+  .welcome-modal { padding: 24px 20px; }
+  .welcome-modal h2 { font-size: 1.2rem; }
+  .prereq-block { padding: 18px; }
+  .prereq-text h2 { font-size: 1.15rem; }
+}
+
 .btn-switch-week {
   background: none; border: none;
   color: var(--text2);
@@ -870,6 +1062,7 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
     </div>
     <div class="nav-right">
       <div class="nav-student">Olá, <strong id="selectorStudentName">Aluno</strong></div>
+      <button class="btn-reopen-welcome" onclick="document.getElementById('welcomeModal').style.display='flex'">❓ Base de Claude Code</button>
       <button class="btn-logout" onclick="handleLogout()">Sair</button>
     </div>
   </nav>
@@ -878,6 +1071,93 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
     <div class="selector-wrap">
       <h1 class="selector-title">Escolha por onde começar</h1>
       <p class="selector-sub">Sem trava. Você decide a ordem.</p>
+
+      <div class="prereq-block" id="prereqBlock">
+        <div class="prereq-header">
+          <div class="prereq-icon">📚</div>
+          <div class="prereq-text">
+            <div class="prereq-badge">Pré-requisito · opcional</div>
+            <h2>Base de Claude Code</h2>
+            <p class="prereq-tagline">Nunca usou Claude Code? Comece por aqui antes de aplicar os Setups. Conteúdo extraído da Formação Cientista da IA.</p>
+          </div>
+        </div>
+
+        <div class="prereq-module" id="prereq-m1">
+          <div class="prereq-module-header" onclick="togglePrereqModule(1)">
+            <div>
+              <div class="prereq-module-num">Módulo 1 · 7 aulas</div>
+              <div class="prereq-module-title">Fundamentos do Claude Code</div>
+            </div>
+            <div class="prereq-chevron">▼</div>
+          </div>
+          <div class="prereq-module-body">
+            <div class="prereq-module-body-inner">
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 1 — Automatização com Claude Cowork</div>
+                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/2733b728405a23131ea3c782cc5b6aa822009336" title="Automatização com Claude Cowork" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 2 — Sistema de prospecção com Claude Code na prática</div>
+                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/51550cdb0aa38e0c12714469479ce4068cdf8768" title="Sistema de Prospecção com Claude Code" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 3 — Boas práticas para criar sistemas e agentes de IA</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/0729a0ff-31a1-416d-8f88-284e25fb15a9?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 4 — Cases de apps e dashboards usando Claude</div>
+                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/1b9b080ffb9bca9d5d7ef47b9131613dd5548068" title="Cases de Apps e Dashboards Usando Claude" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 5 — Como usar Claude para criar dashboards e aplicativos</div>
+                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/d91c373be3ff61cb2fbedcd032ef8ed5e4ded9aa" title="Como Usar Claude para Criar Dashboards" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 6 — Reduza custos de tokens em até 90%</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/ec90e515-1e9b-4340-882b-3a02e2c30877?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 7 — Sistema de proteção e otimização de memória</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/e14388aa-a63f-4771-9f41-001fb6e3f952?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div><div style="margin-top:16px;text-align:center;"><a href="https://whimsical.com/zx44/masterclass-sistema-de-protecao-e-otimizacao-de-memoria-para-cla-Hzh9bZnZ8Aryd1nMcmsXrK" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">Mapa Mental da Aula (Whimsical)</a></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prereq-module" id="prereq-m2">
+          <div class="prereq-module-header" onclick="togglePrereqModule(2)">
+            <div>
+              <div class="prereq-module-num">Módulo 2 · 5 aulas</div>
+              <div class="prereq-module-title">Automação com Claude Code</div>
+            </div>
+            <div class="prereq-chevron">▼</div>
+          </div>
+          <div class="prereq-module-body">
+            <div class="prereq-module-body-inner">
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 1 — Automação com Claude Code e novidades de IA</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/afa1f569-14c5-42ea-ae73-e7425dc0fb7c?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 2 — Mission Control: sistema de automação na sua operação</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/12a0f835-ea34-4960-93e8-89750e02337a?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 3 — Boas práticas para criar sistemas e agentes (revisão)</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/0729a0ff-31a1-416d-8f88-284e25fb15a9?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 4 — Novidades de IA + sessão especial Semana Santa</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/afa1f569-14c5-42ea-ae73-e7425dc0fb7c?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+              <div class="prereq-lesson">
+                <div class="prereq-lesson-title">Aula 5 — Claude vs Codex, modelos chineses e otimização de tokens</div>
+                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/81c47449-3978-4f5d-9be9-391e2df2b92b?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="week-grid">
         <!-- Semana 5 -->
@@ -3810,6 +4090,7 @@ function showSelector(name) {
   }
 
   initBanner()
+  maybeShowWelcomeModal()
 }
 
 function toggleWeekAccordion(n) {
@@ -4020,14 +4301,20 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // ── RENEWAL BANNER ──────────────────────────────────────────
-const BANNER_DEADLINE = new Date('2026-04-30T23:59:59').getTime()
+const BANNER_DEADLINE = new Date('2026-04-30T23:59:00-03:00').getTime()
 let _bannerTimer = null
+
+// Oferta A — renovação 50% OFF para alunos ZX Control 1.0
+const NEUTRAL_BADGE     = '⚡ Exclusivo Alunos 1.0'
+const NEUTRAL_COPY      = '<strong>Renove para o ZX Control 2.0</strong> — 50% OFF travado enquanto ativo'
+const NEUTRAL_CTA_LABEL = 'Renovar com 50% OFF →'
+const NEUTRAL_CTA_URL   = 'https://zx-control-renovacao.pages.dev/'
 
 function initBanner() {
   if (localStorage.getItem('zxbanner_closed') === '1') return
-  if (Date.now() >= BANNER_DEADLINE) return
   const banner = document.getElementById('renewal-banner')
-  if (banner.classList.contains('show')) return  // já iniciado
+  if (!banner) return
+  if (banner.classList.contains('show')) return
   banner.classList.add('show')
   document.body.classList.add('banner-on')
   updateBannerCountdown()
@@ -4040,19 +4327,68 @@ function closeBanner() {
   localStorage.setItem('zxbanner_closed', '1')
 }
 
+function renderNeutralBanner() {
+  const banner = document.getElementById('renewal-banner')
+  if (!banner || banner.dataset.neutral === '1') return
+  banner.dataset.neutral = '1'
+  banner.innerHTML =
+      '<span class="rb-badge">' + NEUTRAL_BADGE + '</span>'
+    + '<div class="rb-copy">' + NEUTRAL_COPY + '</div>'
+    + '<a class="rb-cta" href="' + NEUTRAL_CTA_URL + '" target="_blank" rel="noopener">' + NEUTRAL_CTA_LABEL + '</a>'
+    + '<button class="rb-close" onclick="closeBanner()" title="Fechar">✕</button>'
+  if (_bannerTimer) { clearInterval(_bannerTimer); _bannerTimer = null }
+}
+
 function updateBannerCountdown() {
-  const diff = Math.max(0, BANNER_DEADLINE - Date.now())
-  if (diff === 0) { closeBanner(); return }
+  const diff = BANNER_DEADLINE - Date.now()
+  if (diff <= 0) { renderNeutralBanner(); return }
   const d = Math.floor(diff / 86400000)
   const h = Math.floor((diff % 86400000) / 3600000)
   const m = Math.floor((diff % 3600000) / 60000)
   const s = Math.floor((diff % 60000) / 1000)
-  document.getElementById('rb-d').textContent = String(d).padStart(2,'0')
-  document.getElementById('rb-h').textContent = String(h).padStart(2,'0')
-  document.getElementById('rb-m').textContent = String(m).padStart(2,'0')
-  document.getElementById('rb-s').textContent = String(s).padStart(2,'0')
+  const eD = document.getElementById('rb-d'); if (eD) eD.textContent = String(d).padStart(2,'0')
+  const eH = document.getElementById('rb-h'); if (eH) eH.textContent = String(h).padStart(2,'0')
+  const eM = document.getElementById('rb-m'); if (eM) eM.textContent = String(m).padStart(2,'0')
+  const eS = document.getElementById('rb-s'); if (eS) eS.textContent = String(s).padStart(2,'0')
+}
+
+// ══════════════════════════════════════════
+//   WELCOME MODAL + PRÉ-REQUISITO
+// ══════════════════════════════════════════
+function maybeShowWelcomeModal() {
+  if (localStorage.getItem('zxcontrol_intro_seen')) return
+  const m = document.getElementById('welcomeModal')
+  if (m) m.style.display = 'flex'
+}
+function dismissWelcome(action) {
+  localStorage.setItem('zxcontrol_intro_seen', '1')
+  const m = document.getElementById('welcomeModal')
+  if (m) m.style.display = 'none'
+  if (action === 'base') {
+    const block = document.getElementById('prereqBlock')
+    if (block) block.scrollIntoView({behavior:'smooth', block:'start'})
+    togglePrereqModule(1, true)
+  }
+}
+function togglePrereqModule(n, forceOpen) {
+  const el = document.getElementById('prereq-m' + n)
+  if (!el) return
+  if (forceOpen) el.classList.add('open')
+  else el.classList.toggle('open')
 }
 </script>
+
+<div class="welcome-modal-overlay" id="welcomeModal" style="display:none">
+  <div class="welcome-modal">
+    <h2>Bem-vindo à Área de Membros</h2>
+    <p class="welcome-question">Você já tem familiaridade com Claude Code?</p>
+    <div class="welcome-actions">
+      <button class="welcome-btn welcome-btn-primary" onclick="dismissWelcome('base')">Não — quero começar pela Base</button>
+      <button class="welcome-btn welcome-btn-secondary" onclick="dismissWelcome('setups')">Sim — ir direto pros Setups</button>
+    </div>
+    <a class="welcome-skip" onclick="dismissWelcome('skip')">Pular por agora</a>
+  </div>
+</div>
 
 </body>
 </html>
