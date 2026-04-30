@@ -351,8 +351,9 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
 .etapa-num.check::after { content: '✓'; }
 .etapa-item-body { flex: 1; min-width: 0; }
 .etapa-item-title {
-  font-size: 0.82rem; font-weight: 600; color: var(--text2);
+  font-size: 0.95rem; font-weight: 700; color: var(--text);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: -0.01em;
   transition: color 0.15s;
 }
 .etapa-item.active .etapa-item-title { color: var(--text); }
@@ -629,53 +630,83 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
   margin-bottom: 48px;
 }
 .week-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 920px;
+  margin: 0 auto;
 }
 .week-card {
   background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 36px;
+  border-radius: 16px;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .week-card::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(139,92,246,0.4), transparent);
+  z-index: 1;
 }
-.week-card:hover {
+.week-card:hover { border-color: var(--border2); }
+.week-card.expanded {
   border-color: var(--border2);
-  box-shadow: 0 12px 40px rgba(139,92,246,0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(139,92,246,0.12);
+}
+.week-card-header {
+  display: flex; align-items: center; gap: 20px;
+  padding: 22px 28px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.week-card-header:hover { background: rgba(255,255,255,0.02); }
+.week-card-header-text { flex: 1; min-width: 0; }
+.week-card-chevron {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: var(--text3);
+  transition: transform 0.25s ease;
+}
+.week-card.expanded .week-card-chevron { transform: rotate(180deg); color: var(--purple); }
+.week-card-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.25s ease;
+  padding: 0 28px;
+}
+.week-card.expanded .week-card-body {
+  max-height: 2000px;
+  opacity: 1;
+  padding: 4px 28px 28px 28px;
 }
 .week-card-progress {
-  position: absolute; top: 20px; right: 20px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem; font-weight: 600;
   padding: 3px 10px; border-radius: 100px;
   background: rgba(16,185,129,0.1); color: var(--green);
   border: 1px solid rgba(16,185,129,0.25);
+  margin-right: 8px;
 }
 .week-card-badge {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem; font-weight: 600;
   letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--purple); margin-bottom: 8px;
+  color: var(--purple); margin-bottom: 6px;
 }
 .week-card-title {
-  font-size: 1.6rem; font-weight: 800;
+  font-size: 1.4rem; font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text);
   margin-bottom: 4px;
 }
 .week-card-tagline {
-  font-size: 0.88rem; color: var(--text2);
-  margin-bottom: 16px;
+  font-size: 0.86rem; color: var(--text2);
+  margin-bottom: 0;
 }
 .week-card-thesis {
   font-size: 0.88rem; color: var(--text2);
@@ -849,105 +880,135 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
       <p class="selector-sub">Sem trava. Você decide a ordem.</p>
 
       <div class="week-grid">
-        <!-- Semana 1 -->
-        <div class="week-card" onclick="openWeek(1)">
-          <div class="week-card-progress" id="s1Progress" style="display:none"></div>
-          <div class="week-card-badge">Setup 1</div>
-          <div class="week-card-title">Fundação Operacional</div>
-          <div class="week-card-tagline">Setup completo em ~1 hora</div>
-          <div class="week-card-thesis">Ao final: WhatsApp + Email conectados, agente IA respondendo leads, disparos programados rodando, monitor diário ativo.</div>
-          <div class="benefit-list">
-            <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">WhatsApp conectado</span> — <span class="b-desc">seu número respondendo leads via Evolution API (grátis) ou Z-API</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email automatizado</span> — <span class="b-desc">integração Resend com plano gratuito 3.000 emails/mês</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente IA BANT</span> — <span class="b-desc">qualifica leads automaticamente (OpenAI, Gemini ou Claude)</span></div></div>
-            <div class="benefit-item"><span class="b-icon">👥</span><div><span class="b-name">Base de contatos</span> — <span class="b-desc">importa sua lista e organiza em banco local</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🚀</span><div><span class="b-name">Disparos seguros</span> — <span class="b-desc">rate limiter (30/h, 150/dia) e dry-run obrigatório</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Monitor diário</span> — <span class="b-desc">relatório de saúde às 8h, sem você precisar lembrar</span></div></div>
+        <!-- Semana 5 -->
+        <div class="week-card s5 expanded" id="weekCard-5">
+          <div class="week-card-header" onclick="toggleWeekAccordion(5)">
+            <div class="week-card-header-text">
+              <div class="week-card-badge"><span class="week-card-progress" id="s5Progress" style="display:none"></span>Setup 5 · Automação Instagram</div>
+              <div class="week-card-title">Automação do Instagram</div>
+              <div class="week-card-tagline">Auto-resposta de comentários + Agente de DM em ~75 min · 9 etapas</div>
+            </div>
+            <div class="week-card-chevron">▼</div>
           </div>
-          <div class="week-card-meta">⏱ ~1 hora · 10 etapas</div>
-          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(1)">Começar Setup 1 →</button>
-        </div>
-
-        <!-- Semana 2 -->
-        <div class="week-card s2" onclick="openWeek(2)">
-          <div class="week-card-progress" id="s2Progress" style="display:none"></div>
-          <div class="week-card-badge">Setup 2</div>
-          <div class="week-card-title">Operação Robusta</div>
-          <div class="week-card-tagline">Profissionaliza sua operação em ~1h15</div>
-          <div class="week-card-thesis">Ao final: sua operação vira profissional — economiza 60-90% em tokens, se monitora sozinha, roda na nuvem e você publica seu primeiro mini-CRM online.</div>
-          <div class="benefit-list">
-            <div class="benefit-item"><span class="b-icon">🎯</span><div><span class="b-name">Mission Control</span> — <span class="b-desc">painel único com tudo da sua operação num HTML que você abre no browser</span></div></div>
-            <div class="benefit-item"><span class="b-icon">💰</span><div><span class="b-name">RTK Token Killer</span> — <span class="b-desc">60-90% menos tokens Claude Code em operações repetitivas</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🛠</span><div><span class="b-name">Pack de skills pro</span> — <span class="b-desc">/status, /healthcheck, /fix, /dedup, /preflight, /harvest, /encerrar</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🛡</span><div><span class="b-name">Agente Guardião + Heartbeat</span> — <span class="b-desc">detecta queda e te avisa no WhatsApp em minutos</span></div></div>
-            <div class="benefit-item"><span class="b-icon">☁️</span><div><span class="b-name">Supabase + Auth</span> — <span class="b-desc">banco de dados na nuvem com login pronto, grátis</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📦</span><div><span class="b-name">Contatos na nuvem</span> — <span class="b-desc">migra sua base da Sem1 (ou cola CSV) direto pro Supabase</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🌐</span><div><span class="b-name">Mini-CRM publicado</span> — <span class="b-desc">deploy real no Cloudflare Pages com login, listagem e CRUD</span></div></div>
-            <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Checklist final</span> — <span class="b-desc">Mission Control populado com links e status de cada módulo</span></div></div>
+          <div class="week-card-body">
+            <div class="week-card-thesis">Ao final: comentários com palavras-chave enviam DM automático, agente treinado nos seus produtos responde DMs, escalação para o seu WhatsApp pessoal, token com refresh automático (60 dias) e Mission Control 5.0 com widgets do Instagram.</div>
+            <div class="benefit-list">
+              <div class="benefit-item"><span class="b-icon">💬</span><div><span class="b-name">Auto-resposta de comentários</span> — <span class="b-desc">palavras-chave disparam DM (Private Reply) automático com link do produto</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente de DM</span> — <span class="b-desc">treinado nos seus produtos, responde leads no inbox do Instagram 24h</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Token com refresh automático</span> — <span class="b-desc">renovação silenciosa a cada 50 dias — sem interrupção da automação</span></div></div>
+              <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Cron configurável</span> — <span class="b-desc">você define a cadência — comentários e DMs rodam em paralelo sem você fazer nada</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📲</span><div><span class="b-name">Escalação para WhatsApp</span> — <span class="b-desc">quando o lead pede humano, você recebe a conversa direto no seu WhatsApp</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 5.0</span> — <span class="b-desc">widgets de Instagram: comentários processados, DMs respondidas, dias até expirar token</span></div></div>
+              <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Teste prático ao vivo</span> — <span class="b-desc">você comenta em um post seu e valida o ciclo completo antes de finalizar</span></div></div>
+            </div>
+            <div class="week-card-meta">⏱ ~75 min · 9 etapas</div>
+            <button class="week-card-cta" onclick="event.stopPropagation();openWeek(5)">Começar Setup 5 →</button>
           </div>
-          <div class="week-card-meta">⏱ ~1h15 · 8 etapas</div>
-          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(2)">Começar Setup 2 →</button>
-        </div>
-
-        <!-- Semana 3 -->
-        <div class="week-card s3" onclick="openWeek(3)">
-          <div class="week-card-progress" id="s3Progress" style="display:none"></div>
-          <div class="week-card-badge">Setup 3</div>
-          <div class="week-card-title">Prospecção Automatizada</div>
-          <div class="week-card-tagline">Máquina de prospecção em ~1h30</div>
-          <div class="week-card-thesis">Ao final: APIFY buscando leads do seu nicho automaticamente, dashboard com score e temperatura de cada lead, disparos de WhatsApp (30/dia) e Email (200/dia) com sequência de 7 dias, tudo rodando sozinho às 8h toda manhã.</div>
-          <div class="benefit-list">
-            <div class="benefit-item"><span class="b-icon">🔍</span><div><span class="b-name">APIFY buscando leads</span> — <span class="b-desc">encontra empresas do seu nicho no Google Maps automaticamente</span></div></div>
-            <div class="benefit-item"><span class="b-icon">👤</span><div><span class="b-name">Perfil de prospecção</span> — <span class="b-desc">define exatamente quem você quer como cliente (nicho, cidade, serviço)</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Dashboard de leads</span> — <span class="b-desc">vê score, temperatura e potencial de cada lead num painel dark</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">Disparos WhatsApp seguros</span> — <span class="b-desc">30/dia com rate limiter anti-bloqueio e delay randomizado</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email em escala</span> — <span class="b-desc">200/dia com sequência personalizada por segmento</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Copy de 7 dias</span> — <span class="b-desc">mensagens que parecem escritas a mão, geradas automaticamente por segmento</span></div></div>
-            <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Motor de campanhas</span> — <span class="b-desc">decide quando e para quem enviar, respeitando limites e priorizando por score</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🕐</span><div><span class="b-name">Automação diária</span> — <span class="b-desc">roda às 8h toda manhã sem você fazer nada — busca + disparo + dashboard</span></div></div>
-          </div>
-          <div class="week-card-meta">⏱ ~1h30 · 10 etapas</div>
-          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(3)">Começar Setup 3 →</button>
         </div>
 
         <!-- Semana 4 -->
-        <div class="week-card s4" onclick="openWeek(4)">
-          <div class="week-card-progress" id="s4Progress" style="display:none"></div>
-          <div class="week-card-badge">Setup 4</div>
-          <div class="week-card-title">Inteligência & Escala</div>
-          <div class="week-card-tagline">Segundo cérebro + economia de 60-90% tokens em ~55 min</div>
-          <div class="week-card-thesis">Ao final: skill /codex-review para revisar projetos sob demanda, memória unificada entre Desktop e Terminal, skills sincronizadas, Graphify economizando tokens e Mission Control 2.0 com dashboard das 4 semanas.</div>
-          <div class="benefit-list">
-            <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Codex Revisor</span> — <span class="b-desc">skill /codex-review para revisar projetos quando quiser + automação agendada opcional</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🧠</span><div><span class="b-name">Memória unificada</span> — <span class="b-desc">Claude Desktop e Terminal compartilhando a mesma memória via symlink</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Skills + MCPs em Sync</span> — <span class="b-desc">skills sincronizadas via git entre máquinas, sem perder configurações</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🕸</span><div><span class="b-name">Graphify — Economia de Tokens</span> — <span class="b-desc">60-90% menos tokens em perguntas sobre projetos — contexto pré-indexado</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🚀</span><div><span class="b-name">Claude mais rápido e inteligente</span> — <span class="b-desc">contexto pré-indexado, entende dependências, sem precisar colar código</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 2.0</span> — <span class="b-desc">dashboard completo com status de todas as 4 semanas</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Log automático de sessão</span> — <span class="b-desc">feedback e dados enviados ao Supabase para evolução do produto</span></div></div>
+        <div class="week-card s4" id="weekCard-4">
+          <div class="week-card-header" onclick="toggleWeekAccordion(4)">
+            <div class="week-card-header-text">
+              <div class="week-card-badge"><span class="week-card-progress" id="s4Progress" style="display:none"></span>Setup 4 · Inteligência & Escala</div>
+              <div class="week-card-title">Inteligência & Escala</div>
+              <div class="week-card-tagline">Segundo cérebro + economia de 60-90% tokens em ~55 min · 8 etapas</div>
+            </div>
+            <div class="week-card-chevron">▼</div>
           </div>
-          <div class="week-card-meta">⏱ ~55 min · 8 etapas</div>
-          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(4)">Começar Setup 4 →</button>
+          <div class="week-card-body">
+            <div class="week-card-thesis">Ao final: skill /codex-review para revisar projetos sob demanda, memória unificada entre Desktop e Terminal, skills sincronizadas, Graphify economizando tokens e Mission Control 2.0 com dashboard das 4 semanas.</div>
+            <div class="benefit-list">
+              <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Codex Revisor</span> — <span class="b-desc">skill /codex-review para revisar projetos quando quiser + automação agendada opcional</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🧠</span><div><span class="b-name">Memória unificada</span> — <span class="b-desc">Claude Desktop e Terminal compartilhando a mesma memória via symlink</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Skills + MCPs em Sync</span> — <span class="b-desc">skills sincronizadas via git entre máquinas, sem perder configurações</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🕸</span><div><span class="b-name">Graphify — Economia de Tokens</span> — <span class="b-desc">60-90% menos tokens em perguntas sobre projetos — contexto pré-indexado</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🚀</span><div><span class="b-name">Claude mais rápido e inteligente</span> — <span class="b-desc">contexto pré-indexado, entende dependências, sem precisar colar código</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 2.0</span> — <span class="b-desc">dashboard completo com status de todas as 4 semanas</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Log automático de sessão</span> — <span class="b-desc">feedback e dados enviados ao Supabase para evolução do produto</span></div></div>
+            </div>
+            <div class="week-card-meta">⏱ ~55 min · 8 etapas</div>
+            <button class="week-card-cta" onclick="event.stopPropagation();openWeek(4)">Começar Setup 4 →</button>
+          </div>
         </div>
 
-        <!-- Semana 5 -->
-        <div class="week-card s5" onclick="openWeek(5)">
-          <div class="week-card-progress" id="s5Progress" style="display:none"></div>
-          <div class="week-card-badge">Setup 5</div>
-          <div class="week-card-title">Automação do Instagram</div>
-          <div class="week-card-tagline">Auto-resposta de comentários + Agente de DM em ~75 min · 9 etapas</div>
-          <div class="week-card-thesis">Ao final: comentários com palavras-chave enviam DM automático, agente treinado nos seus produtos responde DMs, escalação para o seu WhatsApp pessoal, token com refresh automático (60 dias) e Mission Control 5.0 com widgets do Instagram.</div>
-          <div class="benefit-list">
-            <div class="benefit-item"><span class="b-icon">💬</span><div><span class="b-name">Auto-resposta de comentários</span> — <span class="b-desc">palavras-chave disparam DM (Private Reply) automático com link do produto</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente de DM</span> — <span class="b-desc">treinado nos seus produtos, responde leads no inbox do Instagram 24h</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Token com refresh automático</span> — <span class="b-desc">renovação silenciosa a cada 50 dias — sem interrupção da automação</span></div></div>
-            <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Cron configurável</span> — <span class="b-desc">você define a cadência — comentários e DMs rodam em paralelo sem você fazer nada</span></div></div>
-            <div class="benefit-item"><span class="b-icon">📲</span><div><span class="b-name">Escalação para WhatsApp</span> — <span class="b-desc">quando o lead pede humano, você recebe a conversa direto no seu WhatsApp</span></div></div>
-            <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 5.0</span> — <span class="b-desc">widgets de Instagram: comentários processados, DMs respondidas, dias até expirar token</span></div></div>
-            <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Teste prático ao vivo</span> — <span class="b-desc">você comenta em um post seu e valida o ciclo completo antes de finalizar</span></div></div>
+        <!-- Semana 3 -->
+        <div class="week-card s3" id="weekCard-3">
+          <div class="week-card-header" onclick="toggleWeekAccordion(3)">
+            <div class="week-card-header-text">
+              <div class="week-card-badge"><span class="week-card-progress" id="s3Progress" style="display:none"></span>Setup 3 · Prospecção Automatizada</div>
+              <div class="week-card-title">Prospecção Automatizada</div>
+              <div class="week-card-tagline">Máquina de prospecção em ~1h30 · 10 etapas</div>
+            </div>
+            <div class="week-card-chevron">▼</div>
           </div>
-          <div class="week-card-meta">⏱ ~75 min · 9 etapas</div>
-          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(5)">Começar Setup 5 →</button>
+          <div class="week-card-body">
+            <div class="week-card-thesis">Ao final: APIFY buscando leads do seu nicho automaticamente, dashboard com score e temperatura de cada lead, disparos de WhatsApp (30/dia) e Email (200/dia) com sequência de 7 dias, tudo rodando sozinho às 8h toda manhã.</div>
+            <div class="benefit-list">
+              <div class="benefit-item"><span class="b-icon">🔍</span><div><span class="b-name">APIFY buscando leads</span> — <span class="b-desc">encontra empresas do seu nicho no Google Maps automaticamente</span></div></div>
+              <div class="benefit-item"><span class="b-icon">👤</span><div><span class="b-name">Perfil de prospecção</span> — <span class="b-desc">define exatamente quem você quer como cliente (nicho, cidade, serviço)</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Dashboard de leads</span> — <span class="b-desc">vê score, temperatura e potencial de cada lead num painel dark</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">Disparos WhatsApp seguros</span> — <span class="b-desc">30/dia com rate limiter anti-bloqueio e delay randomizado</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email em escala</span> — <span class="b-desc">200/dia com sequência personalizada por segmento</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📝</span><div><span class="b-name">Copy de 7 dias</span> — <span class="b-desc">mensagens que parecem escritas a mão, geradas automaticamente por segmento</span></div></div>
+              <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Motor de campanhas</span> — <span class="b-desc">decide quando e para quem enviar, respeitando limites e priorizando por score</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🕐</span><div><span class="b-name">Automação diária</span> — <span class="b-desc">roda às 8h toda manhã sem você fazer nada — busca + disparo + dashboard</span></div></div>
+            </div>
+            <div class="week-card-meta">⏱ ~1h30 · 10 etapas</div>
+            <button class="week-card-cta" onclick="event.stopPropagation();openWeek(3)">Começar Setup 3 →</button>
+          </div>
+        </div>
+
+        <!-- Semana 2 -->
+        <div class="week-card s2" id="weekCard-2">
+          <div class="week-card-header" onclick="toggleWeekAccordion(2)">
+            <div class="week-card-header-text">
+              <div class="week-card-badge"><span class="week-card-progress" id="s2Progress" style="display:none"></span>Setup 2 · Operação Robusta</div>
+              <div class="week-card-title">Operação Robusta</div>
+              <div class="week-card-tagline">Profissionaliza sua operação em ~1h15 · 8 etapas</div>
+            </div>
+            <div class="week-card-chevron">▼</div>
+          </div>
+          <div class="week-card-body">
+            <div class="week-card-thesis">Ao final: sua operação vira profissional — economiza 60-90% em tokens, se monitora sozinha, roda na nuvem e você publica seu primeiro mini-CRM online.</div>
+            <div class="benefit-list">
+              <div class="benefit-item"><span class="b-icon">🎯</span><div><span class="b-name">Mission Control</span> — <span class="b-desc">painel único com tudo da sua operação num HTML que você abre no browser</span></div></div>
+              <div class="benefit-item"><span class="b-icon">💰</span><div><span class="b-name">RTK Token Killer</span> — <span class="b-desc">60-90% menos tokens Claude Code em operações repetitivas</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🛠</span><div><span class="b-name">Pack de skills pro</span> — <span class="b-desc">/status, /healthcheck, /fix, /dedup, /preflight, /harvest, /encerrar</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🛡</span><div><span class="b-name">Agente Guardião + Heartbeat</span> — <span class="b-desc">detecta queda e te avisa no WhatsApp em minutos</span></div></div>
+              <div class="benefit-item"><span class="b-icon">☁️</span><div><span class="b-name">Supabase + Auth</span> — <span class="b-desc">banco de dados na nuvem com login pronto, grátis</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📦</span><div><span class="b-name">Contatos na nuvem</span> — <span class="b-desc">migra sua base da Sem1 (ou cola CSV) direto pro Supabase</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🌐</span><div><span class="b-name">Mini-CRM publicado</span> — <span class="b-desc">deploy real no Cloudflare Pages com login, listagem e CRUD</span></div></div>
+              <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Checklist final</span> — <span class="b-desc">Mission Control populado com links e status de cada módulo</span></div></div>
+            </div>
+            <div class="week-card-meta">⏱ ~1h15 · 8 etapas</div>
+            <button class="week-card-cta" onclick="event.stopPropagation();openWeek(2)">Começar Setup 2 →</button>
+          </div>
+        </div>
+
+        <!-- Semana 1 -->
+        <div class="week-card" id="weekCard-1">
+          <div class="week-card-header" onclick="toggleWeekAccordion(1)">
+            <div class="week-card-header-text">
+              <div class="week-card-badge"><span class="week-card-progress" id="s1Progress" style="display:none"></span>Setup 1 · Fundação Operacional</div>
+              <div class="week-card-title">Fundação Operacional</div>
+              <div class="week-card-tagline">Setup completo em ~1 hora · 10 etapas</div>
+            </div>
+            <div class="week-card-chevron">▼</div>
+          </div>
+          <div class="week-card-body">
+            <div class="week-card-thesis">Ao final: WhatsApp + Email conectados, agente IA respondendo leads, disparos programados rodando, monitor diário ativo.</div>
+            <div class="benefit-list">
+              <div class="benefit-item"><span class="b-icon">📱</span><div><span class="b-name">WhatsApp conectado</span> — <span class="b-desc">seu número respondendo leads via Evolution API (grátis) ou Z-API</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📧</span><div><span class="b-name">Email automatizado</span> — <span class="b-desc">integração Resend com plano gratuito 3.000 emails/mês</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente IA BANT</span> — <span class="b-desc">qualifica leads automaticamente (OpenAI, Gemini ou Claude)</span></div></div>
+              <div class="benefit-item"><span class="b-icon">👥</span><div><span class="b-name">Base de contatos</span> — <span class="b-desc">importa sua lista e organiza em banco local</span></div></div>
+              <div class="benefit-item"><span class="b-icon">🚀</span><div><span class="b-name">Disparos seguros</span> — <span class="b-desc">rate limiter (30/h, 150/dia) e dry-run obrigatório</span></div></div>
+              <div class="benefit-item"><span class="b-icon">📊</span><div><span class="b-name">Monitor diário</span> — <span class="b-desc">relatório de saúde às 8h, sem você precisar lembrar</span></div></div>
+            </div>
+            <div class="week-card-meta">⏱ ~1 hora · 10 etapas</div>
+            <button class="week-card-cta" onclick="event.stopPropagation();openWeek(1)">Começar Setup 1 →</button>
+          </div>
         </div>
       </div>
     </div>
@@ -3749,6 +3810,17 @@ function showSelector(name) {
   }
 
   initBanner()
+}
+
+function toggleWeekAccordion(n) {
+  const card = document.getElementById(`weekCard-${n}`)
+  if (!card) return
+  const isOpen = card.classList.contains('expanded')
+  document.querySelectorAll('.week-card.expanded').forEach(c => c.classList.remove('expanded'))
+  if (!isOpen) {
+    card.classList.add('expanded')
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100)
+  }
 }
 
 function openWeek(n) {
