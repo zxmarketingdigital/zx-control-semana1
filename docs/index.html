@@ -766,195 +766,33 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
   background: linear-gradient(90deg, #f59e0b, #d97706);
 }
 
-/* ══════════════════════════════════════════
-   PRÉ-REQUISITO — Base de Claude Code
-   ══════════════════════════════════════════ */
-.prereq-block {
-  background: linear-gradient(180deg, rgba(139,92,246,0.06), rgba(139,92,246,0.02));
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 28px;
-  position: relative;
-  overflow: hidden;
+/* Base de Claude Code — pré-requisito */
+.week-card.base .week-card-cta {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
 }
-.prereq-block::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--grad);
+.week-card.base::before {
+  background: linear-gradient(90deg, #06b6d4, #0891b2);
 }
-.prereq-header {
-  display: flex; gap: 16px; align-items: flex-start;
-  margin-bottom: 20px;
-}
-.prereq-icon { font-size: 2rem; line-height: 1; }
-.prereq-text { flex: 1; min-width: 0; }
-.prereq-badge {
-  display: inline-block;
-  font-size: 0.65rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--purple);
-  background: rgba(139,92,246,0.12);
-  padding: 4px 10px; border-radius: 12px;
-  margin-bottom: 10px;
-}
-.prereq-text h2 {
-  font-size: 1.35rem; font-weight: 700;
-  color: var(--text); letter-spacing: -0.01em;
-  margin-bottom: 6px;
-}
-.prereq-tagline { font-size: 0.92rem; color: var(--text2); line-height: 1.5; }
-.prereq-module {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  margin-top: 12px;
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-.prereq-module:hover { border-color: var(--border2); }
-.prereq-module-header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px 20px;
-  cursor: pointer;
-  user-select: none;
-  gap: 12px;
-}
-.prereq-module-num {
-  font-size: 0.7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--text2); margin-bottom: 4px;
-}
-.prereq-module-title {
-  font-size: 1rem; font-weight: 600; color: var(--text);
-}
-.prereq-chevron {
-  color: var(--text2); font-size: 0.9rem;
-  transition: transform 0.25s;
-  flex-shrink: 0;
-}
-.prereq-module.open .prereq-chevron { transform: rotate(180deg); }
-.prereq-module-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
-}
-.prereq-module.open .prereq-module-body {
-  max-height: 12000px;
-  transition: max-height 1s ease-in;
-}
-.prereq-module-body-inner {
-  padding: 0 20px 20px;
-  display: flex; flex-direction: column; gap: 20px;
-}
-.prereq-lesson {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-}
-.prereq-lesson-title {
-  font-size: 0.95rem; font-weight: 600; color: var(--text);
-  margin-bottom: 12px;
-}
-.prereq-lesson-video iframe {
-  display: block;
-  border-radius: 8px;
-  background: #000;
+.week-card.base .week-card-badge {
+  background: rgba(6,182,212,0.15);
+  color: #67e8f9;
 }
 
-.btn-reopen-welcome {
-  background: none; border: 1px solid var(--border);
-  color: var(--text2);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.78rem; font-weight: 500;
-  cursor: pointer;
-  padding: 7px 12px; border-radius: 8px;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
-  margin-right: 8px;
-}
-.btn-reopen-welcome:hover {
-  color: var(--purple); border-color: var(--border2);
-  background: rgba(139,92,246,0.08);
-}
-
-/* ══════════════════════════════════════════
-   WELCOME MODAL
-   ══════════════════════════════════════════ */
-.welcome-modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(10,10,15,0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 9999;
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-  animation: welcomeFadeIn 0.25s ease-out;
-}
-@keyframes welcomeFadeIn { from { opacity: 0; } to { opacity: 1; } }
-.welcome-modal {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 32px;
-  max-width: 480px; width: 100%;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-.welcome-modal::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--grad);
-  border-radius: 16px 16px 0 0;
-}
-.welcome-modal h2 {
-  font-size: 1.4rem; font-weight: 700; color: var(--text);
-  margin-bottom: 10px; letter-spacing: -0.01em;
-}
-.welcome-question {
-  font-size: 1rem; color: var(--text2);
-  margin-bottom: 24px;
-}
-.welcome-actions {
-  display: flex; flex-direction: column; gap: 10px;
-  margin-bottom: 14px;
-}
-.welcome-btn {
-  display: block; width: 100%;
-  padding: 13px 18px; border-radius: 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.92rem; font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border2);
-  transition: transform 0.15s, background 0.2s, border-color 0.2s;
-}
-.welcome-btn:hover { transform: translateY(-1px); }
-.welcome-btn-primary {
-  background: var(--grad);
-  color: #fff;
-  border: none;
-}
-.welcome-btn-secondary {
-  background: var(--bg3);
-  color: var(--text);
-}
-.welcome-btn-secondary:hover { background: var(--bg4); border-color: var(--purple); }
-.welcome-skip {
-  display: inline-block;
-  font-size: 0.82rem; color: var(--text3);
-  cursor: pointer;
-  text-decoration: underline;
+/* Section header dentro do sidebar (separador entre módulos da Base) */
+.etapa-section-header {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  padding: 16px 12px 8px;
+  border-top: 1px solid var(--border);
   margin-top: 4px;
 }
-.welcome-skip:hover { color: var(--text2); }
-@media (max-width: 600px) {
-  .welcome-modal { padding: 24px 20px; }
-  .welcome-modal h2 { font-size: 1.2rem; }
-  .prereq-block { padding: 18px; }
-  .prereq-text h2 { font-size: 1.15rem; }
+.etapa-section-header:first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 8px;
 }
 
 .btn-switch-week {
@@ -1062,7 +900,6 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
     </div>
     <div class="nav-right">
       <div class="nav-student">Olá, <strong id="selectorStudentName">Aluno</strong></div>
-      <button class="btn-reopen-welcome" onclick="document.getElementById('welcomeModal').style.display='flex'">❓ Base de Claude Code</button>
       <button class="btn-logout" onclick="handleLogout()">Sair</button>
     </div>
   </nav>
@@ -1072,94 +909,29 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
       <h1 class="selector-title">Escolha por onde começar</h1>
       <p class="selector-sub">Sem trava. Você decide a ordem.</p>
 
-      <div class="prereq-block" id="prereqBlock">
-        <div class="prereq-header">
-          <div class="prereq-icon">📚</div>
-          <div class="prereq-text">
-            <div class="prereq-badge">Pré-requisito · opcional</div>
-            <h2>Base de Claude Code</h2>
-            <p class="prereq-tagline">Nunca usou Claude Code? Comece por aqui antes de aplicar os Setups. Conteúdo extraído da Formação Cientista da IA.</p>
-          </div>
-        </div>
-
-        <div class="prereq-module" id="prereq-m1">
-          <div class="prereq-module-header" onclick="togglePrereqModule(1)">
-            <div>
-              <div class="prereq-module-num">Módulo 1 · 7 aulas</div>
-              <div class="prereq-module-title">Fundamentos do Claude Code</div>
-            </div>
-            <div class="prereq-chevron">▼</div>
-          </div>
-          <div class="prereq-module-body">
-            <div class="prereq-module-body-inner">
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 1 — Automatização com Claude Cowork</div>
-                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/2733b728405a23131ea3c782cc5b6aa822009336" title="Automatização com Claude Cowork" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 2 — Sistema de prospecção com Claude Code na prática</div>
-                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/51550cdb0aa38e0c12714469479ce4068cdf8768" title="Sistema de Prospecção com Claude Code" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 3 — Boas práticas para criar sistemas e agentes de IA</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/0729a0ff-31a1-416d-8f88-284e25fb15a9?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 4 — Cases de apps e dashboards usando Claude</div>
-                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/1b9b080ffb9bca9d5d7ef47b9131613dd5548068" title="Cases de Apps e Dashboards Usando Claude" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 5 — Como usar Claude para criar dashboards e aplicativos</div>
-                <div class="prereq-lesson-video"><iframe src="https://player.scaleup.com.br/embed/d91c373be3ff61cb2fbedcd032ef8ed5e4ded9aa" title="Como Usar Claude para Criar Dashboards" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 6 — Reduza custos de tokens em até 90%</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/ec90e515-1e9b-4340-882b-3a02e2c30877?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 7 — Sistema de proteção e otimização de memória</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/e14388aa-a63f-4771-9f41-001fb6e3f952?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div><div style="margin-top:16px;text-align:center;"><a href="https://whimsical.com/zx44/masterclass-sistema-de-protecao-e-otimizacao-de-memoria-para-cla-Hzh9bZnZ8Aryd1nMcmsXrK" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">Mapa Mental da Aula (Whimsical)</a></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="prereq-module" id="prereq-m2">
-          <div class="prereq-module-header" onclick="togglePrereqModule(2)">
-            <div>
-              <div class="prereq-module-num">Módulo 2 · 5 aulas</div>
-              <div class="prereq-module-title">Automação com Claude Code</div>
-            </div>
-            <div class="prereq-chevron">▼</div>
-          </div>
-          <div class="prereq-module-body">
-            <div class="prereq-module-body-inner">
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 1 — Automação com Claude Code e novidades de IA</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/afa1f569-14c5-42ea-ae73-e7425dc0fb7c?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 2 — Mission Control: sistema de automação na sua operação</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/12a0f835-ea34-4960-93e8-89750e02337a?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 3 — Boas práticas para criar sistemas e agentes (revisão)</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/0729a0ff-31a1-416d-8f88-284e25fb15a9?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 4 — Novidades de IA + sessão especial Semana Santa</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/afa1f569-14c5-42ea-ae73-e7425dc0fb7c?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-              <div class="prereq-lesson">
-                <div class="prereq-lesson-title">Aula 5 — Claude vs Codex, modelos chineses e otimização de tokens</div>
-                <div class="prereq-lesson-video"><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/81c47449-3978-4f5d-9be9-391e2df2b92b?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="week-grid">
+        <!-- Base de Claude Code (pré-requisito) -->
+        <div class="week-card base" id="weekCard-base">
+          <div class="week-card-header" onclick="toggleWeekAccordion('base')">
+            <div class="week-card-header-text">
+              <div class="week-card-badge"><span class="week-card-progress" id="sBaseProgress" style="display:none"></span>📚 Pré-requisito · opcional</div>
+              <div class="week-card-title">Base de Claude Code</div>
+              <div class="week-card-tagline">Nunca usou Claude Code? Comece pelos fundamentos · 12 aulas em 2 módulos</div>
+            </div>
+            <div class="week-card-chevron">▼</div>
+          </div>
+          <div class="week-card-body">
+            <div class="week-card-thesis">Antes de aplicar os Setups, aprenda os fundamentos do Claude Code com aulas extraídas da Formação Cientista da IA: como Claude Code funciona, boas práticas, automação, otimização de tokens e proteção de memória.</div>
+            <div class="benefit-list">
+              <div class="benefit-item"><span class="b-icon">📦</span><div><span class="b-name">Módulo 1 — Fundamentos</span> — <span class="b-desc">7 aulas: Cowork, prospecção, boas práticas, dashboards, otimização de tokens e proteção de memória</span></div></div>
+              <div class="benefit-item"><span class="b-icon">⚡</span><div><span class="b-name">Módulo 2 — Automação</span> — <span class="b-desc">5 aulas: Mission Control, novidades de IA, comparativo Claude vs Codex</span></div></div>
+              <div class="benefit-item"><span class="b-icon">✓</span><div><span class="b-name">Marque seu progresso</span> — <span class="b-desc">cada aula concluída fica registrada como nos Setups</span></div></div>
+            </div>
+            <div class="week-card-meta">⏱ Conteúdo da Formação Cientista da IA · 12 aulas</div>
+            <button class="week-card-cta" onclick="event.stopPropagation();openWeek('base')">Começar pela Base →</button>
+          </div>
+        </div>
+
         <!-- Semana 5 -->
         <div class="week-card s5 expanded" id="weekCard-5">
           <div class="week-card-header" onclick="toggleWeekAccordion(5)">
@@ -3855,6 +3627,236 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
         </div>
       </div>
 
+      <!-- ══════════════════════════════════════════
+           BASE DE CLAUDE CODE — 12 aulas
+      ══════════════════════════════════════════ -->
+      <!-- ─── BASE M1 · Aula 1 ─── -->
+      <div class="etapa-panel" id="panel-base-1">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 1</span>
+            <span class="etapa-status-badge pending" id="status-base-1">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Automatização com Claude Cowork</h1>
+          <p class="etapa-sub">Como o Claude Cowork ajuda a paralelizar tarefas e organizar projetos sem fricção.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <iframe src="https://player.scaleup.com.br/embed/2733b728405a23131ea3c782cc5b6aa822009336" title="Automatização com Claude Cowork" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-1" onclick="markComplete(1)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(2)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M1 · Aula 2 ─── -->
+      <div class="etapa-panel" id="panel-base-2">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 2</span>
+            <span class="etapa-status-badge pending" id="status-base-2">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Sistema de Prospecção com Claude Code</h1>
+          <p class="etapa-sub">Construa um pipeline de prospecção automatizado usando Claude Code do zero.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <iframe src="https://player.scaleup.com.br/embed/51550cdb0aa38e0c12714469479ce4068cdf8768" title="Sistema de Prospecção com Claude Code" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-2" onclick="markComplete(2)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M1 · Aula 3 ─── -->
+      <div class="etapa-panel" id="panel-base-3">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 3</span>
+            <span class="etapa-status-badge pending" id="status-base-3">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Boas práticas para sistemas e agentes de IA</h1>
+          <p class="etapa-sub">Padrões fundamentais para criar sistemas e agentes confiáveis com Claude Code.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/0729a0ff-31a1-416d-8f88-284e25fb15a9?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-3" onclick="markComplete(3)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(4)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M1 · Aula 4 ─── -->
+      <div class="etapa-panel" id="panel-base-4">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 4</span>
+            <span class="etapa-status-badge pending" id="status-base-4">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Cases de apps e dashboards</h1>
+          <p class="etapa-sub">Cases reais de aplicativos e dashboards construídos com Claude Code.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <iframe src="https://player.scaleup.com.br/embed/1b9b080ffb9bca9d5d7ef47b9131613dd5548068" title="Cases de apps e dashboards" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-4" onclick="markComplete(4)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(5)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M1 · Aula 5 ─── -->
+      <div class="etapa-panel" id="panel-base-5">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 5</span>
+            <span class="etapa-status-badge pending" id="status-base-5">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Como usar Claude para criar dashboards e aplicativos</h1>
+          <p class="etapa-sub">Passo a passo para construir dashboards funcionais e apps com Claude.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <iframe src="https://player.scaleup.com.br/embed/d91c373be3ff61cb2fbedcd032ef8ed5e4ded9aa" title="Como usar Claude para criar dashboards e aplicativos" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; aspect-ratio: 16 / 9; border: 0px; margin: 0px auto;"></iframe>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-5" onclick="markComplete(5)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(6)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M1 · Aula 6 ─── -->
+      <div class="etapa-panel" id="panel-base-6">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 6</span>
+            <span class="etapa-status-badge pending" id="status-base-6">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Reduza custos de tokens em até 90%</h1>
+          <p class="etapa-sub">Estratégias práticas para diminuir consumo de tokens sem perder qualidade.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/ec90e515-1e9b-4340-882b-3a02e2c30877?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-6" onclick="markComplete(6)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(7)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M1 · Aula 7 ─── -->
+      <div class="etapa-panel" id="panel-base-7">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 1 · Aula 7</span>
+            <span class="etapa-status-badge pending" id="status-base-7">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Sistema de proteção e otimização de memória</h1>
+          <p class="etapa-sub">Como organizar memória do Claude Code para sessões longas e estáveis.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/e14388aa-a63f-4771-9f41-001fb6e3f952?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div><div style="margin-top:16px;text-align:center;"><a href="https://whimsical.com/zx44/masterclass-sistema-de-protecao-e-otimizacao-de-memoria-para-cla-Hzh9bZnZ8Aryd1nMcmsXrK" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">Mapa Mental da Aula (Whimsical)</a></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-7" onclick="markComplete(7)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(8)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M2 · Aula 1 ─── -->
+      <div class="etapa-panel" id="panel-base-8">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 2 · Aula 1</span>
+            <span class="etapa-status-badge pending" id="status-base-8">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Automação com Claude Code e novidades de IA</h1>
+          <p class="etapa-sub">Visão geral de automações + atualizações recentes do ecossistema de IA.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/afa1f569-14c5-42ea-ae73-e7425dc0fb7c?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-8" onclick="markComplete(8)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(9)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M2 · Aula 2 ─── -->
+      <div class="etapa-panel" id="panel-base-9">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 2 · Aula 2</span>
+            <span class="etapa-status-badge pending" id="status-base-9">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Mission Control: sistema de automação na sua operação</h1>
+          <p class="etapa-sub">Arquitetura do Mission Control e como rodar sua operação em modo automático.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/12a0f835-ea34-4960-93e8-89750e02337a?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-9" onclick="markComplete(9)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(10)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M2 · Aula 3 ─── -->
+      <div class="etapa-panel" id="panel-base-10">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 2 · Aula 3</span>
+            <span class="etapa-status-badge pending" id="status-base-10">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Boas práticas (revisão masterclass)</h1>
+          <p class="etapa-sub">Revisão das boas práticas em formato MasterClass — reforço dos fundamentos.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/0729a0ff-31a1-416d-8f88-284e25fb15a9?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-10" onclick="markComplete(10)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(11)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M2 · Aula 4 ─── -->
+      <div class="etapa-panel" id="panel-base-11">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 2 · Aula 4</span>
+            <span class="etapa-status-badge pending" id="status-base-11">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Sessão especial Semana Santa: novidades de IA</h1>
+          <p class="etapa-sub">Sessão especial cobrindo novidades de modelos e ferramentas de IA.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/afa1f569-14c5-42ea-ae73-e7425dc0fb7c?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-11" onclick="markComplete(11)"><span>✓</span> Marcar aula como concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(12)">Próxima aula →</button>
+        </div>
+      </div>
+
+      <!-- ─── BASE M2 · Aula 5 ─── -->
+      <div class="etapa-panel" id="panel-base-12">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Módulo 2 · Aula 5</span>
+            <span class="etapa-status-badge pending" id="status-base-12">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Claude vs Codex e modelos chineses</h1>
+          <p class="etapa-sub">Comparativo entre Claude Code, Codex e modelos abertos chineses; otimização de tokens.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Aula em vídeo</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/81c47449-3978-4f5d-9be9-391e2df2b92b?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-base-12" onclick="markComplete(12)"><span>🎓</span> Concluir Base de Claude Code</button>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -3930,18 +3932,45 @@ const ETAPAS_S5 = [
   { id: 9, title: 'Finalização + Próximos Passos' },
 ]
 
+const ETAPAS_BASE = [
+  { kind: 'header', label: 'MÓDULO 1 — Fundamentos do Claude Code' },
+  { id: 1,  title: 'Automatização com Claude Cowork',          display: 1, module: 1 },
+  { id: 2,  title: 'Sistema de Prospecção com Claude Code',     display: 2, module: 1 },
+  { id: 3,  title: 'Boas práticas para sistemas e agentes',     display: 3, module: 1 },
+  { id: 4,  title: 'Cases de apps e dashboards',                display: 4, module: 1 },
+  { id: 5,  title: 'Dashboards e aplicativos com Claude',       display: 5, module: 1 },
+  { id: 6,  title: 'Reduzir custos de tokens em até 90%',       display: 6, module: 1 },
+  { id: 7,  title: 'Proteção e otimização de memória',          display: 7, module: 1 },
+  { kind: 'header', label: 'MÓDULO 2 — Automação com Claude Code' },
+  { id: 8,  title: 'Automação + novidades de IA',               display: 1, module: 2 },
+  { id: 9,  title: 'Mission Control: automação na operação',    display: 2, module: 2 },
+  { id: 10, title: 'Boas práticas (revisão masterclass)',       display: 3, module: 2 },
+  { id: 11, title: 'Sessão especial Semana Santa',              display: 4, module: 2 },
+  { id: 12, title: 'Claude vs Codex e modelos chineses',        display: 5, module: 2 },
+]
+
 let activeWeek = 1
 
 function activeEtapas() {
+  if (activeWeek === 'base') return ETAPAS_BASE
   if (activeWeek === 1) return ETAPAS_S1
   if (activeWeek === 2) return ETAPAS_S2
   if (activeWeek === 4) return ETAPAS_S4
   if (activeWeek === 5) return ETAPAS_S5
   return ETAPAS_S3
 }
-function panelId(id)    { return activeWeek === 1 ? `panel-${id}` : `panel-s${activeWeek}-${id}` }
-function completeId(id) { return activeWeek === 1 ? `complete-${id}` : `complete-s${activeWeek}-${id}` }
-function statusId(id)   { return activeWeek === 1 ? `status-${id}` : `status-s${activeWeek}-${id}` }
+function panelId(id)    {
+  if (activeWeek === 'base') return `panel-base-${id}`
+  return activeWeek === 1 ? `panel-${id}` : `panel-s${activeWeek}-${id}`
+}
+function completeId(id) {
+  if (activeWeek === 'base') return `complete-base-${id}`
+  return activeWeek === 1 ? `complete-${id}` : `complete-s${activeWeek}-${id}`
+}
+function statusId(id)   {
+  if (activeWeek === 'base') return `status-base-${id}`
+  return activeWeek === 1 ? `status-${id}` : `status-s${activeWeek}-${id}`
+}
 
 // ══════════════════════════════════════════
 //   STATE
@@ -3982,8 +4011,10 @@ function saveAuth(a) { localStorage.setItem('zxcontrol_auth', JSON.stringify(a))
 function getCompleted()    { return getState().completed || [] }
 function getCurrentEtapa() {
   const c = getState().current
-  const validIds = activeEtapas().map(e => e.id)
-  return validIds.includes(c) ? c : 0
+  const real = activeEtapas().filter(e => !e.kind)
+  const validIds = real.map(e => e.id)
+  if (validIds.includes(c)) return c
+  return real.length ? real[0].id : 0
 }
 
 // ══════════════════════════════════════════
@@ -4089,8 +4120,14 @@ function showSelector(name) {
     else { s5Badge.style.display = 'none' }
   }
 
+  const sBaseDone = (getStateForWeek('base').completed || []).length
+  const sBaseBadge = document.getElementById('sBaseProgress')
+  if (sBaseBadge) {
+    if (sBaseDone > 0) { sBaseBadge.textContent = `${sBaseDone}/12 concluídas`; sBaseBadge.style.display = '' }
+    else { sBaseBadge.style.display = 'none' }
+  }
+
   initBanner()
-  maybeShowWelcomeModal()
 }
 
 function toggleWeekAccordion(n) {
@@ -4115,12 +4152,12 @@ function openWeek(n) {
 
   // Update nav subtitle
   const subEl = document.getElementById('weekSubtitle')
-  const subtitles = { 1: 'Setup 1 — Fundação Operacional', 2: 'Setup 2 — Operação Robusta', 3: 'Setup 3 — Prospecção Automatizada', 4: 'Setup 4 — Inteligência & Escala', 5: 'Setup 5 — Automação do Instagram' }
+  const subtitles = { 1: 'Setup 1 — Fundação Operacional', 2: 'Setup 2 — Operação Robusta', 3: 'Setup 3 — Prospecção Automatizada', 4: 'Setup 4 — Inteligência & Escala', 5: 'Setup 5 — Automação do Instagram', base: 'Base de Claude Code — Pré-requisito' }
   if (subEl) subEl.textContent = subtitles[n] || ''
 
-  // Update sidebar total count
+  // Update sidebar total count (exclui headers e item id=0)
   const totalEl = document.getElementById('totalCount')
-  if (totalEl) totalEl.textContent = activeEtapas().length - 1
+  if (totalEl) totalEl.textContent = activeEtapas().filter(e => !e.kind && e.id > 0).length
 
   // Student name
   const auth = getAuth()
@@ -4155,7 +4192,16 @@ function buildSidebar() {
   const list = document.getElementById('etapaList')
   list.innerHTML = ''
 
-  etapas.forEach(({ id, title }) => {
+  etapas.forEach((e) => {
+    if (e.kind === 'header') {
+      const h = document.createElement('div')
+      h.className = 'etapa-section-header'
+      h.textContent = e.label
+      list.appendChild(h)
+      return
+    }
+    const { id, title, display } = e
+    const num = display !== undefined ? display : id
     const isDone = id > 0 && completed.includes(id)
     const isActive = id === current
     const div = document.createElement('div')
@@ -4175,7 +4221,7 @@ function buildSidebar() {
       const tag = isDone ? 'done' : isActive ? 'active' : 'pending'
       const tagLabel = isDone ? 'Concluída' : isActive ? 'Em andamento' : 'Pendente'
       div.innerHTML = `
-        <div class="etapa-num${isDone ? ' check' : ''}">${isDone ? '' : id}</div>
+        <div class="etapa-num${isDone ? ' check' : ''}">${isDone ? '' : num}</div>
         <div class="etapa-item-body">
           <div class="etapa-item-title">${title}</div>
           <span class="etapa-item-tag ${tag}">${tagLabel}</span>
@@ -4193,9 +4239,10 @@ function goToEtapa(id) {
 
   const etapas = activeEtapas()
   const completed = getCompleted()
+  const realEtapas = etapas.filter(e => !e.kind)
   document.querySelectorAll('.etapa-item').forEach((item, i) => {
-    if (i >= etapas.length) return
-    const etapaId = etapas[i].id
+    if (i >= realEtapas.length) return
+    const etapaId = realEtapas[i].id
     item.classList.toggle('active', etapaId === id)
     const tag = item.querySelector('.etapa-item-tag')
     if (!tag) return
@@ -4247,7 +4294,7 @@ function markComplete(id) {
 function updateProgress() {
   const completed = getCompleted()
   const count = completed.length
-  const total = activeEtapas().length - 1 // exclude Aulas (id=0)
+  const total = activeEtapas().filter(e => !e.kind && e.id > 0).length
   const pct = total > 0 ? (count / total) * 100 : 0
 
   document.getElementById('completedCount').textContent = count
@@ -4351,44 +4398,7 @@ function updateBannerCountdown() {
   const eM = document.getElementById('rb-m'); if (eM) eM.textContent = String(m).padStart(2,'0')
   const eS = document.getElementById('rb-s'); if (eS) eS.textContent = String(s).padStart(2,'0')
 }
-
-// ══════════════════════════════════════════
-//   WELCOME MODAL + PRÉ-REQUISITO
-// ══════════════════════════════════════════
-function maybeShowWelcomeModal() {
-  if (localStorage.getItem('zxcontrol_intro_seen')) return
-  const m = document.getElementById('welcomeModal')
-  if (m) m.style.display = 'flex'
-}
-function dismissWelcome(action) {
-  localStorage.setItem('zxcontrol_intro_seen', '1')
-  const m = document.getElementById('welcomeModal')
-  if (m) m.style.display = 'none'
-  if (action === 'base') {
-    const block = document.getElementById('prereqBlock')
-    if (block) block.scrollIntoView({behavior:'smooth', block:'start'})
-    togglePrereqModule(1, true)
-  }
-}
-function togglePrereqModule(n, forceOpen) {
-  const el = document.getElementById('prereq-m' + n)
-  if (!el) return
-  if (forceOpen) el.classList.add('open')
-  else el.classList.toggle('open')
-}
 </script>
-
-<div class="welcome-modal-overlay" id="welcomeModal" style="display:none">
-  <div class="welcome-modal">
-    <h2>Bem-vindo à Área de Membros</h2>
-    <p class="welcome-question">Você já tem familiaridade com Claude Code?</p>
-    <div class="welcome-actions">
-      <button class="welcome-btn welcome-btn-primary" onclick="dismissWelcome('base')">Não — quero começar pela Base</button>
-      <button class="welcome-btn welcome-btn-secondary" onclick="dismissWelcome('setups')">Sim — ir direto pros Setups</button>
-    </div>
-    <a class="welcome-skip" onclick="dismissWelcome('skip')">Pular por agora</a>
-  </div>
-</div>
 
 </body>
 </html>
