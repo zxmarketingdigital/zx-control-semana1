@@ -728,6 +728,12 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
 .week-card.s4::before {
   background: linear-gradient(90deg, #06b6d4, #2563eb);
 }
+.week-card.s5 .week-card-cta {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+.week-card.s5::before {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
 .btn-switch-week {
   background: none; border: none;
   color: var(--text2);
@@ -922,6 +928,26 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
           </div>
           <div class="week-card-meta">⏱ ~55 min · 8 etapas</div>
           <button class="week-card-cta" onclick="event.stopPropagation();openWeek(4)">Começar Setup 4 →</button>
+        </div>
+
+        <!-- Semana 5 -->
+        <div class="week-card s5" onclick="openWeek(5)">
+          <div class="week-card-progress" id="s5Progress" style="display:none"></div>
+          <div class="week-card-badge">Setup 5</div>
+          <div class="week-card-title">Automação do Instagram</div>
+          <div class="week-card-tagline">Auto-resposta de comentários + Agente de DM em ~75 min · 9 etapas</div>
+          <div class="week-card-thesis">Ao final: comentários com palavras-chave enviam DM automático, agente treinado nos seus produtos responde DMs, escalação para o seu WhatsApp pessoal, token com refresh automático (60 dias) e Mission Control 5.0 com widgets do Instagram.</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="b-icon">💬</span><div><span class="b-name">Auto-resposta de comentários</span> — <span class="b-desc">palavras-chave disparam DM (Private Reply) automático com link do produto</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente de DM</span> — <span class="b-desc">treinado nos seus produtos, responde leads no inbox do Instagram 24h</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Token com refresh automático</span> — <span class="b-desc">renovação silenciosa a cada 50 dias — sem interrupção da automação</span></div></div>
+            <div class="benefit-item"><span class="b-icon">⚙️</span><div><span class="b-name">Cron configurável</span> — <span class="b-desc">você define a cadência — comentários e DMs rodam em paralelo sem você fazer nada</span></div></div>
+            <div class="benefit-item"><span class="b-icon">📲</span><div><span class="b-name">Escalação para WhatsApp</span> — <span class="b-desc">quando o lead pede humano, você recebe a conversa direto no seu WhatsApp</span></div></div>
+            <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 5.0</span> — <span class="b-desc">widgets de Instagram: comentários processados, DMs respondidas, dias até expirar token</span></div></div>
+            <div class="benefit-item"><span class="b-icon">✅</span><div><span class="b-name">Teste prático ao vivo</span> — <span class="b-desc">você comenta em um post seu e valida o ciclo completo antes de finalizar</span></div></div>
+          </div>
+          <div class="week-card-meta">⏱ ~75 min · 9 etapas</div>
+          <button class="week-card-cta" onclick="event.stopPropagation();openWeek(5)">Começar Setup 5 →</button>
         </div>
       </div>
     </div>
@@ -3119,6 +3145,375 @@ body.banner-on .main-layout       { margin-top: calc(63px + 48px); min-height: c
         </div>
       </div>
 
+      <!-- ══════════════════════════════════════════
+           SEMANA 5 PANELS
+      ══════════════════════════════════════════ -->
+
+      <!-- ─── S5 AULAS ─── -->
+      <div class="etapa-panel" id="panel-s5-0">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge" style="background:rgba(245,158,11,0.1);color:#f59e0b;border-color:rgba(245,158,11,0.3)">Aulas</span>
+            <span class="etapa-badge" style="background:rgba(217,119,6,0.1);color:#f59e0b;border-color:rgba(217,119,6,0.3)">Setup 5</span>
+          </div>
+          <h1 class="etapa-title">Aulas — Setup 5</h1>
+          <p class="etapa-sub">Assista à gravação da Mentoria com o passo a passo completo do Setup 5 antes de começar. A aula mostra cada clique na criação do app Meta e a configuração das automações de Instagram.</p>
+        </div>
+        <div class="section-title">Mentoria — Passo a Passo do Setup 5</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:32px;border:1px solid var(--border)">
+          <!-- Substituir BUNNY_GUID abaixo após upload do vídeo -->
+          <iframe src="https://iframe.mediadelivery.net/embed/629692/c60bd225-e5e0-4dcd-a4e5-436d3a16a8a3?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que você vai construir nesta semana</div>
+        <div class="benefit-list" style="margin-bottom:32px">
+          <div class="benefit-item"><span class="b-icon">💬</span><div><span class="b-name">Auto-resposta de comentários</span> — <span class="b-desc">palavras-chave disparam DM automático com link do seu produto</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🤖</span><div><span class="b-name">Agente de DM</span> — <span class="b-desc">treinado nos seus produtos, responde leads no inbox 24h sem você</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🔄</span><div><span class="b-name">Token com refresh automático</span> — <span class="b-desc">renovação silenciosa a cada 50 dias, sem interrupção</span></div></div>
+          <div class="benefit-item"><span class="b-icon">📲</span><div><span class="b-name">Escalação para WhatsApp</span> — <span class="b-desc">lead pede humano → você recebe a conversa direto no seu número</span></div></div>
+          <div class="benefit-item"><span class="b-icon">🎛</span><div><span class="b-name">Mission Control 5.0</span> — <span class="b-desc">widgets de Instagram no painel de controle</span></div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div style="text-align:center;padding:16px 0">
+          <button class="btn-complete pending" onclick="goToEtapa(1)" style="cursor:pointer">
+            <span>→</span> Começar o Setup
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 1 ─── -->
+      <div class="etapa-panel" id="panel-s5-1">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 1 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-1">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Boas-vindas + Base</h1>
+          <p class="etapa-sub">Clone o repositório do Setup 5 e abra o Claude. A partir daí, o Claude conduz todo o setup — você não precisa digitar mais nenhum comando técnico.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Pré-requisitos do Setup 5</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Semanas 1 a 4 concluídas</strong> — o Setup 5 exige <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">phase_completed >= 4</code></div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Conta Instagram Business ou Criador</strong> — necessário para acessar a API de comentários e DMs</div></div>
+          <div class="check-item"><div class="check-icon ok">✓</div><div class="check-text"><strong>Claude Code CLI atualizado</strong> — <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">claude --version</code></div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O único comando que você precisa rodar</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-label">terminal — cole e pressione Enter</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-body"><pre><span class="cmd">gh repo clone</span> <span class="arg">zxmarketingdigital/ig-autoflow</span> <span class="arg">~/ig-autoflow</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">cd</span> <span class="arg">~/ig-autoflow</span> <span class="comment">&amp;&amp; \</span>
+<span class="cmd">claude</span></pre></div>
+        </div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body"><h4>Claude abre e se apresenta</h4><p>Aguarde a mensagem de boas-vindas do assistente de Setup. Ele vai listar o que você vai construir nesta semana.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h4>Digite INICIAR SETUP SEMANA 5</h4>
+              <div class="code-block" style="margin-top:10px">
+                <div class="code-header"><span class="code-label">escreva no Claude</span><button class="btn-copy" onclick="copyCode(this)">Copiar</button></div>
+                <div class="code-body"><pre><span class="arg">INICIAR SETUP SEMANA 5</span></pre></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude confirmar o ambiente e exibir o plano das 9 etapas.</p>
+          <button class="btn-complete pending" id="complete-s5-1" onclick="markComplete(1)"><span>✓</span> Base configurada</button>
+          <button class="btn-nav-next" onclick="goToEtapa(2)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 2 ─── -->
+      <div class="etapa-panel" id="panel-s5-2">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 2 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-2">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Configurar App Meta — Instagram API</h1>
+          <p class="etapa-sub">Cria o app no Meta, adiciona as permissões de mensagens, gera o token de acesso de longa duração (60 dias) e salva as credenciais no seu ambiente. Claude executa smoke tests automáticos para confirmar que a API está funcionando.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="tip">💡 <strong>Se travar nesta etapa:</strong> assista à gravação da aula acima — ela mostra cada clique no dashboard do Meta. Ou use a <strong>Meta AI</strong> dentro do próprio painel de developers — está treinada com a documentação oficial e responde em tempo real.</div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que o Claude faz nesta etapa</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body"><h4>Abre o dashboard Meta Developers</h4><p>Claude abre <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">developers.facebook.com/apps</code> no seu navegador e exibe o passo a passo.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body"><h4>Você cria o app com o caso de uso certo</h4><p>Na criação, selecione <strong>"Gerenciar mensagens e conteúdo no Instagram"</strong> — esse caminho pré-configura todas as permissões e o produto Instagram automaticamente.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body"><h4>Adicionar conta como testador</h4><p>Em <strong>App Roles → Instagram Testers</strong>, adicione seu usuário e aceite o convite dentro do Instagram. Dispensa App Review — o token funciona mesmo com o app em modo Desenvolvimento.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">4</div>
+            <div class="step-body"><h4>Gerar token de acesso</h4><p>Clique no botão "Gere tokens de acesso" → OAuth popup → autorize os 3 escopos → token de 60 dias retorna na tela. Cole no Claude quando pedido.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">5</div>
+            <div class="step-body"><h4>Claude valida a API automaticamente</h4><p>Executa 2 smoke tests: verifica que o token está vivo e que consegue listar mídia recente. Qualquer falha → Claude instrui como regerar o token e re-rodar a etapa.</p></div>
+          </div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Credenciais salvas automaticamente</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">~/.operacao-ia/config/instagram.env</code> — App ID, App Secret, User ID, Access Token</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Arquivo gitignored — suas credenciais nunca vão para o repositório público</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Refresh automático configurado na Etapa 5 — token renova silenciosamente todo dia 03h</div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s5-2" onclick="markComplete(2)"><span>✓</span> App Meta configurado + token válido</button>
+          <button class="btn-nav-next" onclick="goToEtapa(3)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 3 ─── -->
+      <div class="etapa-panel" id="panel-s5-3">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 3 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-3">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Auto-resposta de Comentários</h1>
+          <p class="etapa-sub">Você define as palavras-chave que ativam a automação. Para cada uma, o Claude pergunta: qual link enviar, qual mensagem aparecer no comentário público e qual mensagem chegar por DM. Tudo preenchido por você — zero dados hardcoded.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que você vai configurar</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>Palavras-chave</strong> — você digita quantas quiser, sem limite mínimo ou máximo (ex: "quero", "link", "info")</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>Para cada palavra-chave:</strong> URL/link de destino, resposta pública no comentário e texto da DM (Private Reply)</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>Cadência configurável</strong> — padrão sugerido 30 min, você pode ajustar de 5 a 60 min</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que o Claude instala</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig_auto_responder.py</code> — script de monitoramento de comentários</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig_triggers.json</code> — suas palavras-chave e mensagens</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig_state.json</code> — rastreia IDs já processados para evitar duplicatas</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Dry-run automático ao final — processa os últimos 5 posts sem enviar nada, só para validar</div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s5-3" onclick="markComplete(3)"><span>✓</span> Palavras-chave e auto-resposta configuradas</button>
+          <button class="btn-nav-next" onclick="goToEtapa(4)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 4 ─── -->
+      <div class="etapa-panel" id="panel-s5-4">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 4 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-4">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Base de Conhecimento — Seus Produtos</h1>
+          <p class="etapa-sub">Você cadastra os produtos que o agente vai usar para responder leads no DM. O agente não tem acesso a nenhum produto por padrão — ele só conhece o que você cadastrar aqui.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Loop interativo de cadastro</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body"><h4>Quantos produtos quer cadastrar?</h4><p>Claude pergunta a quantidade — você pode cadastrar 1 ou vários.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body"><h4>Para cada produto, você informa</h4><p>Nome, URL/link de compra, descrição/diferencial (pode ser múltiplas linhas), preço e bônus opcionais. Se você passar a URL, Claude oferece extrair título e descrição automaticamente — você aprova ou edita.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body"><h4>Preview + confirmação</h4><p>Claude mostra a base de conhecimento gerada. Você confirma e o arquivo <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig_knowledge_base.py</code> é instalado em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">~/.operacao-ia/scripts/instagram/</code>.</p></div>
+          </div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s5-4" onclick="markComplete(4)"><span>✓</span> Produtos cadastrados na base de conhecimento</button>
+          <button class="btn-nav-next" onclick="goToEtapa(5)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 5 ─── -->
+      <div class="etapa-panel" id="panel-s5-5">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 5 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-5">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Agente de DM + Escalação</h1>
+          <p class="etapa-sub">Configura o agente que responde DMs do Instagram usando OmniRoute (IA) + seus produtos cadastrados. Quando o lead pede para falar com humano, você recebe a conversa direto no seu WhatsApp via Evolution API.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que acontece em cada sub-etapa</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>5a — OmniRoute:</strong> Claude verifica se está instalado — se não, oferece instalar automaticamente (clone + pip install)</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>5b — Modelos de IA:</strong> URL do OmniRoute (padrão <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">localhost:8765</code>), modelo principal e fallback — você pode customizar ou usar os padrões</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>5c — Escalação:</strong> URL da Evolution API, nome da instância e o número do seu WhatsApp pessoal — quando o lead disser "quero falar com humano", você recebe</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>5d — Cadência DM:</strong> padrão 2 min, ajustável de 1 a 10 min</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>5e — LaunchAgents:</strong> instala <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig-dm</code>, <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig-auto</code> e <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">ig-token</code> (refresh diário às 03h)</div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s5-5" onclick="markComplete(5)"><span>✓</span> Agente de DM e escalação configurados</button>
+          <button class="btn-nav-next" onclick="goToEtapa(6)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 6 ─── -->
+      <div class="etapa-panel" id="panel-s5-6">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 6 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-6">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Mission Control 5.0</h1>
+          <p class="etapa-sub">Adiciona os widgets de Instagram ao seu painel de controle. A partir de agora, você monitora comentários processados, DMs respondidas, escalações e dias até o token expirar — tudo na tela principal.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Widgets adicionados ao painel</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>IG Auto-Responder</strong> — último run, quantidade de comentários processados nas últimas 24h, falhas</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>IG DM Agent</strong> — último run, DMs respondidas, escalações enviadas para o seu WhatsApp</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text"><strong>IG Token Age</strong> — dias restantes até o token expirar — fica vermelho quando chega a menos de 5 dias</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Dashboard HTML regenerado e título atualizado para <strong>"Mission Control 5.0"</strong></div></div>
+        </div>
+        <div class="etapa-footer">
+          <button class="btn-complete pending" id="complete-s5-6" onclick="markComplete(6)"><span>✓</span> Mission Control 5.0 ativo</button>
+          <button class="btn-nav-next" onclick="goToEtapa(7)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 7 — AUDITORIA ─── -->
+      <div class="etapa-panel" id="panel-s5-7">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 7 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-7">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Auditoria Técnica</h1>
+          <p class="etapa-sub">Verificação automática de 11 componentes do Setup 5. Claude corrige automaticamente o que encontrar e exibe o relatório final. Se algum check falhar, o auto-fix entra em ação.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">11 checks da auditoria</div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:6px 10px;color:var(--text2)">#</th>
+            <th style="text-align:left;padding:6px 10px;color:var(--text2)">Check</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">1</td><td style="padding:6px 10px;color:var(--text2)">Claude Code CLI disponível</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">2</td><td style="padding:6px 10px;color:var(--text2)">config.json phase_completed >= 4</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">3</td><td style="padding:6px 10px;color:var(--text2)">instagram.env presente e lível</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">4</td><td style="padding:6px 10px;color:var(--text2)">IG_ACCESS_TOKEN válido (smoke test /me)</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">5</td><td style="padding:6px 10px;color:var(--text2)">IG_USER_ID confere com o token</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">6</td><td style="padding:6px 10px;color:var(--text2)">Scripts presentes em ~/.operacao-ia/scripts/instagram/</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">7</td><td style="padding:6px 10px;color:var(--text2)">OmniRoute respondendo em localhost:8765</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">8</td><td style="padding:6px 10px;color:var(--text2)">ig_knowledge_base.py carrega sem erro</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">9</td><td style="padding:6px 10px;color:var(--text2)">ig_dm_sessions.sqlite existe</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:6px 10px;color:#f59e0b">10</td><td style="padding:6px 10px;color:var(--text2)">LaunchAgents ig-auto e ig-dm carregados</td></tr>
+            <tr><td style="padding:6px 10px;color:#f59e0b">11</td><td style="padding:6px 10px;color:var(--text2)">LaunchAgent ig-token (refresh diário) carregado</td></tr>
+          </tbody>
+        </table>
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando o Claude exibir o relatório com 9/11 ou mais checks aprovados.</p>
+          <button class="btn-complete pending" id="complete-s5-7" onclick="markComplete(7)"><span>✓</span> Auditoria concluída</button>
+          <button class="btn-nav-next" onclick="goToEtapa(8)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 8 — TESTE PRÁTICO ─── -->
+      <div class="etapa-panel" id="panel-s5-8">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 8 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-8">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Teste Prático ao Vivo</h1>
+          <p class="etapa-sub">Você vai ao seu Instagram, comenta em um post seu usando uma das palavras-chave que cadastrou, e valida que o ciclo completo funciona — reply público + DM chegando. Depois testa o agente de DM respondendo uma mensagem real.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Ciclo 1 — Auto-resposta de comentários</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">1</div>
+            <div class="step-body"><h4>Claude mostra suas palavras-chave ativas</h4><p>Ele vai listar todas que você cadastrou na Etapa 3 para você escolher qual usar no teste.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">2</div>
+            <div class="step-body"><h4>Comente em um post seu no Instagram</h4><p>Vá ao seu Instagram e comente em qualquer post seu usando uma das palavras-chave listadas. Quando feito, volte e escreva <strong>OK</strong> no terminal.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">3</div>
+            <div class="step-body"><h4>Claude dispara o cron imediatamente</h4><p>O script roda agora — não precisa esperar os 30 min do cron. Claude monitora o log até detectar o comentário processado.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">4</div>
+            <div class="step-body"><h4>Confirme que recebeu</h4><p>Verifique no Instagram: o reply público no comentário chegou? A DM chegou? Claude pergunta e registra o resultado.</p></div>
+          </div>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">Ciclo 2 — Agente de DM</div>
+        <div class="step-list">
+          <div class="step-row">
+            <div class="step-circle">5</div>
+            <div class="step-body"><h4>Responda a DM que chegou</h4><p>Responda qualquer mensagem sobre um dos seus produtos. Claude dispara o agente imediatamente e você valida a resposta.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-circle">6</div>
+            <div class="step-body"><h4>Teste a escalação</h4><p>Envie uma mensagem com "quero falar com humano". O agente deve enviar a transição e você recebe a conversa no seu WhatsApp via Evolution.</p></div>
+          </div>
+        </div>
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">Marque como concluída quando os 2 ciclos passarem: comentário → DM e DM → resposta do agente.</p>
+          <button class="btn-complete pending" id="complete-s5-8" onclick="markComplete(8)"><span>✓</span> Ciclo completo validado ao vivo</button>
+          <button class="btn-nav-next" onclick="goToEtapa(9)">Próxima etapa →</button>
+        </div>
+      </div>
+
+      <!-- ─── S5 ETAPA 9 — FINALIZAÇÃO ─── -->
+      <div class="etapa-panel" id="panel-s5-9">
+        <div class="etapa-header">
+          <div class="etapa-badge-row">
+            <span class="etapa-badge">Etapa 9 de 9</span>
+            <span class="etapa-status-badge pending" id="status-s5-9">Pendente</span>
+          </div>
+          <h1 class="etapa-title">Finalização + Próximos Passos</h1>
+          <p class="etapa-sub">Encerramento oficial do Setup 5. Log da sessão enviado automaticamente para o Supabase, fase atualizada e convite para quem ainda não conhece o ZX Control completo.</p>
+        </div>
+        <div class="etapa-divider"></div>
+        <div class="section-title">O que acontece na finalização</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Coleta dados da sessão e checkpoints concluídos</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Pergunta feedback: "O que você gostaria nos próximos Setups?"</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Salva log em <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">~/.operacao-ia/data/logs/session-s5-{timestamp}.json</code></div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Envia log para Supabase automaticamente</div></div>
+          <div class="check-item"><div class="check-icon ok">▶</div><div class="check-text">Atualiza <code style="font-family:JetBrains Mono,monospace;font-size:0.82em;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;color:#fbbf24">config.json</code>: phase_completed = 5</div></div>
+        </div>
+        <div class="etapa-divider"></div>
+
+        <!-- ZX Control CTA para visitantes -->
+        <div style="background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(217,119,6,0.12));border:1px solid rgba(245,158,11,0.3);border-radius:16px;padding:32px;text-align:center;margin-bottom:24px">
+          <div style="font-size:0.8rem;font-weight:700;letter-spacing:0.12em;color:#f59e0b;text-transform:uppercase;margin-bottom:12px">ZX Control</div>
+          <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:8px;background:linear-gradient(135deg,#f59e0b,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Operação IA Completa</h2>
+          <p style="color:var(--text2);font-size:0.95rem;margin-bottom:24px">5 semanas de automações práticas — WhatsApp, prospecção, inteligência e Instagram. Do zero ao sistema rodando.</p>
+          <a href="https://zxlab.com.br/mission-control" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:700;font-size:1rem;padding:14px 36px;border-radius:10px;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Conhecer o ZX Control →</a>
+        </div>
+
+        <div class="etapa-footer">
+          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:20px">🎉 Parabéns! Você concluiu as 5 semanas do ZX Control.</p>
+          <button class="btn-complete pending" id="complete-s5-9" onclick="markComplete(9)">
+            <span>🎉</span> Setup 5 completo! Instagram automatizado
+          </button>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -3181,12 +3576,26 @@ const ETAPAS_S4 = [
   { id: 8, title: 'Finalização + ZX Control 2.0' },
 ]
 
+const ETAPAS_S5 = [
+  { id: 0, title: 'Aulas', icon: '▶' },
+  { id: 1, title: 'Boas-vindas + Base' },
+  { id: 2, title: 'Configurar App Meta — Instagram API' },
+  { id: 3, title: 'Auto-resposta de Comentários' },
+  { id: 4, title: 'Base de Conhecimento — Produtos' },
+  { id: 5, title: 'Agente de DM + Escalação' },
+  { id: 6, title: 'Mission Control 5.0' },
+  { id: 7, title: 'Auditoria Técnica' },
+  { id: 8, title: 'Teste Prático ao Vivo' },
+  { id: 9, title: 'Finalização + Próximos Passos' },
+]
+
 let activeWeek = 1
 
 function activeEtapas() {
   if (activeWeek === 1) return ETAPAS_S1
   if (activeWeek === 2) return ETAPAS_S2
   if (activeWeek === 4) return ETAPAS_S4
+  if (activeWeek === 5) return ETAPAS_S5
   return ETAPAS_S3
 }
 function panelId(id)    { return activeWeek === 1 ? `panel-${id}` : `panel-s${activeWeek}-${id}` }
@@ -3328,8 +3737,15 @@ function showSelector(name) {
   const s4Done = (getStateForWeek(4).completed || []).length
   const s4Badge = document.getElementById('s4Progress')
   if (s4Badge) {
-    if (s4Done > 0) { s4Badge.textContent = `${s4Done}/10 concluídas`; s4Badge.style.display = '' }
+    if (s4Done > 0) { s4Badge.textContent = `${s4Done}/8 concluídas`; s4Badge.style.display = '' }
     else { s4Badge.style.display = 'none' }
+  }
+
+  const s5Done = (getStateForWeek(5).completed || []).length
+  const s5Badge = document.getElementById('s5Progress')
+  if (s5Badge) {
+    if (s5Done > 0) { s5Badge.textContent = `${s5Done}/9 concluídas`; s5Badge.style.display = '' }
+    else { s5Badge.style.display = 'none' }
   }
 
   initBanner()
@@ -3346,7 +3762,7 @@ function openWeek(n) {
 
   // Update nav subtitle
   const subEl = document.getElementById('weekSubtitle')
-  const subtitles = { 1: 'Setup 1 — Fundação Operacional', 2: 'Setup 2 — Operação Robusta', 3: 'Setup 3 — Prospecção Automatizada', 4: 'Setup 4 — Inteligência & Escala' }
+  const subtitles = { 1: 'Setup 1 — Fundação Operacional', 2: 'Setup 2 — Operação Robusta', 3: 'Setup 3 — Prospecção Automatizada', 4: 'Setup 4 — Inteligência & Escala', 5: 'Setup 5 — Automação do Instagram' }
   if (subEl) subEl.textContent = subtitles[n] || ''
 
   // Update sidebar total count
@@ -3568,4 +3984,4 @@ function updateBannerCountdown() {
 
 </body>
 </html>
-<!-- Force rebuild Thu Apr 23 12:02:39 -03 2026 -->
+<!-- Force rebuild 2026-04-29 20:09:08 -->
