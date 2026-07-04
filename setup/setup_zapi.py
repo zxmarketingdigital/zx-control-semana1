@@ -58,7 +58,7 @@ def validate_credentials(instance_id, token, client_token=""):
 def find_existing_credentials():
     """Busca credenciais Z-API existentes em locais conhecidos."""
     env_paths = [
-        Path.home() / ".zxlab-mission-control" / ".env",
+        Path.home() / ".operacao-ia" / "config" / ".env",
         Path.home() / ".env",
     ]
     creds = {}

@@ -139,7 +139,7 @@ Tom:
 def call_openai(messages, api_key, system_prompt):
     payload = json.dumps(
         {
-            "model": "gpt-5.4-mini",
+            "model": "gpt-4o-mini",
             "messages": [{"role": "system", "content": system_prompt}] + messages,
             "max_completion_tokens": 600,
         }
@@ -295,11 +295,23 @@ def mark_seen(state, message_id):
         state["seen_message_ids"] = state["seen_message_ids"][-STATE_CACHE_LIMIT:]
 
 
+_zapi_inbound_warned = False
+
+
 def extract_zapi_messages(config):
+    global _zapi_inbound_warned
     zapi = config.get("zapi", {})
-    messages_file = Path(
-        zapi.get("messages_file") or Path.home() / ".zapi-whatsapp" / "messages.json"
-    )
+    messages_file = zapi.get("messages_file")
+    if not messages_file:
+        if not _zapi_inbound_warned:
+            log.warning(
+                "Z-API inbound nao configurado — a Z-API entrega mensagens por webhook, "
+                "nao por arquivo local. Configure 'zapi.messages_file' no config.json com o "
+                "arquivo onde seu webhook Z-API grava as mensagens recebidas."
+            )
+            _zapi_inbound_warned = True
+        return []
+    messages_file = Path(messages_file)
     if not messages_file.exists():
         return []
     try:
