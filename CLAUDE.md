@@ -1,3 +1,6 @@
+> **Como o projeto funciona:** ver `MAPA-PROJETO.md` na raiz (ler ao começar).
+> **Histórico de sessões:** ver `HISTORICO-SESSOES.md` na raiz.
+
 > **CLAUDE: AGUARDE O COMANDO DO ALUNO ANTES DE COMEÇAR.**
 > Ao carregar este arquivo, envie APENAS a mensagem de boas-vindas abaixo.
 > NÃO execute nenhum script ainda. Aguarde o aluno digitar **INICIAR SETUP**.
@@ -14,6 +17,18 @@
 ---
 
 # ZX Control — Semana 1: Setup Operação IA
+
+## Estado Atual (Sessão 2026-04-08)
+
+Revisão e correção de bugs em `area-membros.html` (2255 linhas):
+1. **Bug getAuth()** — fallback de migração agora limpa `loggedIn`/`student` do `zxcontrol_s1` após migrar para `zxcontrol_auth`, evitando loop de auto-login pós-logout para usuários legados
+2. **Bug getCurrentEtapa()** — agora valida o `id` salvo contra `activeEtapas()` antes de retornar, evitando painel invisível com estado corrompido
+
+Ambas as correções foram validadas via auditoria Codex paralela (4 agentes, 0 bugs restantes no HTML/JS).
+
+**Próximo passo:** deploy do arquivo corrigido para produção (Cloudflare Pages ou Worker) + teste completo: login → selector → Sem1/Sem2 → trocar semana → logout → login novamente.
+
+---
 
 ## REGRAS DE COMPORTAMENTO (leia antes de tudo)
 

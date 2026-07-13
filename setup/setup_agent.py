@@ -56,7 +56,7 @@ def call_openai_test(api_key):
         }
     ).encode("utf-8")
     request = urllib.request.Request(
-        "https://api.openai.com/v1/chat/completions",
+        "http://localhost:20128/v1/chat/completions",  # OmniRoute gateway
         data=payload,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json", "User-Agent": "ZXControl/1.0"},
         method="POST",

@@ -45,4 +45,15 @@ def send_whatsapp(phone, text, config):
         )
         return status in (200, 201)
 
+    if provider == "uaizap":
+        uaizap = config.get("uaizap", {})
+        base_url = uaizap.get("base_url", "https://zxlab.uazapi.com").rstrip("/")
+        token = uaizap.get("token")
+        status, _ = _post_json(
+            f"{base_url}/send/text",
+            {"number": phone, "text": text},
+            headers={"token": token},
+        )
+        return status in (200, 201)
+
     raise ValueError(f"Provedor WhatsApp nao suportado: {provider}")

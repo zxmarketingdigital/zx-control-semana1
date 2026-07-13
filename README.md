@@ -1,4 +1,4 @@
-# ZX Control — Semana 1: Setup Operação IA
+# ZX Control — Semanas 1 e 2: Setup + Operação
 
 > Repositório exclusivo para alunos do ZX Control.
 > Ao final desta sessão você terá WhatsApp + Email conectados, um agente IA respondendo leads e disparos programados funcionando — sem digitar um único comando.
@@ -49,7 +49,7 @@ O Claude lê as instruções e conduz você por tudo — sem precisar digitar ma
 
 ## O que está incluído em cada semana
 
-| Funcionalidade | Semana 1 | Semana 2+ |
+| Funcionalidade | Semana 1 | Semana 2 |
 |----------------|:--------:|:---------:|
 | Verificação de pré-requisitos | ✅ | — |
 | Pasta `~/.operacao-ia/` configurada | ✅ | — |
@@ -64,7 +64,7 @@ O Claude lê as instruções e conduz você por tudo — sem precisar digitar ma
 | Status matinal automático | ✅ | — |
 | Dashboard HTML visual | — | ✅ |
 | Integração Hotmart / Greenn / Kiwify | — | ✅ |
-| Onboarding automático pós-venda | — | ✅ |
+| Onboarding automático pós-venda | — | Base pronta |
 | Heartbeat 3 camadas | — | ✅ |
 | Copy com IA (geração automática) | — | ✅ Semana 3 |
 | CRM com IA | — | ✅ Semana 4 |
@@ -87,19 +87,44 @@ zx-control-semana1/
 │   ├── setup_agent.py           # Configura o agente IA BANT
 │   ├── import_contacts.py       # Importa contatos por texto ou CSV
 │   ├── setup_dispatcher.py      # Prepara o dispatcher de disparos
-│   └── setup_monitor.py         # Ativa o monitor diario
+│   ├── setup_monitor.py         # Ativa o monitor diario
+│   └── setup_week2.py           # Instala a camada visual e operacional da Semana 2
 ├── scripts/
 │   ├── agent_bant.py            # Fonte do agente deployado em ~/.operacao-ia/scripts/
 │   ├── dispatcher.py            # Fonte do dispatcher deployado
-│   └── monitor.py               # Fonte do monitor deployado
+│   ├── monitor.py               # Fonte do monitor deployado
+│   ├── dashboard.py             # Dashboard HTML local
+│   ├── sales_webhooks.py        # Webhooks Hotmart / Greenn / Kiwify
+│   ├── heartbeat.py             # Heartbeat em 3 camadas
+│   └── week2_lib.py             # Utilitários compartilhados da Semana 2
 ├── templates/
 │   ├── claude_md_template.md    # Template para CLAUDE.md personalizado do aluno
 │   ├── rate_limiter_template.py # Rate limiter local em SQLite
 │   ├── dispatch_log_template.py # Deduplicacao de disparos em SQLite
 │   └── whatsapp_api_template.py # Abstracao Evolution vs Z-API
 └── docs/
-    └── prerequisitos.md         # Guia de instalação por sistema operacional
+    ├── prerequisitos.md         # Guia de instalação por sistema operacional
+    └── semana2.md               # Guia rápido da Semana 2
 ```
+
+---
+
+## Como continuar na Semana 2
+
+Depois de concluir a base da Semana 1:
+
+```bash
+python3 setup/setup_week2.py
+```
+
+Isso cria:
+
+- Dashboard local em `~/.operacao-ia/dashboard/index.html`
+- Webhooks locais para Hotmart, Greenn e Kiwify
+- Heartbeat em 3 camadas
+- Checkpoint para retomar a configuração da Semana 2
+
+Veja também: `docs/semana2.md`
 
 ---
 

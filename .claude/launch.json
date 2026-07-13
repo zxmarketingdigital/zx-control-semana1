@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "area-membros",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "7890", "--directory", "/Users/rcastrodigital/projetos/zx-control-semana1"],
+      "port": 7890
+    }
+  ]
+}

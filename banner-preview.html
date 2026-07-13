@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banner Preview — ZX Control 2.0</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e8e8ed; }
+
+  /* ── BANNER ── */
+  #renewal-banner {
+    position: relative;
+    background: linear-gradient(135deg, #0e1628 0%, #0d1f1a 100%);
+    border-bottom: 1px solid rgba(6,182,212,0.35);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    z-index: 100;
+  }
+
+  .banner-badge {
+    background: linear-gradient(135deg, #06b6d4, #2563eb);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .banner-copy {
+    font-size: 0.9rem;
+    color: #e8e8ed;
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .banner-copy strong {
+    color: #22d3ee;
+  }
+
+  .banner-countdown {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .countdown-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(6,182,212,0.25);
+    border-radius: 8px;
+    padding: 4px 10px;
+    min-width: 44px;
+  }
+
+  .countdown-num {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #22d3ee;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .countdown-label {
+    font-size: 0.58rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  .countdown-sep {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #475569;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .banner-cta {
+    display: inline-block;
+    background: linear-gradient(135deg, #06b6d4, #2563eb);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 9px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+  }
+  .banner-cta:hover { opacity: 0.85; }
+
+  .banner-close {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #475569;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+  .banner-close:hover { color: #94a3b8; }
+
+  /* ── SIMULAÇÃO DO HEADER DA ÁREA ── */
+  .fake-header {
+    background: #10101a;
+    border-bottom: 1px solid #1e1e2e;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .fake-logo { font-size: 1rem; font-weight: 700; color: #e8e8ed; }
+  .fake-logo span { color: #6366f1; }
+
+  .fake-body {
+    padding: 32px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .fake-card {
+    background: #16161f;
+    border: 1px solid #1e1e2e;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .fake-card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .fake-card-sub { font-size: 0.85rem; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div id="renewal-banner">
+  <span class="banner-badge">⚡ Exclusivo Alunos 1.0</span>
+
+  <div class="banner-copy">
+    <strong>Turma 2 começa 01/05</strong> — De R$997 por <strong>R$497/mês</strong> · 50% OFF travado enquanto ativo
+  </div>
+
+  <div class="banner-countdown" id="countdown">
+    <div class="countdown-block"><span class="countdown-num" id="cd-d">06</span><span class="countdown-label">dias</span></div>
+    <span class="countdown-sep">:</span>
+    <div class="countdown-block"><span class="countdown-num" id="cd-h">23</span><span class="countdown-label">horas</span></div>
+    <span class="countdown-sep">:</span>
+    <div class="countdown-block"><span class="countdown-num" id="cd-m">59</span><span class="countdown-label">min</span></div>
+    <span class="countdown-sep">:</span>
+    <div class="countdown-block"><span class="countdown-num" id="cd-s">59</span><span class="countdown-label">seg</span></div>
+  </div>
+
+  <a class="banner-cta" href="https://zx-control-renovacao.pages.dev/" target="_blank">Garantir 50% OFF →</a>
+
+  <button class="banner-close" onclick="document.getElementById('renewal-banner').style.display='none'" title="Fechar">✕</button>
+</div>
+
+<!-- SIMULAÇÃO DA ÁREA -->
+<div class="fake-header">
+  <div class="fake-logo">ZX <span>Control</span></div>
+  <div style="font-size:0.8rem;color:#94a3b8">Área de Membros</div>
+</div>
+<div class="fake-body">
+  <div class="fake-card">
+    <div class="fake-card-title">Semana 4 — Inteligência & Escala</div>
+    <div class="fake-card-sub">O banner aparece no topo assim que o aluno acessa a área de membros.</div>
+  </div>
+</div>
+
+<script>
+  // Deadline da oferta turma 2 (30/04/2026 23:59 BRT). Após isso, banner permanece visível em modo neutro.
+  const deadline = new Date('2026-04-30T23:59:00-03:00').getTime();
+
+  // Oferta A — renovação 50% OFF para alunos ZX Control 1.0
+  const NEUTRAL_BADGE     = '⚡ Exclusivo Alunos 1.0';
+  const NEUTRAL_COPY      = '<strong>Renove para o ZX Control 2.0</strong> — 50% OFF travado enquanto ativo';
+  const NEUTRAL_CTA_LABEL = 'Renovar com 50% OFF →';
+  const NEUTRAL_CTA_URL   = 'https://zx-control-renovacao.pages.dev/';
+
+  let _cdInterval = null;
+
+  function renderNeutralBanner() {
+    const banner = document.getElementById('renewal-banner');
+    if (!banner || banner.dataset.neutral === '1') return;
+    banner.dataset.neutral = '1';
+    banner.innerHTML =
+        '<span class="banner-badge">' + NEUTRAL_BADGE + '</span>'
+      + '<div class="banner-copy">' + NEUTRAL_COPY + '</div>'
+      + '<a class="banner-cta" href="' + NEUTRAL_CTA_URL + '" target="_blank" rel="noopener">' + NEUTRAL_CTA_LABEL + '</a>'
+      + '<button class="banner-close" onclick="document.getElementById(\'renewal-banner\').style.display=\'none\'" title="Fechar">✕</button>';
+    if (_cdInterval) { clearInterval(_cdInterval); _cdInterval = null; }
+  }
+
+  function update() {
+    const diff = deadline - Date.now();
+    if (diff <= 0) { renderNeutralBanner(); return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  }
+  update();
+  _cdInterval = setInterval(update, 1000);
+</script>
+</body>
+</html>
