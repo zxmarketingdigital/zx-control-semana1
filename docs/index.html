@@ -3822,7 +3822,7 @@ function zxcRvClose(){var e=document.getElementById('zxc-renov-v5');if(e)e.style
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;"><iframe src="https://iframe.mediadelivery.net/embed/629692/12a0f835-ea34-4960-93e8-89750e02337a?autoplay=false" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe></div>
         <div class="etapa-footer">
           <button class="btn-complete pending" id="complete-base-9" onclick="markComplete(9)"><span>✓</span> Marcar aula como concluída</button>
-          <button class="btn-nav-next" onclick="goToEtapa(10)">Próxima aula →</button>
+          <button class="btn-nav-next" onclick="goToEtapa(12)">Próxima aula →</button>
         </div>
       </div>
 
@@ -4107,10 +4107,11 @@ function showSelector(name) {
     else { s5Badge.style.display = 'none' }
   }
 
-  const sBaseDone = (getStateForWeek('base').completed || []).length
+  const sBaseIds = ETAPAS_BASE.filter(e => !e.kind && e.id > 0).map(e => e.id)
+  const sBaseDone = (getStateForWeek('base').completed || []).filter(id => sBaseIds.includes(id)).length
   const sBaseBadge = document.getElementById('sBaseProgress')
   if (sBaseBadge) {
-    if (sBaseDone > 0) { sBaseBadge.textContent = `${sBaseDone}/12 concluídas`; sBaseBadge.style.display = '' }
+    if (sBaseDone > 0) { sBaseBadge.textContent = `${sBaseDone}/${sBaseIds.length} concluídas`; sBaseBadge.style.display = '' }
     else { sBaseBadge.style.display = 'none' }
   }
 
@@ -4273,15 +4274,19 @@ function markComplete(id) {
   updateProgress()
   buildSidebar()
 
-  const etapas = activeEtapas()
-  const maxId = etapas[etapas.length - 1].id
-  if (id < maxId) setTimeout(() => goToEtapa(id + 1), 800)
+  // os ids não são contíguos (aulas removidas deixam buracos) — avança pro
+  // PRÓXIMO id da lista, nunca id + 1
+  const ids = activeEtapas().filter(e => !e.kind).map(e => e.id)
+  const next = ids[ids.indexOf(id) + 1]
+  if (next !== undefined) setTimeout(() => goToEtapa(next), 800)
 }
 
 function updateProgress() {
-  const completed = getCompleted()
-  const count = completed.length
-  const total = activeEtapas().filter(e => !e.kind && e.id > 0).length
+  // ignora ids que não existem mais (aula removida ainda salva no localStorage),
+  // senão o contador passa do total
+  const validIds = activeEtapas().filter(e => !e.kind && e.id > 0).map(e => e.id)
+  const count = getCompleted().filter(id => validIds.includes(id)).length
+  const total = validIds.length
   const pct = total > 0 ? (count / total) * 100 : 0
 
   document.getElementById('completedCount').textContent = count
