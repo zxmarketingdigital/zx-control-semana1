@@ -48,7 +48,7 @@ Cada script é executado pelo Claude na etapa correspondente. Todos criam/leem `
 - `dispatcher.py` — disparos WhatsApp em lote. CLI (`--message`/`--file`, `--tag`, `--dry-run`). Lê `contacts.db`, passa por rate limiter + dispatch log antes de enviar.
 - `monitor.py` — health check + status matinal.
 - **Semana 2:** `dashboard.py` (HTML local), `heartbeat.py` (3 camadas), `sales_webhooks.py` (Hotmart/Greenn/Kiwify), `week2_lib.py` (utilitários).
-- `scripts/sync_asaas_purchases.py` — **⚠️ NÃO faz parte do fluxo do aluno.** É um one-shot **interno ZX LAB**: lê `~/.asaas-connector/events.json`, filtra pagamentos "ZX Control", faz upsert em `contacts` + insert idempotente em `purchases` no CRM Supabase. Ferramenta operacional que ficou hospedada aqui (ligada ao auth real do ZX Control — ver `reference feedback_zxcontrol_auth_real_pattern`).
+- `scripts/sync_asaas_purchases.py` — **⚠️ NÃO faz parte do fluxo do aluno.** É um one-shot **interno ZX LAB** que reconcilia pagamentos com o CRM interno. Ferramenta operacional que ficou hospedada aqui (ligada ao auth real do ZX Control).
 
 ## Templates (`templates/`)
 
@@ -71,7 +71,7 @@ Cada script é executado pelo Claude na etapa correspondente. Todos criam/leem `
 
 - `docs/index.html` (~4.4k linhas) — SPA da área de membros v1, deploy **Cloudflare Pages → `zx-control.zxlab.com.br`**.
 - `docs/_redirects` = `/* /index.html 200` (catch-all SPA).
-- **Auth server-side:** chama Edge Function `check-zxcontrol-access` no Supabase `pnfvlszwlumetdjsuktj` (valida email contra `purchases`, `refunded=false AND access_blocked=false`). **Sem anon key/JWT nem senha no HTML** (verificado). Estado de login em `localStorage` (`zxcontrol_auth`, migrando do legado `zxcontrol_s1`).
+- **Auth server-side:** chama Edge Function `check-zxcontrol-access` num Supabase interno (valida email contra `purchases`, `refunded=false AND access_blocked=false`). **Sem anon key/JWT nem senha no HTML** (verificado). Estado de login em `localStorage` (`zxcontrol_auth`, migrando do legado `zxcontrol_s1`).
 - `docs/prerequisitos.md`, `docs/semana2.md`, `docs/session-handoff-2026-04-01.md` — docs de apoio.
 
 ## Integrações externas
@@ -79,7 +79,7 @@ Cada script é executado pelo Claude na etapa correspondente. Todos criam/leem `
 - **Evolution API** (Docker local `:8080`) · **Z-API** (cloud, fallback) · **UAIZAP** (`zxlab.uazapi.com`).
 - **Resend** (email).
 - **OpenAI / Gemini / Anthropic** (agente IA).
-- **Supabase** `pnfvlszwlumetdjsuktj` (só a área de membros e o script interno de sync).
+- **Supabase interno** (só a área de membros e o script interno de sync).
 - **Hotmart / Greenn / Kiwify** (webhooks, Semana 2).
 
 ## Gotchas / armadilhas conhecidas
@@ -87,7 +87,7 @@ Cada script é executado pelo Claude na etapa correspondente. Todos criam/leem `
 - **`CLAUDE.md` tem bloco "Estado Atual (Sessão 2026-04-08)" DESATUALIZADO** (a verificar/limpar): fala em corrigir bugs em `area-membros.html` (2255 linhas) — **esse arquivo não existe no repo**; a área de membros real é `docs/index.html` (~4.4k linhas). Conteúdo de outra sessão que vazou para o roteiro do instrutor; pode confundir o Claude do aluno.
 - **`.claude/launch.json`** serve a **raiz do repo** em `python3 -m http.server 7890` como "area-membros" — mas o `index.html` está em `docs/`, não na raiz. Config provavelmente **quebrada/obsoleta** (a verificar) — para servir a área de membros localmente, apontar `--directory docs`.
 - **Provider WhatsApp é sempre `evolution`** no `setup_environment.py` (retorno hardcoded). Z-API só entra por caminho manual na Etapa 3.
-- **Repo público:** skills que o aluno precisa devem ser **embutidas no repo e instaladas por cópia local**, nunca `claude skill install http…`/`git clone` de repo externo que pode dar 404 (ver `feedback_setup_skill_embutida_nao_repo_externo`). Ao mexer, `grep` por `skill install http`, `git clone`, `cargo/pip/npm install` e validar cada URL/pacote.
+- **Repo público:** skills que o aluno precisa devem ser **embutidas no repo e instaladas por cópia local**, nunca `claude skill install http…`/`git clone` de repo externo que pode dar 404. Ao mexer, `grep` por `skill install http`, `git clone`, `cargo/pip/npm install` e validar cada URL/pacote.
 - **`sync_asaas_purchases.py` não é do aluno** — é interno ZX LAB; não confundir com o fluxo de setup.
 - `graphify-out/` e `.wrangler/` são gitignored (não vão pro repo público).
 - Todo disparo WhatsApp **tem** que passar pelo rate limiter (30/h · 150/dia · 90s) e pelo dispatch log — o agente roda em processo separado do dispatcher pra não conflitar.
@@ -116,7 +116,7 @@ python3 -m http.server 7890 --directory docs
 gh repo view zxmarketingdigital/zx-control-semana1 --json visibility
 ```
 
-## Memórias relacionadas
-- `feedback_zxcontrol_auth_real_pattern` — auth contra `purchases` + bloqueio individual (Edge Function `check-zxcontrol-access`).
-- `feedback_setup_skill_embutida_nao_repo_externo` — skills embutidas, nunca repo externo.
+## Notas relacionadas
+- Auth contra `purchases` + bloqueio individual (Edge Function `check-zxcontrol-access`).
+- Skills embutidas no repo, nunca instaladas de repo externo.
 - Regra global `~/CLAUDE.md`: "Repos de Setup de Aluno → SEMPRE Public".

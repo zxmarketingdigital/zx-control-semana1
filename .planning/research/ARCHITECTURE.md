@@ -543,7 +543,7 @@ zx-control-semana1/
 
 - agente-ia-vendas reference repo (local: ~/agente-ia-vendas/) -- CLAUDE.md conductor pattern, setup scripts, templates -- **HIGH confidence**
 - Mission Control (local: ~/.zxlab-mission-control/) -- dispatch-log.py, health-checker.py, rate limiter patterns -- **HIGH confidence**
-- OpenClaw scripts (local: ~/.openclaw/workspace/scripts/) -- bom_dia, watcher, whatsapp_api patterns -- **HIGH confidence**
+- Automações internas ZX LAB -- bom_dia, watcher, whatsapp_api patterns -- **HIGH confidence**
 - [CLI UX Patterns 2025](https://medium.com/@kaushalsinh73/top-8-cli-ux-patterns-users-will-brag-about-4427adb548b7) -- first-run wizard as proven pattern -- **MEDIUM confidence**
 - [Claude Code Starter](https://github.com/seaneoliver/claude-code-starter) -- CLAUDE.md template generation approach -- **MEDIUM confidence**
 - [Command Line Interface Guidelines](https://clig.dev/) -- CLI design principles -- **HIGH confidence**
