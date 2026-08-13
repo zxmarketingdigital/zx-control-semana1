@@ -5,3 +5,5 @@ __pycache__/
 *.pyc
 .DS_Store
 scripts/sync_asaas_purchases.py
+__pycache__/
+.DS_Store
