@@ -4,6 +4,7 @@ Configura e deploya o agente IA BANT em ~/.operacao-ia/scripts/.
 """
 
 import json
+import os
 import subprocess
 import urllib.error
 import urllib.request
@@ -20,6 +21,7 @@ SOURCE_AGENT = REPO_DIR / "scripts" / "agent_bant.py"
 SOURCE_WPP = REPO_DIR / "templates" / "whatsapp_api_template.py"
 SOURCE_RATE = REPO_DIR / "templates" / "rate_limiter_template.py"
 SOURCE_LOG = REPO_DIR / "templates" / "dispatch_log_template.py"
+DEFAULT_GEMINI_MODEL = "gemini-flash-lite-latest"
 
 
 def load_config():
@@ -73,15 +75,29 @@ def call_gemini_test(api_key):
             "generationConfig": {"maxOutputTokens": 20},
         }
     ).encode("utf-8")
+    # `or` (nao default do get): GEMINI_MODEL definida mas vazia tem que cair no default,
+    # senao a URL sai sem modelo e o teste da chave falha por motivo errado.
+    gemini_model = os.environ.get("GEMINI_MODEL", "").strip() or DEFAULT_GEMINI_MODEL
     request = urllib.request.Request(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+        f"https://generativelanguage.googleapis.com/v1beta/models/{gemini_model}:generateContent",
         data=payload,
         headers={"Content-Type": "application/json", "x-goog-api-key": api_key, "User-Agent": "ZXControl/1.0"},
         method="POST",
     )
     with urllib.request.urlopen(request, timeout=30) as response:
         data = json.loads(response.read().decode("utf-8"))
-    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+    parts = []
+    for candidate in data.get("candidates", []):
+        parts.extend(candidate.get("content", {}).get("parts", []))
+    # part com thought=True e raciocinio interno do modelo — nao entra na resposta.
+    text = "".join(
+        part.get("text", "")
+        for part in parts
+        if part.get("text") and not part.get("thought")
+    ).strip()
+    if not text:
+        raise ValueError("A IA nao devolveu texto.")
+    return text
 
 
 def call_anthropic_test(api_key):

@@ -7,6 +7,7 @@ Este arquivo e a fonte do script deployado em ~/.operacao-ia/scripts/agent_bant.
 import hashlib
 import json
 import logging
+import os
 import sqlite3
 import sys
 import time
@@ -36,6 +37,7 @@ STATE_CACHE_LIMIT = 5000
 
 DEFAULT_AGENT_NAME = "{{AGENT_NAME}}"
 DEFAULT_AGENT_TONE = "{{AGENT_TONE}}"
+DEFAULT_GEMINI_MODEL = "gemini-flash-lite-latest"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -172,8 +174,11 @@ def call_gemini(messages, api_key, system_prompt):
         }
     ).encode("utf-8")
 
+    # `or` (nao default do get): GEMINI_MODEL definida mas vazia tem que cair no default,
+    # senao a URL sai sem modelo e toda chamada quebra.
+    gemini_model = os.environ.get("GEMINI_MODEL", "").strip() or DEFAULT_GEMINI_MODEL
     request = urllib.request.Request(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+        f"https://generativelanguage.googleapis.com/v1beta/models/{gemini_model}:generateContent",
         data=payload,
         headers={
             "Content-Type": "application/json",
@@ -183,7 +188,18 @@ def call_gemini(messages, api_key, system_prompt):
     )
     with urllib.request.urlopen(request, timeout=40) as response:
         result = json.loads(response.read().decode("utf-8"))
-    return result["candidates"][0]["content"]["parts"][0]["text"].strip()
+    parts = []
+    for candidate in result.get("candidates", []):
+        parts.extend(candidate.get("content", {}).get("parts", []))
+    # part com thought=True e raciocinio interno do modelo — nao vai para o lead.
+    text = "".join(
+        part.get("text", "")
+        for part in parts
+        if part.get("text") and not part.get("thought")
+    ).strip()
+    if not text:
+        raise ValueError("A IA nao devolveu texto.")
+    return text
 
 
 def call_anthropic(messages, api_key, system_prompt):
