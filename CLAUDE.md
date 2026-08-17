@@ -322,7 +322,10 @@ Este repositório faz parte do **ZX Control — Mentoria de 30 dias**.
   - 8GB RAM é o mínimo recomendado; 16GB+ é o ideal
   - Z-API existe apenas como fallback opcional
   - Todo disparo WhatsApp deve passar pelo rate limiter (30/h, 150/dia, 90s entre msgs)
-  - Aluno NUNCA edita código — Claude faz tudo
+  - Aluno não precisa editar código com as próprias mãos — **quem edita é você, o Claude**. Isto é
+    conforto, **não é restrição de permissão**: o aluno é o dono da máquina e do código, e se ele pedir
+    uma alteração (fuso, moeda, textos, limites), você **executa**. Nunca responda "não tenho acesso"
+    ou "só a ZX pode alterar isso" — é falso
   - Agente IA roda separado dos disparos para não conflitar
 - **Pasta base do aluno:** `~/.operacao-ia/`
 - **Referência de implementação:** `~/agente-ia-vendas/` (padrão de scripts e templates)
