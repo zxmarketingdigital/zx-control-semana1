@@ -6,9 +6,11 @@ Cria ~/.operacao-ia/ com estrutura de pastas e arquivo de configuração.
 
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 
@@ -82,21 +84,122 @@ def ask(prompt, default=""):
         sys.exit(0)
 
 
+class ConfigBackupError(OSError):
+    """Nao foi possivel guardar copia de seguranca do config; o original NAO foi tocado."""
+
+
+def backup_config_copy(path):
+    """Copia (copy2) o config para <nome>.bak-<AAAAmmdd-HHMMSS>[-N], sem sobrescrever backup existente.
+
+    Confere que o destino existe com o mesmo tamanho. Em falha, o original fica intacto
+    e levanta ConfigBackupError (so entao o chamador pode recriar o config).
+    """
+    path = Path(path)
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    backup = None
+    try:
+        n = 0
+        while backup is None:
+            candidate = path.with_name("%s.bak-%s%s" % (path.name, stamp, "-%d" % n if n else ""))
+            try:
+                # O_EXCL: a criação é atômica; se outro processo pegou o nome, tenta o próximo sufixo.
+                fd = os.open(str(candidate), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            except FileExistsError:
+                n += 1
+                continue
+            backup = candidate
+            with os.fdopen(fd, "wb") as dst, open(str(path), "rb") as src:
+                shutil.copyfileobj(src, dst)
+            os.chmod(str(backup), 0o600)  # backup nunca herda permissao aberta do original
+        if not backup.is_file() or backup.stat().st_size != path.stat().st_size:
+            raise OSError("copia de seguranca incompleta")
+    except OSError as e:
+        try:
+            if backup is not None and backup.is_file():
+                backup.unlink()
+        except OSError:
+            pass
+        msg = (f"Não consegui salvar uma cópia de segurança de {path}: {e}. "
+               "Verifique a permissão da pasta e rode de novo.")
+        print(f"  ❌ {msg}")
+        raise ConfigBackupError(msg) from e
+    return backup
+
+
+def load_existing_config():
+    """Lê o config.json existente (de outro setup ou de uma execução anterior).
+
+    Ausente -> {}. Corrompido -> backup config.json.bak-<timestamp> e {} (nunca quebra).
+    """
+    if not CONFIG_PATH.exists():
+        return {}
+    try:
+        with open(CONFIG_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        if isinstance(data, dict):
+            return data
+    except (OSError, ValueError, RecursionError):
+        pass
+    try:
+        backup = backup_config_copy(CONFIG_PATH)
+    except ConfigBackupError:
+        sys.exit(1)  # mensagem ja impressa; config original intacto
+    print(f"  ⚠️  config.json inválido — backup salvo em {backup.name}")
+    return {}
+
+
+def parse_phase(value):
+    """Interpreta phase_completed de forma tolerante: 5, 5.0, "5", "week5", "semana 5", "phase5". Invalido = 0."""
+    if isinstance(value, bool):
+        return 0
+    try:
+        number = float(value)
+    except OverflowError:
+        number = float("inf") if value > 0 else 0.0  # inteiro gigante: maior que qualquer fase, nunca sobrescreve
+    except (TypeError, ValueError):
+        achou = re.search(r"\d+(?:\.\d+)?", str(value))
+        number = float(achou.group()) if achou else 0
+    if number != number or number == float("-inf"):
+        return 0
+    return number
+
+
 def write_config(student_name, business_name, whatsapp_provider, ram_gb):
-    """Escreve o arquivo config.json."""
-    config = {
+    """Escreve o arquivo config.json, preservando o que já existir (outro setup) e sem regredir phase_completed."""
+    config = load_existing_config()
+    phase = parse_phase(config.get("phase_completed", 0))
+    config.update({
         "student_name": student_name,
         "business_name": business_name,
         "whatsapp_provider": whatsapp_provider,
         "ram_gb": ram_gb,
         "output_dir": str(BASE_DIR),
         "setup_date": date.today().isoformat(),
-        "phase_completed": 1
-    }
+    })
+    if phase < 1:  # nunca reduz um phase_completed maior vindo de outro setup
+        config["phase_completed"] = 1
 
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
-        json.dump(config, f, ensure_ascii=False, indent=2)
+    # Grava em arquivo temporário no mesmo diretório e troca com os.replace: uma falha no meio
+    # nunca deixa o config válido do aluno truncado. realpath mantém config.json que é symlink.
+    destino = os.path.realpath(str(CONFIG_PATH))
+    tmp = "%s.tmp-%d" % (destino, os.getpid())
+    try:
+        try:
+            os.unlink(tmp)  # sobra de execucao interrompida
+        except FileNotFoundError:
+            pass
+        with os.fdopen(os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), "w", encoding="utf-8") as f:
+            json.dump(config, f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, destino)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
     return config
 
